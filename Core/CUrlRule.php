@@ -41,11 +41,15 @@ class CUrlRule
         foreach ($_POST as $k=>$v) {
             $_POST[$k] = trim($v);
         }
-        
+
         $urlPath = preg_replace('/\?.*/', '', $urlPath);
         $charlist = '/';
         $urlPath = trim($urlPath, $charlist);
-        $urlPath = trim($urlPath, self::URL_SUFFIX);
+        $count = strlen(self::URL_SUFFIX);
+        $suffixString = substr($urlPath, -$count);
+        if ($suffixString == self::URL_SUFFIX) {
+            $urlPath = substr($urlPath, 0, -$count);
+        }
         $urlPath = explode($charlist, $urlPath);
         $modules = CConfig::getConfig('modules');
         $result = array();

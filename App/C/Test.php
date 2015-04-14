@@ -8,16 +8,10 @@
 class C_Test extends CController
 {
 	public function init() {
-		
 	}
 	
 	public function index() {
-		$this->_view->a = 'a';
-		$this->_view->b = 88;
-		$this->_view->title = '这个是标题';
-		var_dump($this->getParams());
-		//$this->_view->setIsLayout();
-		$this->_view->setIsView();
+
 	}
 	
 	/**
