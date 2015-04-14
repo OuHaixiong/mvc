@@ -7,7 +7,7 @@
  * @version 1.0.0
  * @created 2015-04-11 22:17
  */
-class Lib_UrlRule
+class CUrlRule
 {
     const URL_SUFFIX = '.html';
     
@@ -47,7 +47,7 @@ class Lib_UrlRule
         $urlPath = trim($urlPath, $charlist);
         $urlPath = trim($urlPath, self::URL_SUFFIX);
         $urlPath = explode($charlist, $urlPath);
-        $modules = Lib_Config::getConfig('modules');
+        $modules = CConfig::getConfig('modules');
         $result = array();
         if ($modules !== null) {
             if (isset($urlPath[0]) && $urlPath[0] != '') {

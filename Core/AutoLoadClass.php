@@ -36,7 +36,7 @@ function __autoload($classname) {
 	}
 	// 3, 查找第三方类库下的类
 	include_once CORE_PATH . '/Config.php';
-	$libraries = Lib_Config::getConfig('thireLibrariesPath');
+	$libraries = CConfig::getConfig('thireLibrariesPath');
 	foreach ($libraries as $lib) {
 	    $absolutePath = $lib . $filePath;
 	    if (is_file($absolutePath)) {

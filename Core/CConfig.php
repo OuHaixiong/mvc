@@ -7,7 +7,7 @@
  * @copyright http://maimengmei.com
  * @created 2015-04-11 16:53
  */
-class Lib_Config
+class CConfig
 {
 	private static $_constant;
 	private static $_config;

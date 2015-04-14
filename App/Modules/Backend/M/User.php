@@ -7,7 +7,7 @@
  * @version 1.0.0
  * @created 2015-04-11
  */
-class Backend_M_User
+class Backend_M_User extends CModel
 {
     public function login() {
     }

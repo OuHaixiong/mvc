@@ -8,7 +8,7 @@
  * @version 1.0.0
  * @created 2012-09-24 17:17
  */
-class Lib_App
+class CApp
 {
     private static $_module;
 	private static $_controller;
@@ -16,12 +16,13 @@ class Lib_App
 	
 	
 	/**
-	 * 调用控制器，并渲染视图
+	 * 调用控制器，
+	 * 后改为手动渲染视图
 	 */
 	public function run() {
 // 		$phpSelf = $_SERVER['PHP_SELF']; // 操！在有些服务器上这里不能返回浏览器的请求地址
 // 		var_dump($phpSelf);exit;
-		$urlRule = new Lib_UrlRule();
+		$urlRule = new CUrlRule();
 		$result = $urlRule->parseUrl($_SERVER['REQUEST_URI']);// 这个貌似可以，暂时用这个
 		self::$_module = $result['module'];
 		self::$_controller = $result['controller'];

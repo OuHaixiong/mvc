@@ -1,6 +1,6 @@
 <?php
 
-class Backend_C_Test extends C_Abstract
+class Backend_C_Test extends CController
 {
     public function init() {
         

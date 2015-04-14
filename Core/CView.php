@@ -7,7 +7,7 @@
  * @version 1.1.0  2015-04-13 15:09
  * @created 2012-09-24 17:08
  */
-class V_View
+class CView
 {
 	/**
 	 * 渲染页面路径
@@ -68,11 +68,11 @@ class V_View
 	    }
 	    $path = trim($path);
         if (empty($path)) {
-            $module = Lib_App::getModule();
+            $module = CApp::getModule();
 	        if ($module == 'Default') {
 	            $module = '';
 	        }
-	        $path = $module . '/' . Lib_App::getController() . '/' . Lib_App::getAction();
+	        $path = $module . '/' . CApp::getController() . '/' . CApp::getAction();
 	    }
         $layoutContent = $this->render($path);
         if ($this->_layoutFlag) { // 渲染布局

@@ -17,5 +17,5 @@ defined('APP_PATH') || define('APP_PATH', realpath(ROOT_PATH . '/../App')); //хо
 
 require_once CORE_PATH . '/AutoLoadClass.php';
 
-$app = new Lib_App();
+$app = new CApp();
 $app->run();
