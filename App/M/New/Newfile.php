@@ -3,6 +3,8 @@
 class M_New_Newfile extends CModel
 {
 	public function mm() {
-		echo 'mm操你老母';
+	    $sql = 'select * from tb_adminf';
+		$result = $this->db->query($sql, '粗错：');
+		Common_Tool::prePrint($result);
 	}
 }

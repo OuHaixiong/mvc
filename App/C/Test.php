@@ -11,7 +11,8 @@ class C_Test extends CController
 	}
 	
 	public function index() {
-
+        $newfile = new M_New_Newfile();
+        $newfile->mm();
 	}
 	
 	/**
