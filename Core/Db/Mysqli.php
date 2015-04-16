@@ -71,13 +71,125 @@ class Db_Mysqli
     /**
      * mysqli_num_rows 返回结果集中的总行数
      * @access public
-     * @param resource $result
+     * @param mysqli_result $result
      * @return integer
      */
-    public function num($result) {
-        return @mysqli_num_rows($result);
+    public function totalRows($result) {
+        return $result->num_rows; // mysqli_num_rows($result);
+    }
+
+    /**
+     * mysqli_prepare 获取sql语句信息
+     * 
+     * @access public
+     * @param string $sql 
+     * @return object mysqli_stmt
+     */
+    public function prepare($sql = null) {
+        if ($sql !== null) {
+            $this->_sql = $sql;
+        }
+        return $this->_link->prepare($this->_sql);
+        // @mysqli_prepare($this->_link, $this->_sql);
     }
     
+    /**
+     * mysqli_fetch_array 以关联数组返回结果中的一行
+     * @access public
+     * @param mysqli_result $result
+     * @return array | null
+     */
+    public function fetchArray($result) {
+        return $result->fetch_array(MYSQLI_ASSOC); // mysqli_fetch_array($result);
+    }
+    
+    /**
+     * 获取mysql前一次操作（select，delete，insert）所影响的行数
+     * mysqli_affected_rows
+     * @return integer
+     */
+    public function affectedRows() {
+        return $this->_link->affected_rows; // mysqli_affected_rows($this->_link);
+    }
+    
+    /**
+     * fetch once result from the specific sql query
+     * 获取一行数据，作为关联数组返回
+     * @access public
+     * @param string $sql 需要执行的sql语句
+     * @param string $message 执行失败提示语
+     * @return array | null 一维数组或null
+     */
+    public function fetchArrayOnce($sql = null, $message = null) {
+        $result = $this->query($sql, $message);
+        $row = $this->fetchArray($result);//return mysqli_fetch_assoc($result);// yes return mysqli_fetch_object($result); // yes
+        return $row;
+    }
+    
+    /**
+     * 获取所有的结果行
+     * fetch all result from the specific sql query
+     * @access public
+     * @param string $sql 需要执行的sql语句
+     * @param string $message 执行失败后的提示
+     * @return array
+     */
+    public function fetchArrayAll($sql = null, $message=null) {
+        $result = $this->query($sql, $message);
+//         return $result->fetch_all(); // 此方法仅 MySQL原生驱动（mysqlnd）才支持
+        $rows = array();
+        while (($row = $this->fetchArray($result)) == true) {
+            $rows[] = $row;
+        }
+        return $rows;
+    }
+    
+    /**
+     * 返回sql语句的总行数
+     * fetch the number of results from the specific sql query  
+     * @access public
+     * @param string $sql
+     * @param string $message
+     * @return integer
+     */
+    public function getTotalRows($sql = null, $message = null) {
+        $result = $this->query($sql, $message);
+        return $this->totalRows($result);
+    }
+    
+    /**
+     * mysqli_stmt_execute 执行一个prepared查询
+     * @access public
+     * @param object $stmt
+     * @param string $message
+     * @return boolean
+     */
+    public function stmtExecute($stmt, $message = null) {
+        return $stmt->execute() or die($message . $this->_link->error);
+    }
+    
+    /**
+     * 选择数据库（换个数据库）
+     * @param string $databaseName 新的数据库名,如果为null就是说恢复默认选择的数据库
+     * @return boolean
+     */
+    public function changeDatabase($databaseName = null) {
+        $databaseName = trim($databaseName);
+        if (empty($databaseName)) {
+            return false;
+        }
+        return $this->_link->select_db($databaseName); // mysqli_select_db($this->_link, $databaseName);
+    }
+    
+    /**
+     * 获取最后一次插入数据的主键id
+     * mysqli_insert_id
+     * @access public
+     * @return integer | array
+     */
+    public function getLastId() {
+        return $this->_link->insert_id; // return @mysqli_insert_id($this->_link);
+    }
     
     /**
      * 获取最后一次操作数据库的sql语句
@@ -105,7 +217,7 @@ class Db_Mysqli
     
     /**
      * 获取数据库连接资源
-     * @return resource
+     * @return mysqli
      */
     public function getLink() {
         return $this->_link;
@@ -120,137 +232,3 @@ class Db_Mysqli
         }
     }
 }
-  
-
-
-
-
-//     /**
-//      * mysqli_fetch_array
-//      * @access public
-//      * @param resource $result
-//      * @return array
-//      */
-//     public function fetchArray($result) {
-//         return @mysqli_fetch_array($result);
-//     }
-
-//     /**
-//      * mysqli_insert_id
-//      * @access public
-//      * @param resource $result
-//      * @return integer
-//      */
-//     public function lastId() {
-//         return @mysqli_insert_id($this->_link);
-//     }
-
-//     /**
-//      * 获取mysql前一次操作（select，delete）所影响的行数
-//      * mysqli_affected_rows
-//      * @return integer
-//      */
-//     public function affectedRows() {
-//         return mysqli_affected_rows($this->_link);
-//     }
-
-//     /**
-//      * close the datebase connection
-//      * @access public
-//      * @return null
-//      */
-//     public function close() {
-//         @mysqli_close($this->_link);
-//         //		unset(self::$_instance); // 特别注意了：unset 是能够释放静态变量的（将销毁此变量及其所有的引用），但在这里貌似这样用是错误的，因为对象本身不能释放本身
-//         self::$_instance = null;
-//     }
-
-//     /**
-//      * fetch once result from the specific sql query
-//      * 获取一行数据
-//      * @access public
-//      * @param string $sql
-//      * @param string $message
-//      * @return array | null 一维数组或null
-//      */
-//     public function fetchArrayOnce($sql = null, $message = null) {
-//         if ($sql !== null) {
-//             $this->_sql = $sql;
-//         }
-//         $result = $this->query($this->_sql, $message);
-//         $row = $this->fetchArray($result);//return mysqli_fetch_assoc($result);// yes return mysqli_fetch_object($result); // yes
-//         return $row;
-//     }
-
-//     /**
-//      * fetch all result from the specific sql query
-//      * @access public
-//      * @param string $sql
-//      * @param string $message
-//      * @return array
-//      */
-//     public function fetchArrayMore($sql = null, $message=null) {
-//         if ($sql !== null) {
-//             $this->_sql = $sql;
-//         }
-//         $result = $this->query($this->_sql, $message);
-//         $moreRow = array();
-//         while (($row = $this->fetchArray($result)) == true) {
-//             $moreRow[] = $row;
-//         }
-//         return $moreRow;
-//     }
-
-//     /**
-//      * fetch the number of results from the specific sql query  返回sql语句的总行数
-//      * @access public
-//      * @param string $sql
-//      * @param string $message
-//      * @return integer
-//      */
-//     public function fetchNum($sql = null, $message = null) {
-//         if ($sql !== null) {
-//             $this->_sql = $sql;
-//         }
-//         $result = $this->query($this->_sql, $message);
-//         return $this->num($result);
-//     }
-
-//     /**
-//      * mysqli_prepare 获取sql语句信息
-//      * @access public
-//      * @param string $sql
-//      * @return object mysqli_stmt
-//      */
-//     public function prepare($sql = null) {
-//         if ($sql !== null) {
-//             $this->_sql = $sql;
-//         }
-//         return @mysqli_prepare($this->_link, $this->_sql);
-//     }
-
-//     /**
-//      * mysqli_stmt_execute
-//      * @access public
-//      * @param object $stmt
-//      * @param string $message
-//      * @return boolean
-//      */
-//     public function stmtExecute($stmt, $message = null) {
-//         @mysqli_stmt_execute($stmt) or die($message . mysqli_error($this->_link));
-//     }
-
-
-
-//     /**
-//      * 选择数据库（换个数据库）
-//      * @param string $databaseName 新的数据库名,如果为null就是说恢复默认选择的数据库
-//      */
-//     public function setDatabase($databaseName = null) {
-//         if ($databaseName === null) {
-//             $databaseName = self::__DATABASE__;
-//         }
-//         mysqli_select_db($this->_link, $databaseName);
-//     }
-
-
