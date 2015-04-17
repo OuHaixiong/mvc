@@ -2,7 +2,7 @@
 
 return array(
     'pdo_db' => array(
-        'connectionString' => 'mysql:host=localhost;dbname=vragon_debug',
+        'dsn' => 'mysql:host=127.0.0.1;dbname=vragon_debug',
         'emulatePrepare' => true,
         'username' => 'root',
         'password' => '123456',

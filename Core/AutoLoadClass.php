@@ -17,8 +17,8 @@ function __autoload($classname) {
 	}
 	$filePath .= '.php';
     // ROOT_PATH 暂不考虑根目录下的类
-	// 1, 查找本Lib下的类
-	$absolutePath = CORE_PATH . '/' . $filePath;
+	// 1, 查找本Core下的类
+	$absolutePath = CORE_PATH . $filePath;
 	if (is_file($absolutePath)) {
 	    include_once $absolutePath;
 	    return;
@@ -45,7 +45,7 @@ function __autoload($classname) {
 	    }
 	}
     if (DEBUG) {
-        echo 'File(' . __FILE__ . '): on line 50: ';
+        echo 'File(' . __FILE__ . ') on line 50: ';
     }
 	die('文件： ' . $filePath . ' 不存在！');
 }

@@ -6,6 +6,9 @@ class Backend_C_Test extends CController
         
     }
     
+    /**
+     * 测试视图渲染
+     */
     public function index() {
         $this->_view->love = 'a';
         $this->me = 88;
@@ -15,6 +18,22 @@ class Backend_C_Test extends CController
         $this->c = $this->getParam('c', '');
         $this->ri = $this->getParam('ri');
         $this->render();
+    }
+    
+    /**
+     * 测试数据库操作
+     */
+    public function db() {
+        $username = '';
+        $password = '123456';
+        $backendUser = new Backend_M_User();
+//         $backendUser->login($username, $password);
+//         $database = $backendUser->getPdo();
+        $id = 718;
+        $boolean = $backendUser->getDefaultRow()->del($id);
+        
+        
+        Common_Tool::prePrint($boolean);
     }
     
 }

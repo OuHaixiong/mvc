@@ -23,41 +23,6 @@ abstract class CModel
      */
     private $_pdo;
     
-    public function save($data) {
-        
-    }
-    
-    public function add($data) {
-        
-    }
-    
-    public function del($primaryKey) {
-        
-    }
-    
-    public function modify($data, $primaryKey) {
-        
-    }
-    
-    public function load($primaryKey) {
-        
-    }
-    
-    public function batchAdd(array $data) {
-        
-    }
-    
-    public function batchDel(array $primaryKeys) {
-        
-    }
-    
-    public function batchModify($data, array $primaryKeys) {
-        
-    }
-    
-    public function batchLoad(array $primaryKeys) {
-        
-    }
     
     
     
