@@ -1,31 +1,31 @@
 <?php
 
 /**
- * 数据库操作pdo类，封装了PDO的一些函数; 数据库操作层（数据持久层）
+ * 主数据库操作pdo类，封装了PDO的一些函数; 数据库操作层（数据持久层）
  * TODO 多主键的考虑
  * @author Bear
  * @version 1.0.0
  * @copyright http://maimengmei.com
  * @property PDO $pdo pdo对象
- * @created 2015-4-17 10:37
+ * @created 2015-5-5 15:37
  * @example
  */
-class Db_Pdo
+class Db_Slave
 {
     /**
      * pdo对象
      * @var PDO
      */
     protected $pdo;
-
+    
     /**
      * 实例化数据库pdo类
-     * @param array $config
+     * @param array $config 数据库配置文件
      * @throws PDOException
      */
     public function __construct($config = null) {
         if (empty($config)) {
-            $config = CConfig::getConfig('pdo_db');
+            $config = CConfig::getConfig('slave_db');
         }
         if (!is_array($config)) {
             throw new PDOException('无数据库配置');
@@ -61,7 +61,7 @@ class Db_Pdo
     
     /**
      * 获取数据库信息
-     * @return array 
+     * @return array
      */
     public function info() {
         $output = array(
@@ -79,5 +79,21 @@ class Db_Pdo
     
         return $output;
     }
-
+    
+    /**
+     * 单表简单查询
+     * @param unknown $tableName
+     * @param unknown $where
+     * @param string $column
+     * @param unknown $orderBy
+     * @param string $offset
+     * @param string $limit
+     */
+    public function select($tableName, $where, $column = '*', $orderBy, $offset = null, $limit = null) {
+        if ($offset != null && $limit != null) {
+    
+        }
+    }
+    
+    
 }

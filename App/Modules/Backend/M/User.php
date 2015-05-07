@@ -35,7 +35,7 @@ class Backend_M_User extends CModel
      * @return Db_Row
      */
     public function getDefaultRow() {
-        return new Db_Row('tb_admin', 'user_id');
+        return new Db_Row('bage_admin', 'id');
     }
     
     

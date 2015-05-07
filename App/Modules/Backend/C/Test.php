@@ -19,21 +19,5 @@ class Backend_C_Test extends CController
         $this->ri = $this->getParam('ri');
         $this->render();
     }
-    
-    /**
-     * 测试数据库操作
-     */
-    public function db() {
-        $username = '';
-        $password = '123456';
-        $backendUser = new Backend_M_User();
-//         $backendUser->login($username, $password);
-//         $database = $backendUser->getPdo();
-        $id = 718;
-        $boolean = $backendUser->getDefaultRow()->del($id);
-        
-        
-        Common_Tool::prePrint($boolean);
-    }
-    
+   
 }
