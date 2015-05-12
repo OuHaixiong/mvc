@@ -151,12 +151,101 @@ class Backend_C_Db extends Backend_C_Controller
        Common_Tool::prePrint($boolean);
     }
     
+    /**
+     * 查询
+     */
     public function select() {
         $id = 5;
-        $worldRow = new Backend_M_World_Row(null, null, 'master_db');
-        $row = $worldRow->load($id);
-        Common_Tool::prePrint($row);
+        $entity = new Backend_M_Row_World();
+        $row = $entity->load($id, '`world_id`,`world_name`');
+        Common_Tool::prePrint($row, false);
+        $slave = $entity->connectSlave();
+        Common_Tool::prePrint($slave, false);
+        
+        $id = '12';
+        $row = $entity->loadByMaster($id);
+        Common_Tool::prePrint($row, false);
+        Common_Tool::prePrint($entity->master);
     }
     
+    /**
+     * 测试从库删除
+     */
+    public function slaveDelete() {
+        $id = 12;
+        $slave = new Db_Slave();
+        $pdo = $slave->pdo;
+        Common_Tool::prePrint($pdo, false);
+        $sql = "DELETE FROM `tb_world` WHERE `id`={$id}";
+        $num = $pdo->exec($sql); // 此处返回false（因为出错了），如果没有出错：返回受修改或删除 SQL 语句影响的行数(integer)
+        Common_Tool::prePrint($num, false);
+        Common_Tool::prePrint($pdo->errorInfo()); // 0:sql状态错误码; 1:pdo_mysql错误码; 2：pdo_mysql错误信息
+    }
+    
+    /**
+     * 批量插入
+     */
+    public function batchInsert() {
+        $d1 = array();
+        $d1['world_name'] = '第六';
+        $d1['world_id'] = '22';
+        $d1['builds_to_one_world'] = 25;
+        
+        $data = array(
+            array(
+                'world_name' => 'i日内',
+                'world_id' => '18',
+                'builds_to_one_world' => '22',
+            ),
+            array(
+                'world_name' => '第三栋',
+                'world_id' => '17',
+                'builds_to_one_world' => '3',
+            ),
+            $d1
+        );
+        
+        $entity = new Backend_M_Row_World();
+        $boolean = $entity->batchAdd($data);
+        Common_Tool::prePrint($boolean, false);
+        Common_Tool::prePrint($entity->master->getError());
+    }
+    
+    /**
+     * 批量删除
+     */
+    public function batchDelete() {
+        $primaryKeys = array(26,27,28,12,24,25);
+        $entity = new Backend_M_Row_World();
+        $num = $entity->batchDel($primaryKeys);
+        Common_Tool::prePrint($num);
+    }
+    
+    /**
+     * 批量更新
+     */
+    public function batchUpdate() {
+        $primaryKeys = array(12, 24, 13, 25);
+        $data = array('world_name'=>'第六感');
+        $entity = new Backend_M_Row_World();
+        $boolean = $entity->batchModify($data, $primaryKeys);
+        Common_Tool::prePrint($boolean);
+    }
+    
+    /**
+     * 批量查询
+     */
+    public function batchSelect() {
+        $tableName = 'tb_world';
+        $column = '`id`,`world_name`,`world_id`';
+        $entity = new Backend_M_Row_World();
+        $entity->connectSlave();
+        $result = $entity->slave->select($tableName, null, null, null, null, null, $column);
+        Common_Tool::prePrint($result, false);
+
+        $primaryKeys = array(12, 24, 13, 25, 1, 2, 3);
+        $rowset = $entity->batchLoad($primaryKeys, $column);
+        Common_Tool::prePrint($rowset);
+    }
 
 }

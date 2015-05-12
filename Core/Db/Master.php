@@ -34,7 +34,7 @@ class Db_Master
             $config = CConfig::getConfig('master_db');
         }
         if (!is_array($config)) {
-            throw new PDOException('无数据库配置');
+            throw new PDOException('无主数据库配置');
         }
         if (isset($config['charset'])) {
             $driverOptions = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES '{$config['charset']}'");
@@ -122,57 +122,166 @@ class Db_Master
     /**
      * 删除符合条件的数据
      * @param string $tableName 表名
-     * @param array $where 条件
+     * @param array | string $where 条件;如果为数组时，全为and条件
      * @return number 返回删除的行数（受影响的行数）
      */
-    public function delete($tableName, array $where) {
+    public function delete($tableName, $where) {
         if (empty($where)) {
             return 0;
         }
-        foreach ($where as $k=>$v) {
-            $where[$k] = "`{$k}`={$this->pdo->quote($v)}";
+        if (is_array($where)) {
+            if (empty($where)) {
+                return 0;
+            } else {
+                foreach ($where as $k=>$v) {
+                    $where[$k] = "`{$k}`={$this->pdo->quote($v)}";
+                }
+                $where = implode(' AND ', $where);
+            }
         }
-        $where = implode(' AND ', $where);
         $sql = "DELETE FROM `{$tableName}` WHERE {$where}";
         return $this->pdo->exec($sql);
     }
     
     /**
-     * 更新付款条件的数据
+     * 更新符合条件的数据
      * @param string $tableName 表名
      * @param array $data 要更新的数据
      * @param array | string $where 条件
-     * @return boolean
+     * @return boolean 执行成功返回true，执行失败返回false
      */
     public function update($tableName, $data, $where) {
+        if (empty($data)) {
+            return false;
+        }
+        $bindValue = array();
+        if (is_array($where)) {
+            foreach ($where as $k=>$v) {
+                $where[$k] = "`{$k}`=:{$k}";
+                $bindValue[$k] = $v;
+            }
+            $where = implode(' AND ', $where);
+        }
         $values = array();
         foreach ($data as $k=>$v) {
-            $values[] = "`$k`=:$k";
+            $values[] = "`{$k}`=:{$k}";
+            $bindValue[$k] = $v;
         }
         $values = implode(',', $values);
-        $sql = "UPDATE `{$this->tableName}` SET {$values} WHERE `{$this->primaryKey}`={$primaryKey}";
-        $statement = $this->dbPdo->pdo->prepare($sql);
-        foreach ($data as $k=>$v) {
-            //             $statement->bindParam(':' . $k, $data[$k]); // 特别注意这里，不能用$v
+        $sql = "UPDATE `{$tableName}` SET {$values} ";
+        if (strlen($where) > 0 ) {
+            $sql .= " WHERE {$where}";
+        }
+        $statement = $this->pdo->prepare($sql);
+        foreach ($bindValue as $k=>$v) {
+//             $statement->bindParam(':' . $k, $bindValue[$k]); // 特别注意这里，不能用$v
             $statement->bindValue(':' . $k, $v);
         }
         return $statement->execute();
     }
     
     /**
-     * 单表简单查询
-     * @param unknown $tableName
-     * @param unknown $where
-     * @param string $column
-     * @param unknown $orderBy
-     * @param string $offset
-     * @param string $limit
+     * 单表批量查询,可用于翻页
+     * @param string $tableName 表名
+     * @param string | array $where 条件
+     * @param integer $offset 从第几条开始查询
+     * @param integer $limit 需要查询多少条，如果不需要limit，传null即可
+     * @param string $orderField 排序字段，如果不需要排序传null即可
+     * @param string $orderMode 排序模式，desc：降序；asc：升序。（只能为这两个值）
+     * @param string $column 需要查询的字段
+     * @return array
      */
-    public function select($tableName, $where = null, $column = '*', $orderBy, $offset = null, $limit = null) {
+    public function select($tableName, $where = null, $offset = null, $limit = null, $orderField = null, $orderMode = null, $column = '*') {
+        $sql = "SELECT {$column} FROM `{$tableName}`";
+        
+        if (is_array($where) && (!empty($where))) {
+            foreach ($where as $k=>$v) {
+                $where[$k] = "`{$k}`={$this->pdo->quote($v)}";
+            }
+            $where = implode(' AND ', $where);
+        }
+        if (strlen($where) > 0) {
+            $sql .= " WHERE {$where}";
+        }
+
+        if (($orderField != null) && is_string($orderField)) { // 需要排序
+            $modes = array('DESC', 'ASC');
+            $orderMode = strtoupper($orderMode);
+            if (in_array($orderMode, $modes)) {
+                $sql .= " ORDER BY {$orderField} {$orderMode}";
+            } else {
+                $sql .= " ORDER BY {$orderField}";
+            }
+        }
+        
         if ($offset != null && $limit != null) {
-            
+            $offset = (int) $offset;
+            $limit = (int) $limit;
+            $limits = " LIMIT {$offset},{$limit}";
+        } else {
+            $offset = 0;
+            $limit = 0;
+            $limits = '';
+        }
+        $sql .= $limits;
+        
+        $data['sum'] = 0;
+        $data['offset'] = $offset;
+        $data['limit'] = $limit;
+        $data['rowset'] = array();
+//         var_dump($sql);exit;
+        $statement = $this->pdo->query($sql);
+        if ($statement instanceof PDOStatement) {
+            $sum = $this->getSum($sql);
+            $data['sum'] = $sum;
+            $data['rowset'] = $statement->fetchAll(PDO::FETCH_OBJ);
+        }
+        return $data;
+    }
+    
+    /**
+     * 单表单条查询
+     * @param string $tableName 表名
+     * @param string | array $where 条件
+     * @param string $column 查询字段
+     * @return boolean | object 有数据返回对象，无数据返回false
+     */
+    public function load($tableName, $where = '', $column = '*') {
+        if (is_array($where) && (!empty($where))) {
+            foreach ($where as $k=>$v) {
+                $where[$k] = "`{$k}`={$this->pdo->quote($v)}";
+            }
+            $where = implode(' AND ', $where);
+        }
+        $sql = "SELECT {$column} FROM `{$tableName}`";
+        if (strlen($where) > 0) {
+            $sql .= " WHERE {$where}";
+        }
+        $statement = $this->pdo->query($sql);
+        if ($statement instanceof PDOStatement) {
+            return $statement->fetchObject();
+        } else {
+            return false;
         }
     }
     
+    /**
+     * 获取总记录数（total row number）
+     * @param string $sql
+     * @return number
+     */
+    public function getSum($sql) {
+        if (is_string($sql) && (strlen($sql) > 0)) {
+            $sql = preg_replace('/SELECT(.+)FROM/is', 'SELECT count(*) FROM', $sql);
+            $position = strripos($sql, 'LIMIT');
+            if ($position) {
+                $sql = substr($sql, 0, $position);
+            }
+            $statement = $this->pdo->query($sql);
+            return intval($statement->fetchColumn(0));
+        } else {
+            return 0;
+        }
+    }
     
 }

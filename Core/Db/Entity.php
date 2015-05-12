@@ -39,7 +39,7 @@ abstract class Db_Entity
 
     /**
      * 连接主数据库
-     * @param string $masterConfig
+     * @param string $masterConfig 配置文件中主数据库配置的key
      * @throws Exception
      * @return Db_Master
      */
@@ -60,11 +60,22 @@ abstract class Db_Entity
 
     /**
      * 连接从数据库
-     * @param string $slaveConfig
+     * @param string $slaveConfig 配置文件中从数据库配置的key
+     * @throws Exception
      * @return Db_Slave
      */
     public function connectSlave($slaveConfig = null) {
-        $this->slave = new Db_Slave();
+        if ($this->slave != null) {
+            return $this->slave;
+        }
+        if ($slaveConfig == null) {
+            $slaveConfig = 'slave_db';
+        }
+        $slaveConfig = CConfig::getConfig($slaveConfig);
+        if (empty($slaveConfig)) {
+            throw new Exception('无从数据库配置');
+        }
+        $this->slave = new Db_Slave($slaveConfig);
         return $this->slave;
     }
     
@@ -111,37 +122,50 @@ abstract class Db_Entity
     }
     
     /**
-     * 获取一行记录
+     * 获取一行记录;用从库查询
      * @param integer $primaryKey 主键值
      * @param string $column 需要查询的字段
-     * @return array | false 有记录返回一维数组，没记录返回false
+     * @return boolean | object 有数据返回对象，无数据返回false
      */
     public function load($primaryKey, $column = '*') {
         $primaryKey = (int) $primaryKey;
-        $sql = "SELECT {$column} FROM `{$this->tableName}` WHERE `{$this->primaryKey}`={$primaryKey}";
-        $statement = $this->dbPdo->pdo->query($sql);
-        if ($statement instanceof PDOStatement) {
-            return $statement->fetch(PDO::FETCH_ASSOC);
-        } else {
-            return false;
-        }
+        $this->connectSlave();
+        $where = array($this->primaryKey=>$primaryKey);
+        return $this->slave->load($this->tableName, $where, $column);
+    }
+    
+    /**
+     * 从主数据库获取一行记录（主库查询）
+     * @param integer $primaryKey 主键值
+     * @param string $column 需要查询的字段
+     * @return boolean | object 有数据返回对象，无数据返回false
+     */
+    public function loadByMaster($primaryKey, $column = '*') {
+        $primaryKey = (int) $primaryKey;
+        $this->connectMaster();
+        $where = array($this->primaryKey=>$primaryKey);
+        return $this->master->load($this->tableName, $where, $column);
     }
     
     /**
      * 新增一批数据
      * @param array $data 二维数组
-     * @return boolean
+     * @return boolean 插入成功返回true，失败返回false
      */
     public function batchAdd(array $datas) {
-        $this->dbPdo->pdo->beginTransaction();
+        if (empty($datas)) {
+            return false;
+        }
+        $this->connectMaster();
+        $this->master->pdo->beginTransaction();
         foreach ($datas as $data) {
             $id = $this->add($data);
             if ($id == 0) {
-                $this->dbPdo->pdo->rollBack();
+                $this->master->pdo->rollBack();
                 return false;
             }
         }
-        $this->dbPdo->pdo->commit();
+        $this->master->pdo->commit();
         return true;
     }
     
@@ -158,23 +182,34 @@ abstract class Db_Entity
             $primaryKeys[$k] = (int) $v;
         }
         $primaryKeys = implode(',', $primaryKeys);
-        $sql = "DELETE FROM `{$this->tableName}` WHERE `{$this->primaryKey}` in ({$primaryKeys})";
-        return $this->dbPdo->pdo->exec($sql);
+        $where = "{$this->primaryKey} in ({$primaryKeys})";
+        $this->connectMaster();
+        return $this->master->delete($this->tableName, $where);
     }
     
     /**
      * 根据主键id集，批量修改数据
      * @param array $data 需要修改的数据（键值对）
      * @param array $primaryKeys 主键集
-     *
+     * @return boolean 执行成功返回true，执行失败返回false  
      */
-    public function batchModify($data, array $primaryKeys) {
-    
+    public function batchModify(array $data, array $primaryKeys) {
+        if (empty($data) || empty($primaryKeys)) {
+            return false;
+        }
+        foreach ($primaryKeys as $k=>$v) {
+            $primaryKeys[$k] = (int) $v;
+        }
+        $primaryKeys = implode(',', $primaryKeys);
+        $where = "{$this->primaryKey} in ({$primaryKeys})";
+        $this->connectMaster();
+        return $this->master->update($this->tableName, $data, $where);
     }
     
     /**
      * 批量查询一批数据
      * @param array $primaryKeys 主键集
+     * @param string $column 需要查询的字段
      * @return array
      */
     public function batchLoad(array $primaryKeys, $column = '*') {
@@ -185,13 +220,9 @@ abstract class Db_Entity
             $primaryKeys[$k] = (int) $v;
         }
         $primaryKeys = implode(',', $primaryKeys);
-        $sql = "SELECT {$column} FROM `{$this->tableName}` WHERE `{$this->primaryKey}` in ({$primaryKeys})";
-        $statement = $this->dbPdo->pdo->query($sql);
-        if ($statement instanceof PDOStatement) {
-            return $statement->fetchAll(PDO::FETCH_ASSOC);
-        } else {
-            return array();
-        }
+        $this->connectSlave();
+        $result = $this->slave->select($this->tableName, "`{$this->primaryKey}` in ({$primaryKeys})", null, null, null, null, $column);
+        return $result['rowset'];
     }
     
     

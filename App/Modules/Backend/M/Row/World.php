@@ -5,7 +5,6 @@
  * @author Bear
  * @version 1.0.0
  * @copyright http://maimengmei.com
- * @property PDO $pdo pdo对象
  * @created 2015-5-7 11:37
  * @example
  */
