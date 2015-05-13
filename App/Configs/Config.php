@@ -10,24 +10,24 @@ return array(
     ),
     'mysqli_db' => array( // mysqli数据库设置
         'host'     => '127.0.0.1',
-        'database' => 'vragon_debug',
+        'database' => '',
         'username' => 'root',
         'password' => '123456',
         'charset'  => 'utf8'
     ),
     'master_db' => array( // 主数据库设置
-        'dsn' => 'mysql:host=120.24.71.112;dbname=vragon_debug',
+        'dsn' => 'mysql:host=;dbname=',
         'emulatePrepare' => true,
-        'username' => 'master82',
-        'password' => '123456',
+        'username' => '',
+        'password' => '',
         'charset' => 'utf8',
     ),
     'slave_db' => array( // 多个从数据库，这里要设置为二维数组
         array(
-            'dsn' => 'mysql:host=120.24.72.101;dbname=vragon_debug',
+            'dsn' => 'mysql:host=;dbname=',
             'emulatePrepare' => true,
-            'username' => 'slave85',
-            'password' => '123456',
+            'username' => '',
+            'password' => '',
             'charset' => 'utf8'
         ),
 //         array(
