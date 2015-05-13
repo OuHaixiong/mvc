@@ -16,18 +16,18 @@ return array(
         'charset'  => 'utf8'
     ),
     'master_db' => array( // 主数据库设置
-        'dsn' => 'mysql:host=;dbname=',
+        'dsn' => 'mysql:host=127.0.0.1;dbname=mvc',
         'emulatePrepare' => true,
-        'username' => '',
-        'password' => '',
+        'username' => 'root',
+        'password' => '123456',
         'charset' => 'utf8',
     ),
     'slave_db' => array( // 多个从数据库，这里要设置为二维数组
         array(
-            'dsn' => 'mysql:host=;dbname=',
+            'dsn' => 'mysql:host=127.0.0.1;dbname=mvc',
             'emulatePrepare' => true,
-            'username' => '',
-            'password' => '',
+            'username' => 'root',
+            'password' => '123456',
             'charset' => 'utf8'
         ),
 //         array(

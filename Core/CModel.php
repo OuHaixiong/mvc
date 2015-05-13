@@ -8,6 +8,8 @@
  * @created 2015-04-16 09:59
  * @property Db_Mysqli $db mysqli对象
  * @property Db_Pdo $pdo pdo对象
+ * @property Db_Master $master 主数据库对象
+ * @property Db_Slave $slave 从数据库对象
  */
 abstract class CModel
 {
@@ -23,10 +25,17 @@ abstract class CModel
      */
     private $_pdo;
     
+    /**
+     * 主数据库对象
+     * @var Db_Master
+     */
+    private $_master;
     
-    
-    
-    
+    /**
+     * 从数据库对象
+     * @var Db_Slave
+     */
+    private $_slave;
     
     
     
@@ -41,7 +50,12 @@ abstract class CModel
         if ($k == 'db') {
             return $this->getDb();
         }
-
+        if ($k == 'master') {
+            return $this->getMaster();
+        }
+        if ($k == 'slave') {
+            return $this->getSlave();
+        }
     }
     
     /**
@@ -64,6 +78,30 @@ abstract class CModel
             $this->_pdo = new Db_Pdo();
         }
         return $this->_pdo;
+    }
+    
+    /**
+     * 获取Db_Master对象
+     * TODO 传入配置
+     * @return Db_Master
+     */
+    public function getMaster() {
+        if($this->_master === null) {
+            $this->_master = new Db_Master();
+        }
+        return $this->_master;
+    }
+    
+    /**
+     * 获取Db_Slave对象
+     * TODO 传入配置
+     * @return Db_Slave
+     */
+    public function getSlave() {
+        if($this->_slave === null) {
+            $this->_slave = new Db_Slave();
+        }
+        return $this->_slave;
     }
     
 }
