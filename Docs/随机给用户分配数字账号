@@ -20,9 +20,10 @@
 6，考虑性能，每次后台插入账号到表UserAccount中时，最多插入1万条
 7，后台插入账号到表UserAccount中时，默认获取表UserAccount中最大的值+1做起点插入值，往下加100000作为终点插入值
 8，插入账号到表UserAccount之前需要把表中UserMember的数字账号是起点值到终点值的账号读出来，
-在插入时需判断值是否已存在UserMember中，存在无需插入
+在插入时需判断值是否已存在UserMember中，存在无需插入(反过来查也可以：插入UserAccount完后，修改已存在表UserMember中数字账号为已使用)
 9，后台监控表UserAccount未使用账号情况
 
 方案二：
 注册时随机给
 会出现空号
+性能会影响

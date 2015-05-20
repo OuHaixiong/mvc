@@ -18,4 +18,30 @@ class Backend_C_User extends Backend_C_Controller
         Common_Tool::prePrint($boolean);
     }
     
+    /**
+     * 手动添加前台用户
+     */
+    public function add() {
+        $successInfo = '';
+        if (Common_Tool::isPost()) {
+            $data['username'] = $this->getPost('username');
+            $data['password'] = $this->getPost('password');
+            $data['number'] = $this->getPost('num');
+            $user = new M_User();
+            $id = $user->handAdd($data);
+            if ($id > 0) {
+                $successInfo = '添加会员成功';
+            } else {
+                $error = $user->getError();
+                if (empty($error)) {
+                    $error = '添加会员失败';
+                }
+                $successInfo = $error;
+            }
+        }
+        $this->successInfo = $successInfo;
+        $this->_view->setIsLayout();
+        $this->render();
+    }
+    
 }

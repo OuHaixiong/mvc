@@ -37,7 +37,17 @@ abstract class CModel
      */
     private $_slave;
     
+    /**
+     * 实体类对象集合
+     * @var array
+     */
+    protected $entities;
     
+    /**
+     * 错误信息
+     * @var string
+     */
+    protected $error;
     
     /**
      * 魔术方法
@@ -102,6 +112,37 @@ abstract class CModel
             $this->_slave = new Db_Slave();
         }
         return $this->_slave;
+    }
+    
+    /**
+     * 获取数据库实体类对象
+     * @param string $rowName 行对象类名
+     * @return Db_Entity
+     */
+    public function getEntity($rowName) {
+        if (isset($this->entities[$rowName]) && ($this->entities[$rowName] instanceof Db_Entity)) {
+            return $this->entities[$rowName];
+        }
+        $entityName = 'M_Row_' . ucfirst($rowName);
+        $this->entities[$rowName] = new $entityName();
+        return $this->entities[$rowName];
+    }
+    
+    /**
+     * 设置错误信息
+     * @param string $error
+     * @return void
+     */
+    public function setError($error) {
+        $this->error = $error;
+    }
+    
+    /**
+     * 获取错误信息
+     * @return string
+     */
+    public function getError() {
+        return $this->error;
     }
     
 }

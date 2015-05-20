@@ -9,5 +9,26 @@
  */
 class C_User extends CController
 {
+    /**
+     * 注册会员
+     */
+    public function register() {
+        $successInfo = '';
+        if (Common_Tool::isPost()) {
+            $data['username'] = $this->getPost('username');
+            $data['password'] = $this->getPost('password');
+            $user = new M_User();
+            $id = $user->register($data);
+            if ($id > 0) {
+                $successInfo = '注册会员成功';
+            } else {
+                $successInfo = '注册失败';
+            }
+        }
+        $this->successInfo = $successInfo;
+        $this->_view->setIsLayout();
+        $this->render();
+    }
+    
     
 }
