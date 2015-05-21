@@ -287,4 +287,13 @@ class M_User extends CModel
         return $this->slave->load('UserMember', array('accountNumber'=>$accountNumber), $column);
     }
     
+    /**
+     * 查看未使用的账号总数 
+     */
+    public function findUnusedCount() {
+        $sql = "select count(*) from `UserAccount` where `status`=1";
+        $statement = $this->slave->pdo->query($sql);
+        return intval($statement->fetchColumn(0));
+    }
+    
 }

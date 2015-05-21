@@ -5,7 +5,7 @@ return array(
         'dsn' => 'mysql:host=127.0.0.1;dbname=BageCms',
         'emulatePrepare' => true,
         'username' => 'root',
-        'password' => '123456',
+        'password' => '',
         'charset' => 'utf8',
     ),
     'mysqli_db' => array( // mysqli数据库设置

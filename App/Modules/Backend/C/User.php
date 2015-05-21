@@ -44,4 +44,12 @@ class Backend_C_User extends Backend_C_Controller
         $this->render();
     }
     
+    /**
+     * 获取未使用的数字账号总数
+     */
+    public function findUnusedCount() {
+        $user = new M_User();
+        Common_Tool::prePrint($user->findUnusedCount());
+    }
+    
 }
