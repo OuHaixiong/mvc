@@ -1,7 +1,7 @@
 <?php
 
 //defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); 
-// 需设置 ROOT_PATH、 CORE_PATH、 APP_PATH
+// 需设置 ROOT_PATH、 BASE_PATH、 APP_PATH
 
 /**
  * 自动加载类
@@ -17,8 +17,8 @@ function __autoload($classname) {
 	}
 	$filePath .= '.php';
     // ROOT_PATH 暂不考虑根目录下的类
-	// 1, 查找本Core下的类
-	$absolutePath = CORE_PATH . $filePath;
+	// 1, 查找本Base下的类
+	$absolutePath = BASE_PATH . $filePath;
 	if (is_file($absolutePath)) {
 	    include_once $absolutePath;
 	    return;
@@ -35,8 +35,8 @@ function __autoload($classname) {
 	    return;
 	}
 	// 3, 查找第三方类库下的类
-	include_once CORE_PATH . '/CConfig.php';
-	$libraries = CConfig::getConfig('thireLibrariesPath');
+	include_once BASE_PATH . '/BConfig.php';
+	$libraries = BConfig::getConfig('thireLibrariesPath');
 	foreach ($libraries as $lib) {
 	    $absolutePath = $lib . $filePath;
 	    if (is_file($absolutePath)) {

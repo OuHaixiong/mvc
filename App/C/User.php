@@ -7,7 +7,7 @@
  * @copyright http://maimengmei.com
  * @created 2015-5-13 14:37
  */
-class C_User extends CController
+class C_User extends BController
 {
     /**
      * 注册会员

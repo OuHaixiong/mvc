@@ -11,7 +11,7 @@
  * @property Db_Master $master 主数据库对象
  * @property Db_Slave $slave 从数据库对象
  */
-abstract class CModel
+abstract class BModel
 {
     /**
      * 数据库mysqli对象

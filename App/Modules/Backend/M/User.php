@@ -7,7 +7,7 @@
  * @version 1.0.0
  * @created 2015-04-11
  */
-class Backend_M_User extends CModel
+class Backend_M_User extends BModel
 {
     public function login($username, $password) {
         $sql = "select * from `tb_admin`";

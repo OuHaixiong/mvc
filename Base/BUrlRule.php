@@ -7,7 +7,7 @@
  * @version 1.0.0
  * @created 2015-04-11 22:17
  */
-class CUrlRule
+class BUrlRule
 {
     const URL_SUFFIX = '.html';
     
@@ -51,7 +51,7 @@ class CUrlRule
             $urlPath = substr($urlPath, 0, -$count);
         }
         $urlPath = explode($charlist, $urlPath);
-        $modules = CConfig::getConfig('modules');
+        $modules = BConfig::getConfig('modules');
         $result = array();
         if ($modules !== null) {
             if (isset($urlPath[0]) && $urlPath[0] != '') {

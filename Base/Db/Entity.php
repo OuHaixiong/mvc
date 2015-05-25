@@ -50,7 +50,7 @@ abstract class Db_Entity
         if ($masterConfig == null) {
             $masterConfig = 'master_db';
         }
-        $masterConfig = CConfig::getConfig($masterConfig);
+        $masterConfig = BConfig::getConfig($masterConfig);
         if (empty($masterConfig)) {
             throw new Exception('无主数据库配置'); 
         }
@@ -71,7 +71,7 @@ abstract class Db_Entity
         if ($slaveConfig == null) {
             $slaveConfig = 'slave_db';
         }
-        $slaveConfig = CConfig::getConfig($slaveConfig);
+        $slaveConfig = BConfig::getConfig($slaveConfig);
         if (empty($slaveConfig)) {
             throw new Exception('无从数据库配置');
         }

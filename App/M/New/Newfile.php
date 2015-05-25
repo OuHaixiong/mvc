@@ -1,6 +1,6 @@
 <?php
 
-class M_New_Newfile extends CModel
+class M_New_Newfile extends BModel
 {
 	public function mm() {
 	    $sql = 'select * from tb_admin';

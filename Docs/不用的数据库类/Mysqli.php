@@ -35,7 +35,7 @@ class Db_Mysqli
      */
     public function __construct($host = null, $username = null, $password = null, $database = null, $charset = 'utf8') {
         if (empty($host) && empty($username) && empty($password)) {
-            $mysqliDb = CConfig::getConfig('mysqli_db');
+            $mysqliDb = BConfig::getConfig('mysqli_db');
             $host = $mysqliDb['host'];
             $username = $mysqliDb['username'];
             $password = $mysqliDb['password'];

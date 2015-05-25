@@ -7,7 +7,7 @@
  * @copyright xiqiyanyan.com
  * @created 2012-12-21 19:35
  */
-class C_Image extends CController
+class C_Image extends BController
 {
 	public function init() {
 		$this->_view->setIsView();

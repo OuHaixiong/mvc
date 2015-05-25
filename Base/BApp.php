@@ -8,7 +8,7 @@
  * @version 1.0.0
  * @created 2012-09-24 17:17
  */
-class CApp
+class BApp
 {
     private static $_module;
 	private static $_controller;
@@ -22,7 +22,7 @@ class CApp
 	public function run() {
 // 		$phpSelf = $_SERVER['PHP_SELF']; // 操！在有些服务器上这里不能返回浏览器的请求地址
 // 		var_dump($phpSelf);exit;
-		$urlRule = new CUrlRule();
+		$urlRule = new BUrlRule();
 		$result = $urlRule->parseUrl($_SERVER['REQUEST_URI']);// 这个貌似可以，暂时用这个
 		self::$_module = $result['module'];
 		self::$_controller = $result['controller'];

@@ -7,7 +7,7 @@
  * @copyright http://maimengmei.com
  * @created 2015-5-13 11:37
  */
-class M_User extends CModel
+class M_User extends BModel
 {
     const START_NUM = 59999;
     const BATCH_NUM = 20000;

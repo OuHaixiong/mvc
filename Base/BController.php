@@ -8,11 +8,11 @@
  * @copyright xiqiyanyan.com
  * @created 2012-09-24 17:20
  */
-abstract class CController
+abstract class BController
 {
 	/**
 	 * 视图对象
-	 * @var CView
+	 * @var BView
 	 */
 	protected $_view;
 	
@@ -23,7 +23,7 @@ abstract class CController
 	protected $_params;
 	
 	public function __construct(array $params) {
-		$this->_view = new CView();
+		$this->_view = new BView();
 		$this->_params = $params;
 	}
 	
@@ -31,7 +31,7 @@ abstract class CController
 	
 	/**
 	 * 获取视图类
-	 * @return CView
+	 * @return BView
 	 */
 	public function getView() {
 		return $this->_view;

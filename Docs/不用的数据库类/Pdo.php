@@ -25,7 +25,7 @@ class Db_Pdo
      */
     public function __construct($config = null) {
         if (empty($config)) {
-            $config = CConfig::getConfig('pdo_db');
+            $config = BConfig::getConfig('pdo_db');
         }
         if (!is_array($config)) {
             throw new PDOException('无数据库配置');

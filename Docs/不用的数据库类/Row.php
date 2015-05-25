@@ -35,7 +35,7 @@ class Db_Row
             $this->primaryKey = $primaryKey;
         }
         if (($dbConfig !== null) && (is_string($dbConfig))) {
-            $dbConfig = CConfig::getConfig($dbConfig);
+            $dbConfig = BConfig::getConfig($dbConfig);
         }
         
         $this->dbPdo = new Db_Pdo($dbConfig);

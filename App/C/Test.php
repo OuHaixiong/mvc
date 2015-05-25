@@ -5,7 +5,7 @@
  * @author bear
  *
  */
-class C_Test extends CController
+class C_Test extends BController
 {
 	public function init() {
 	}
