@@ -40,4 +40,10 @@ return array(
     'thireLibrariesPath' => array( // 第三方类库路径
         realpath(ROOT_PATH . '/../../libraries')
     ),
+    'master_redis' => array( // redis 主服务器配置
+        'host' => '120.XXX.XXX.XXX',
+        'port' => 6379,
+        'timeout' => 0
+	),
+		
 );

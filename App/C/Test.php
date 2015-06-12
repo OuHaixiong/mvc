@@ -8,11 +8,14 @@
 class C_Test extends BController
 {
 	public function init() {
+        
 	}
 	
 	public function index() {
-        $newfile = new M_New_Newfile();
-        $newfile->mm();
+//        $newfile = new M_New_Newfile();
+//        $newfile->mm();
+        $supportLanguages = array('cn', 'en', 'zh-cn', 'zh');
+        Common_Tool::prePrint(Common_Tool::getClientLanguage($supportLanguages));
 	}
 	
 	/**
@@ -46,6 +49,25 @@ class C_Test extends BController
  	        $i++;
  	    }
  	    return $arr;
+	}
+	
+	public function testPost() {
+        $result = array();
+        $result['status'] = 1;
+        $result['msg'] = '返回数据成功';
+        $result['data'] = array(
+            'rowset' => array(
+                array('id'=>8, 'name'=>'欧海雄'),
+                array('id'=>9, 'name'=>'李欢')
+            ),
+            'total' => 108,
+            'page' => 2
+        );
+        $jsonString = json_encode($result);
+        print_r($jsonString);
+        echo '<br /><pre>';
+        print_r(json_decode($jsonString));
+        echo '</pre>';
 	}
 	
 }
