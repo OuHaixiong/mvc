@@ -38,7 +38,7 @@ abstract class BController
 	}
 	
 	/**
-	 * 渲染视图(默认是有视图和布局的)
+	 * 渲染视图(默认是本模块本控制器下的本action.php)
 	 * @param string $path 需要渲染的视图文件路径（相对V文件夹的路径；不包括后缀名.php，如： /Layouts/left）
 	 */
 	public function render($path = null) {
