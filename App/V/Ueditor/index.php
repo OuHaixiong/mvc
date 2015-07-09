@@ -13,6 +13,7 @@
   
   
   <script type="text/javascript">
+    document.domain = 'mvc.com';
     var ueditor = UE.getEditor('container', { // 实例化编辑器
         autoHeight: true  // 貌似没什么用
     }); 
@@ -27,7 +28,7 @@
         content = ueditor.getContentTxt(); //获取纯文本内容，返回: hello
         console.log(content);
     });
-
+    
     if (UE.browser.isCompatible) {
         console.log('浏览器与UEditor能够良好兼容');
     }

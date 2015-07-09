@@ -6893,7 +6893,11 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                     getStyleValue("padding-top")- getStyleValue("padding-bottom") +'px';
 
                 container.style.zIndex = options.zIndex;
-
+                
+                if (ie) {
+                    document.getElementById('baidu_editor_' + this.uid).src = "javascript:(function(){document.open();document.domain='"+document.domain+"';document.close();})()";
+                } // IE 下多图上传跨域问题
+                
                 var html = ( ie && browser.version < 9  ? '' : '<!DOCTYPE html>') +
                     '<html xmlns=\'http://www.w3.org/1999/xhtml\' class=\'view\' ><head>' +
                     '<style type=\'text/css\'>' +
@@ -6955,6 +6959,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             }
             doc.body.spellcheck = false;
             me.document = doc;
+            me.document.domain = 'mvc.com';
             me.window = doc.defaultView || doc.parentWindow;
             me.iframe = me.window.frameElement;
             me.body = doc.body;

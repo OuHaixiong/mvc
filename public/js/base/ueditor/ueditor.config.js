@@ -30,8 +30,8 @@
         UEDITOR_HOME_URL: URL
 
         // 服务器统一请求接口路径
-        // , serverUrl: URL + "php/controller.php"
-        , serverUrl: "http://upload.mvc.com/ueditor_php/controller.php" // 特别注意这里多图片上传需跨域，需要在根目录下设置crossdomain.xml文件
+//         , serverUrl: URL + "php/controller.php"
+        , serverUrl: "http://www.mvc.com/ueditor_php/controller.php" // 特别注意这里多图片上传需跨域，需要在根目录下设置crossdomain.xml文件
 //        , serverUrl: "/ueditor_php/controller.php"
 
         //工具栏上的所有的功能按钮和下拉框，可以在new编辑器的实例时选择自己需要的从新定义
