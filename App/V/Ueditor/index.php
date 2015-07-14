@@ -20,6 +20,35 @@
 //     var ue_content = UE.getContent(); // 貌似没有这个方法
 
     ueditor.ready(function () {//对编辑器的操作最好在编辑器ready之后再做
+        // 通过重写getActionUrl方法可以改变图片上传路径
+//      UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;
+//      UE.Editor.prototype.getActionUrl = function(action){
+//          return this._bkGetActionUrl(action);
+//      }
+        ueditor.getActionUrl = function(action){
+//          if(action == 'uploadvideo') {
+//             return 'your url';
+//          }
+            switch (action) {
+                case 'uploadimage': return 'http://upload.mvc.com/ueditor_php/controller.php?action=uploadimage';
+//                 case 'uploadimage': return 'http://img.csc86.com/upload?type=texteditor';
+            }
+            var actionName = this.getOpt(action) || action,
+                imageUrl = this.getOpt('imageUrl'),
+                serverUrl = this.getOpt('serverUrl');
+
+            if(!serverUrl && imageUrl) {
+                serverUrl = imageUrl.replace(/^(.*[\/]).+([\.].+)$/, '$1controller$2');
+            }
+
+            if(serverUrl) {
+                serverUrl = serverUrl + (serverUrl.indexOf('?') == -1 ? '?':'&') + 'action=' + (actionName || '');
+                return utils.formatUrl(serverUrl);
+            } else {
+                return '';
+            }
+        };
+
         var content = ueditor.getContent();
         console.log(content);
         ueditor.setContent('hello'); //设置编辑器的内容
@@ -32,7 +61,6 @@
     if (UE.browser.isCompatible) {
         console.log('浏览器与UEditor能够良好兼容');
     }
-
   </script>
 </body>
 </html>
