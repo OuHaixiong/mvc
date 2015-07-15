@@ -1,10 +1,10 @@
 <?php
+header('Content-Type:text/html;charset=utf-8'); //定义字符集
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录: /home/xiqiyanyan/www/mvc
 
-header('Content-Type:text/html;charset=utf-8'); //定义字符集
 
-/* $ip = $_SERVER['REMOTE_ADDR'];//获取当前访问者的ip
-$ip = '127.0.0.1';
+// var_dump(123);exit;
+/*
 $logFilePath = ROOT_PATH . '/data/log/';//日志记录文件保存目录
 $fileht = ROOT_PATH . '/data/.htaccess2';//被禁止的ip记录文件
 $allowtime=60;//防刷新时间
@@ -122,6 +122,7 @@ exit; */
 defined('BASE_PATH') || define('BASE_PATH', realpath(ROOT_PATH . '/../Base')); //定义本框架基本类库目录(不包括/) 
 defined('APP_PATH') || define('APP_PATH', realpath(ROOT_PATH . '/../App')); //定义应用根目录
 defined('STATIC_URL') || define('STATIC_URL', 'http://res.mvc.com'); // 定义静态文件（css、js、样式图片、flash等）的url路径(不包括/)
+// defined('STATIC_URL') || define('STATIC_URL', 'http://mvc.com'); // 定义静态文件（css、js、样式图片、flash等）的url路径(不包括/)
 
 defined('DEBUG') || define('DEBUG', true); // 是否开启调试模式
 

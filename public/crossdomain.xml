@@ -3,5 +3,7 @@
 <cross-domain-policy>
 	<allow-access-from domain="*.mvc.com" />
 	<allow-access-from domain="192.168.0.101" />
+	<allow-access-from domain="10.10.10.48" />
+	<allow-access-from domain="192.168.17.1" />
 	<allow-http-request-headers-from domain="*.mvc.com" headers="*" />
 </cross-domain-policy>
