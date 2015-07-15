@@ -8,6 +8,7 @@
 class C_Test extends BController
 {
 	public function init() {
+        parent::init();
         
 	}
 	
@@ -19,7 +20,7 @@ class C_Test extends BController
 	}
 	
 	/**
-	 * 测试用 
+	 * 测试用
 	 */
 	public function test() {
 	    $this->_view->setIsView();
@@ -68,6 +69,13 @@ class C_Test extends BController
         echo '<br /><pre>';
         print_r(json_decode($jsonString));
         echo '</pre>';
+	}
+	
+	/**
+	 * 测试用的表单
+	 */
+	public function testForm() {
+	    $this->render();
 	}
 	
 }

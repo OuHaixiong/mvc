@@ -34,11 +34,11 @@ class BApp
 		    $controller = self::$_module . '_C_' . self::$_controller;
 		}
 		$c = new $controller($result['params']);
-		if (!method_exists($c, self::$_action)) { // 貌似php的方法是不区分大小写的
-//             die('类' . $controller . '不存在' . self::$_action . '方法');
-            die('不存在的页面：/' . lcfirst(self::$_module) . '/' . lcfirst(self::$_controller) . '/' . self::$_action);
-		}
 		$c->init();
+		if (!method_exists($c, self::$_action)) { // 貌似php的方法是不区分大小写的
+		    //             die('类' . $controller . '不存在' . self::$_action . '方法');
+		    die('不存在的页面：/' . lcfirst(self::$_module) . '/' . lcfirst(self::$_controller) . '/' . self::$_action);
+		}
 		$c->{self::$_action}();
 		//$c->render();
 	}

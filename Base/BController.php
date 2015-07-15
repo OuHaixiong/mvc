@@ -26,8 +26,23 @@ abstract class BController
 		$this->_view = new BView();
 		$this->_params = $params;
 	}
-	
-	public function init() {}
+
+    /**
+     * 初始化控制器，对频繁请求的用户进行屏蔽操作（此判断最好的执行任何php程序的最前端）
+     */
+    public function init() { // $_SERVER['PHP_SELF']; // 返回 /index.php  和 $_SERVER['SCRIPT_NAME']一样
+        // $_SERVER['QUERY_STRING'] 返回问号（?）后面的参数；如：ab=bc&cc=d&q=&ni=8
+        $userIp = Common_Tool::getIP(); // 获取当前访问者的ip
+        $userAgent = $_SERVER['HTTP_USER_AGENT'];
+        $requestUrl = Common_Tool::getCurrentUrl(); // http://mvc.com/ueditor/ueditor1_4_3?ab=bc&cc=d&q=&ni=8
+        $urlArray = parse_url($requestUrl);   //  $urlArray['path'] = $_SERVER['REDIRECT_URL'] = /ueditor/ueditor1_4_3
+        $key = $userIp . $urlArray['path'] . $userAgent;
+        $key = md5($key);
+        // 判断用户的ip是否在白名单中（这里使用文件进行保存，后续最好使用redis之类的缓存进行操作）
+        
+        // 判断用户的ip是否在黑名单中
+//         Common_Tool::prePrint($_SESSION);
+    }
 	
 	/**
 	 * 获取视图类
