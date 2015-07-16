@@ -18,10 +18,10 @@
   </div>
   
   <script type="text/javascript">
-    document.domain = 'mvc.com'; // 火狐和谷歌浏览器跨域问题，此句对单图上传有影响。解决跨域上传图片问题.跨域下单图和多图不能兼容，即单图上传不支持跨域
+     // 火狐和谷歌浏览器跨域问题，此句对单图上传有影响。解决跨域上传图片问题.跨域下单图和多图不能兼容，即单图上传不支持跨域
     //建议使用工厂方法getEditor创建和引用编辑器实例，如果在某个闭包下引用该编辑器，直接调用UE.getEditor('editor')就能拿到相关的实例
     var ue = UE.getEditor('editor_content'); //实例化编辑器
-
+    document.domain = 'mvc.com';
     ue.ready(function () { //对编辑器的操作最好在编辑器ready之后再做
         // 通过重写getActionUrl方法可以改变图片上传路径
 //      UE.Editor.prototype._bkGetActionUrl = UE.Editor.prototype.getActionUrl;

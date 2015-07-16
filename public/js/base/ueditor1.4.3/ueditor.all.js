@@ -6894,9 +6894,9 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
 
                 container.style.zIndex = options.zIndex;
 
-                if (ie) {
-                    document.getElementById('baidu_editor_' + this.uid).src = "javascript:(function(){document.open();document.domain='"+document.domain+"';document.close();})()";
-                } // IE 下多图上传跨域问题，貌似没有什么用
+                //if (ie) {alert(this.uid);
+                //    document.getElementById('edui' + this.uid).src = "javascript:(function(){document.open();document.domain='"+document.domain+"';document.close();})()";
+                //} // IE 下多图上传跨域问题，貌似没有什么用
                 
                 var html = ( ie && browser.version < 9  ? '' : '<!DOCTYPE html>') +
                     '<html xmlns=\'http://www.w3.org/1999/xhtml\' class=\'view\' ><head>' +
@@ -6925,6 +6925,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                         'document.write("' + html + '");document.close();}())'
                 }));
                 container.style.overflow = 'hidden';
+//                container.style.overflow = 'show';
                 //解决如果是给定的百分比，会导致高度算不对的问题
                 setTimeout(function(){
                     if( /%$/.test(options.initialFrameWidth)){
@@ -6959,7 +6960,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
             }
             doc.body.spellcheck = false;
             me.document = doc;
-            me.document.domain = 'mvc.com'; // 解决ie跨域上传图片问题，貌似没有什么用
+            //me.document.domain = 'mvc.com'; // 解决ie跨域上传图片问题，貌似没有什么用
             me.window = doc.defaultView || doc.parentWindow;
             me.iframe = me.window.frameElement;
             me.body = doc.body;
@@ -8008,7 +8009,7 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
 //      }
         	switch (action) {
 //                case 'uploadimage': return 'http://upload.mvc.com/ueditor_1.4.3/controller.php?action=uploadimage';
-//                case 'uploadimage': return 'http://upload.mvc.com/ueditor/upload';
+                case 'uploadimage': return 'http://upload.mvc.com/ueditor/upload';
             }
             var actionName = this.getOpt(action) || action,
                 imageUrl = this.getOpt('imageUrl'),

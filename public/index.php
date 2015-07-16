@@ -1,6 +1,6 @@
 <?php
 header('Content-Type:text/html;charset=utf-8'); //定义字符集
-defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录: /home/xiqiyanyan/www/mvc
+defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录(最后不包含/): /home/xiqiyanyan/www/mvc
 
 
 // var_dump(123);exit;

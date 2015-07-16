@@ -25,7 +25,22 @@ class C_Ueditor extends BController
      * 编辑器上传图片
      */
     public function upload() {
-        var_dump($_FILES);
+        if ((!empty($_FILES)) && isset($_FILES['Filedata'])) {
+            //var_dump($_FILES['Filedata']);
+            $img = new Common_Image();
+            $img->read($_FILES['Filedata']['tmp_name']);
+            $fileName = $img->getFileName() . '.' . $img->getSourceType();
+            $filePath = '/upload/image/' . date('Ym') . '/' . $fileName;
+            $targetPath = ROOT_PATH . $filePath;
+            $boolean = $img->write($targetPath);
+            if ($boolean) {
+                echo '上传成功;图片：'. STATIC_URL . $filePath;
+            } else {
+                var_dump($img->getError());
+            }
+        } else {
+            
+        }
     }
     
     /**
