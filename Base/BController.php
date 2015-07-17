@@ -37,11 +37,123 @@ abstract class BController
         $requestUrl = Common_Tool::getCurrentUrl(); // http://mvc.com/ueditor/ueditor1_4_3?ab=bc&cc=d&q=&ni=8
         $urlArray = parse_url($requestUrl);   //  $urlArray['path'] = $_SERVER['REDIRECT_URL'] = /ueditor/ueditor1_4_3
         $key = $userIp . $urlArray['path'] . $userAgent;
-        $key = md5($key);
+        $key = md5($key); // 长度为32位
         // 判断用户的ip是否在白名单中（这里使用文件进行保存，后续最好使用redis之类的缓存进行操作）
         
         // 判断用户的ip是否在黑名单中
-//         Common_Tool::prePrint($_SESSION);
+        $blacklistPath = ROOT_PATH . '/data/log/blacklist.log';
+        if (is_file($blacklistPath)) {
+            $blacklistString = file_get_contents($blacklistPath);
+            $blacklistArray = explode("\r\n", $blacklistString);
+            if (in_array($userIp, $blacklistArray)) {
+                die('由于你的频繁刷新，你已列入黑名单！');
+            }
+            unset($blacklistString);
+            unset($blacklistArray);
+        }
+        
+        // 判断是否在已禁用一段时间中TODO
+        
+        // 写访问日记
+        $this->_writeRequestLog($userIp, $requestUrl, $userAgent, $urlArray['path'], Common_Tool::getRefererUrl());
+        
+        // 刷新时间和访问次数
+        $allowTime = 60; // 防刷新时间，单位：秒
+        $allowNumber = 5; // 防刷新的次数。以上两项代表单位时间内如果超过请求次数，将提示“警告：不要刷新太频繁！”
+        $allowRefreshTime = $allowTime;  // 允许刷新的时间 ，单位：秒。这里的时间可以自由设置，也可以和防刷时间一样。
+        $allowRefreshTime = 30;
+        $allowRefreshNumber = 50; // 允许刷新的最大次数。以上两项代表单位时间内如果超过了请求次数，将把此ip加入到黑名单，此ip将无法再访问该网站
+        
+        $nowTime = time();
+        // 判断是否加入黑名单
+        $allowFile = ROOT_PATH . '/data/log/allowRefresh.log';
+        if (is_file($allowFile)) {
+            $requestArray = file($allowFile);
+        } else {
+            $requestArray = array();
+        }
+        $isExist = false; // 是否存在日记文件中，默认false：新用户；true：已有记录
+        $delimiter = ' '; // 只能为一位
+        $length = strlen($delimiter);
+        foreach ($requestArray as $k=>$v) {
+            $requestKey = substr($v, 0, 32);
+            if ($requestKey == $key) {
+                $isExist = true;
+                $lastTime = substr($v, (32+$length), 10);
+                if (($nowTime-$lastTime) < $allowRefreshTime) {
+                    $requestNumber = substr($v, (42+2*$length));
+                    $requestNumber = intval($requestNumber);
+                    if ($requestNumber > $allowRefreshNumber) { // 已经超过最大次数，需要警告提示，并加到限制规定时间能不能再访问
+                        // 写入黑名单列表blacklist
+                        Common_Tool::writeFileFromString($blacklistPath, $userIp . "\r\n");
+                        die('由于你的频繁刷新，你已列入黑名单！');
+                    } else {
+                        $requestArray[$k] = $key . $delimiter . $lastTime . $delimiter . ($requestNumber+1) . "\r\n";
+                    }
+                } else {
+                    $requestArray[$k] = $key . $delimiter . $nowTime . $delimiter . '1' . "\r\n";
+                }
+                break;
+            }
+        }
+        if (!$isExist) {
+            $requestArray[] = $key . $delimiter . $nowTime . $delimiter . '1' . "\r\n";
+        }
+        Common_Tool::writeFileFromString($allowFile, implode('', $requestArray));
+        
+        // 判断刷新频率
+        $allowFile = ROOT_PATH . '/data/log/allow.log';
+        if (is_file($allowFile)) {
+            $requestArray = file($allowFile);
+        } else {
+            $requestArray = array();
+        }
+        $isExist = false; // 是否存在日记文件中，默认false：新用户；true：已有记录
+        $delimiter = ' '; // 只能为一位
+        $length = strlen($delimiter);
+        foreach ($requestArray as $k=>$v) {
+            $requestKey = substr($v, 0, 32);
+            if ($requestKey == $key) {
+                $isExist = true;
+                $lastTime = substr($v, (32+$length), 10);
+                if (($nowTime-$lastTime) < $allowTime) {
+                    $requestNumber = substr($v, (42+2*$length));
+                    $requestNumber = intval($requestNumber);
+                    if ($requestNumber > $allowNumber) { // 已经超过最大次数，需要警告提示，并加到限制规定时间能不能再访问
+                        // TODO 加入限制访问时段内
+                        
+                        exit('警告：不要刷新的太频繁！');
+                    } else {
+                        $requestArray[$k] = $key . $delimiter . $lastTime . $delimiter . ($requestNumber+1) . "\r\n";
+                    }
+                } else {
+                    $requestArray[$k] = $key . $delimiter . $nowTime . $delimiter . '1' . "\r\n";
+                }
+                break;
+            }
+        }
+        if (!$isExist) {
+            $requestArray[] = $key . $delimiter . $nowTime . $delimiter . '1' . "\r\n";
+        }
+        Common_Tool::writeFileFromString($allowFile, implode('', $requestArray));
+    }
+    
+    /**
+     * 写用户请求记录
+     * @param string $ip 用户IP
+     * @param string $url 请求完整路径
+     * @param string $userAgent 用户头信息
+     * @param string $urlPath 请求url的目录部分，不包括参数
+     * @param string $refererUrl 来源url
+     */
+    private function _writeRequestLog($ip, $url, $userAgent, $urlPath, $refererUrl = '') {
+        $string = '时间：' . date('Y-m-d H:i:s') . '  IP：' . $ip . '； 请求路径：' . $urlPath . 
+                  '  完整URL：' . $url . '  USER_AGENT:' . $userAgent . '  来源网址：' . $refererUrl . "\r\n";
+        $filePath = ROOT_PATH . '/data/log/request.log';
+        $boolean = Common_Tool::writeFileFromString($filePath, $string, true);
+        if (!$boolean) {
+            die(Common_Tool::getError());
+        }
     }
 	
 	/**
