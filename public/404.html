@@ -1,0 +1,19 @@
+
+404
+
+
+
+404、402、500等页面都可以这样定义
+apache的httpd.conf中
+#ErrorDocument 500 "The server made a boo boo boo."
+
+在nginx中，如果有重写的也可以定义404页面
+在你配置的虚拟机上（基于域名的虚拟机）的 server 段中加入：
+    error_page 404 /404.html; # 根目录中的404页面，如果没有找到，会直接显示nginx默认的404
+# 在有重写的项目中都不建议用nginx来定义404，因为定义了就无法走到代码里定义了
+同样的500等错误页可以在nginx中定义：
+error_page   500 502 503 504  /50x.html;
+nginx定义时，需注意：主nginx.conf中的http段需加入：fastcgi_intercept_errors on;
+
+不要出于省事或者提高首页权重的目的将首页指定为404错误页面，也不要用其它方法跳转到首页。 
+自定义的404页面必须大于512字节，否则可能会出现IE默认的404页面

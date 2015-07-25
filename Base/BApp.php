@@ -37,7 +37,11 @@ class BApp
 		$c->init();
 		if (!method_exists($c, self::$_action)) { // 貌似php的方法是不区分大小写的
 		    //             die('类' . $controller . '不存在' . self::$_action . '方法');
-		    die('不存在的页面：/' . lcfirst(self::$_module) . '/' . lcfirst(self::$_controller) . '/' . self::$_action);
+		    //die('不存在的页面：/' . lcfirst(self::$_module) . '/' . lcfirst(self::$_controller) . '/' . self::$_action);
+            header('HTTP/1.1 404 Not Found');
+            header('Status: 404 Not Found');
+            // TODO 这里渲染一个比较友好的404页面，并且记录下来源页面（如果有referer），如果是本网站的，记录下来并发邮件给管理员告知来自某个页面的点击
+            exit('找不到您想要的页面，404');
 		}
 		$c->{self::$_action}();
 		//$c->render();
