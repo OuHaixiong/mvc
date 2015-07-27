@@ -3377,7 +3377,7 @@ var domUtils = dom.domUtils = {
     },
     /**
      * 删除元素element指定的className
-     * @method removeClasses
+     * @method 
      * @param { Element } ele 需要删除class的元素节点
      * @param { String } classNames 需要删除的className， 多个className之间以空格分开
      * @example
@@ -3387,7 +3387,7 @@ var domUtils = dom.domUtils = {
      * <script>
      *
      *     var testNode = document.getElementById( "test" );
-     *     UE.dom.domUtils.removeClasses( testNode, "test1 test2" );
+     *     UE.dom.domUtils.( testNode, "test1 test2" );
      *
      *     //output: test3
      *     console.log( testNode.className );
@@ -3417,6 +3417,9 @@ var domUtils = dom.domUtils = {
      * ```
      */
     removeClasses:function (elm, classNames) {
+    	if ( elm === null ) { // 修改IE报错问题
+    		return;
+    	}
         classNames = utils.isArray(classNames) ? classNames :
             utils.trim(classNames).replace(/[ ]{2,}/g,' ').split(' ');
         for(var i = 0,ci,cls = elm.className;ci=classNames[i++];){
