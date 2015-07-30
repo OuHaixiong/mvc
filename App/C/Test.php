@@ -78,4 +78,16 @@ class C_Test extends BController
 	    $this->render();
 	}
 	
+	public function cookies() {
+	    $this->render();
+	}
+	
+	/**
+	 * 测试z轴，遮罩层
+	 */
+	public function zIndex() {
+	    $this->render();
+	}
+	
+	
 }
