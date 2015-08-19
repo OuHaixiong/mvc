@@ -34,6 +34,12 @@ class BView
 	private $_layoutPath = null;
 	
 	/**
+	 * url路由对象
+	 * @var BUrlRule
+	 */
+	static private $_urlRule;
+	
+	/**
 	 * 渲染页面
 	 * @param string $path 需要渲染的视图文件路径,相对V文件夹的路径(不包括后缀名.php)，如： /Layouts/left
 	 * @return string
@@ -155,6 +161,20 @@ class BView
 	        return '';
 	    }
 	}
+	
+	/**
+	 * 调用路由规则，生成url地址
+	 * @param string $route 路由，由 模块/控制器/行为 组成 且不能省略（index）
+	 * @param array $params 参数
+	 * @param string $ampersand 连接两个参数之前的&符号
+	 * @return string
+	 */
+    public function createUrl($route, $params = array(), $ampersand='/') {
+        if (!(self::$_urlRule instanceof BUrlRule)) {
+            self::$_urlRule = new BUrlRule();
+        }
+        return self::$_urlRule->createUrl($route, $params, $ampersand);
+    }
 	
 	
 }

@@ -77,11 +77,7 @@ class C_Test extends BController
 	public function testForm() {
 	    $this->render();
 	}
-	
-	public function cookies() {
-	    $this->render();
-	}
-	
+
 	/**
 	 * 测试z轴，遮罩层
 	 */
