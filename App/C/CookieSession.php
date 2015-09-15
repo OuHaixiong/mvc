@@ -17,4 +17,6 @@ class C_CookieSession extends BController
         $this->render();
     }
     
+    
+    
 }
