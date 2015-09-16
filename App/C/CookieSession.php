@@ -25,8 +25,7 @@ class C_CookieSession extends BController
         //$_SESSION['wokao'] = '我靠';
         var_dump($_SESSION);
         var_dump($_SERVER['SERVER_PORT']);
-        var_dump($_SERVER['HTTP_HOST']);
-        var_dump($_SERVER);
+        var_dump($_SERVER['SERVER_ADDR']);
     }
     
 }
