@@ -17,6 +17,13 @@ class C_CookieSession extends BController
         $this->render();
     }
     
-    
+    /**
+     * 测试多主机共享session
+     */
+    public function session() {
+        session_start();
+//         $_SESSION['wokao'] = '我靠';
+        var_dump($_SESSION);
+    }
     
 }
