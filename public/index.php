@@ -1,5 +1,9 @@
 <?php
 header('Content-Type:text/html;charset=utf-8'); //定义字符集
+
+ini_set('session.save_handler', 'redis');
+ini_set('session.save_path', 'tcp://192.168.253.4:6379');
+
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录(最后不包含/): /home/xiqiyanyan/www/mvc
 
 /*
