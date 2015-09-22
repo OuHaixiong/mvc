@@ -39,7 +39,6 @@ defined('IMG_URL') || define('IMG_URL', 'http://img.mvc.com'); // 定义图片�
 
 include_once BASE_PATH . '/BConfig.php';
 $masterRedis = BConfig::getConfig('slave_redis');
-var_dump('nima');
 var_dump($masterRedis);exit;
 ini_set('session.save_handler', 'redis');
 ini_set('session.save_path', 'tcp://192.168.253.4:6379');

@@ -26,8 +26,8 @@ class BConfig
 	
 	/**
 	 * 通过键名读取站点配置文件
-	 * @param string $key
-	 * @return array | string | mixed | false | null
+	 * @param string $key 配置名（键名）
+	 * @return array | string | mixed | false | null 没有找到该项返回null
 	 */
 	public static function getConfig($key) {
 		if (self::$_config === null) {
