@@ -41,18 +41,20 @@ return array(
         realpath(ROOT_PATH . '/../../libraries')
     ),
     'master_redis' => array( // redis 主服务器配置
-        'host' => '120.XXX.XXX.XXX',
+        'host' => '192.168.253.4',
         'port' => 6379,
         'timeout' => 0
 	),
     'slave_redis' => array( // 多个 redis 从服务器配置
         array(
-            'host' => '',
+            'host' => '192.168.17.134',
             'port' => 6379,
             'timeout' => 0
         ),
         array(
-            
+            'host' => '192.168.17.139',
+            'port' => 6379,
+            'timeout' => 0
         ),
     ),
 		
