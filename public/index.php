@@ -38,10 +38,10 @@ defined('STATIC_URL') || define('STATIC_URL', 'http://res.mvc.com'); // 定义�
 defined('IMG_URL') || define('IMG_URL', 'http://img.mvc.com'); // 定义图片服务器的url路径(不包括/)
 
 include_once BASE_PATH . '/BConfig.php';
-$masterRedis = BConfig::getConfig('slave_redis');
-var_dump($masterRedis);exit;
+$masterRedis = BConfig::getConfig('master_redis');
+
 ini_set('session.save_handler', 'redis');
-ini_set('session.save_path', 'tcp://192.168.253.4:6379');
+ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}");
 
 
 defined('DEBUG') || define('DEBUG', true); // 是否开启调试模式
