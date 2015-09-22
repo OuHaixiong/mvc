@@ -1,4 +1,8 @@
 <?php
+ini_set('session.cookie_path', '/');
+ini_set('session.cookie_domain', '.mvc.com');
+ini_set('session.cookie_lifetime', '1800');
+// 上面三句是跨子域，保存cookie
 header('Content-Type:text/html;charset=utf-8'); //定义字符集
 
 /*
