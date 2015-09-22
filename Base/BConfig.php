@@ -31,14 +31,17 @@ class BConfig
 	 */
 	public static function getConfig($key) {
 		if (self::$_config === null) {
-			self::$_config = require_once APP_PATH . '/Configs/Config.php'; //  __DIR__ . '/config/config.php' __DIR__ 获取本页脚本执行的绝对路径
+		    $configPath = CONFIG_PATH . '/Config.php';
+		    if (!(is_file($configPath))) {
+		        $configPath = APP_PATH . '/Configs/Config.php';
+		    }
+			self::$_config = require_once $configPath; //  __DIR__ . '/config/config.php' __DIR__ 获取本页脚本执行的绝对路径
 		}
 		if (isset(self::$_config[$key])) {
 		    return self::$_config[$key];
 		} else {
 		    return null;
 		}
-		
 	}
 
 }

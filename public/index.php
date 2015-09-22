@@ -1,11 +1,6 @@
 <?php
 header('Content-Type:text/html;charset=utf-8'); //定义字符集
 
-ini_set('session.save_handler', 'redis');
-ini_set('session.save_path', 'tcp://192.168.253.4:6379');
-
-defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录(最后不包含/): /home/xiqiyanyan/www/mvc
-
 /*
 var_dump($_SERVER['REMOTE_ADDR']);
 var_dump($_COOKIE);
@@ -35,11 +30,20 @@ exit; */
 // $requestUri = $_SERVER['REQUEST_URI'];
 // var_dump($requestUri);
 
- 
+defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录(最后不包含/): /home/xiqiyanyan/www/mvc 
 defined('BASE_PATH') || define('BASE_PATH', realpath(ROOT_PATH . '/../Base')); //定义本框架基本类库目录(不包括/) 
 defined('APP_PATH') || define('APP_PATH', realpath(ROOT_PATH . '/../App')); //定义应用根目录
+defined('CONFIG_PATH') || define('CONFIG_PATH', ROOT_PATH . '/../../Configs'); // 定义config文件的目录(不包括/)
 defined('STATIC_URL') || define('STATIC_URL', 'http://res.mvc.com'); // 定义静态文件（css、js、样式图片、flash等）的url路径(不包括/)
 defined('IMG_URL') || define('IMG_URL', 'http://img.mvc.com'); // 定义图片服务器的url路径(不包括/)
+
+include_once BASE_PATH . '/BConfig.php';
+$masterRedis = BConfig::getConfig('slave_redis');
+var_dump('nima');
+var_dump($masterRedis);exit;
+ini_set('session.save_handler', 'redis');
+ini_set('session.save_path', 'tcp://192.168.253.4:6379');
+
 
 defined('DEBUG') || define('DEBUG', true); // 是否开启调试模式
 

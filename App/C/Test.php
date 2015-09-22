@@ -8,7 +8,7 @@
 class C_Test extends BController
 {
 	public function init() {
-        parent::init();
+//         parent::init();
         
 	}
 	
@@ -85,5 +85,57 @@ class C_Test extends BController
 	    $this->render();
 	}
 	
+	public function testRep() {
+	    $str = "<a href='aa' alt=\"ni你们啊你好\">hi 你</a>你fd 我的<你的 \"你的\"<img alt='ffxx你' title=\"你d\">";
+	    var_dump($str);
+	    $pattern = '/你/';
+	    $replacement = '他';
+	    $strstr = preg_replace($pattern, $replacement, $str);
+	    var_dump($strstr);
+	    $pattern = '/alt=\'([^他]*)他([^\']*)\'/'; // alt='ffxx他'
+// 	    $pattern = '/alt=(\'|\")([^他]*)他([^\']*)(\'|\")/'; // alt='ffxx他'
+	    $replacement = 'alt="$1你$2"';
+	    $str = preg_replace($pattern, $replacement, $strstr);
+	    var_dump($strstr);
+	    $pattern = '/alt=\"([^他]*)他([^\"]*)\"/'; // alt=\"ni你们\"
+	    $str = preg_replace($pattern, $replacement, $str);
+	    var_dump($strstr);
+	    $pattern = '/title=\"([^他]*)他([^\"]*)\"/';
+	    $replacement = 'title="$1你$2"';
+	    $str = preg_replace($pattern, $replacement, $str);
+	    var_dump($str);
+	    
+	    
+	    $pattern = "/(alt|title)\s*=\s*\"([^\"]*)(你)([^\"]*)\"/";
+	    
+	    $count = preg_match_all($pattern, $str, $matches, PREG_SET_ORDER|PREG_OFFSET_CAPTURE);
+	    print_r($matches);
+	    ///预先替换
+	    $noise = array();
+	    for ($i=$count-1; $i>-1; --$i)
+	    {
+	        $key = '___noise___'.sprintf('% 5d', count($noise)+1000);
+	         
+	        $idx = 0;print_r($matches[$i][0]);
+	        $noise[$key] = $matches[$i][$idx][0];
+	        $str = substr_replace($str, $key, $matches[$i][$idx][1], strlen($matches[$i][$idx][0]));
+	    }
+	    print_r($noise);
+	    echo "\n".$str;
+	    //替换
+	    $str = str_replace("你","他",$str);
+	    //
+	    //恢复
+	    while (($pos=strpos($str, '___noise___'))!==false){
+	        $key = '___noise___'.$str[$pos+11].$str[$pos+12].$str[$pos+13].$str[$pos+14].$str[$pos+15];
+	        echo "pos=".$pos."\n key=".$key;
+	        if (isset($noise[$key]))
+	        {
+	            $str = substr($str, 0, $pos).$noise[$key].substr($str, $pos+16);
+	        }
+	    }
+	    echo $str;
+	    
+	}
 	
 }

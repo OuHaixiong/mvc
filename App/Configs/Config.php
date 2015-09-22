@@ -45,5 +45,15 @@ return array(
         'port' => 6379,
         'timeout' => 0
 	),
+    'slave_redis' => array( // 多个 redis 从服务器配置
+        array(
+            'host' => '',
+            'port' => 6379,
+            'timeout' => 0
+        ),
+        array(
+            
+        ),
+    ),
 		
 );
