@@ -24,6 +24,7 @@ class C_CookieSession extends BController
         session_start();
 //         $_SESSION['wokao'] = '我靠';
 //         $_SESSION['isLogin'] = 'Y';
+var_dump(123);exit;
         var_dump($_SESSION);
         var_dump($_SERVER['SERVER_PORT']);
         var_dump($_SERVER['SERVER_ADDR']);
