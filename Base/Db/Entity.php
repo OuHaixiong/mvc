@@ -207,7 +207,7 @@ abstract class Db_Entity
     }
     
     /**
-     * 批量查询一批数据
+     * 批量查询一批数据;用从库查询
      * @param array $primaryKeys 主键集
      * @param string $column 需要查询的字段
      * @return array

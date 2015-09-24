@@ -9,6 +9,10 @@
  */
 class C_Cache extends BController
 {
+    public function init() {
+        
+    }
+    
     /**
      * redis练习
      */
@@ -218,6 +222,29 @@ class C_Cache extends BController
      */
     public function file() {
         
+    }
+    
+    /**
+     * redis主从练习
+     */
+    public function masterSlave() {
+        $key = 'test_key';
+        $masterRedis = BRedis::getMaster();
+//         $masterRedis->set($key, '你好我也hao!');
+        Common_Tool::prePrint($masterRedis->get($key), false);
+        
+        // 主写，从读
+        $key2 = 'mWrite_sRead';
+//         $masterRedis->set($key2, '主写进去的数据，从能马上读出来吗?');
+        $slaveRedis = BRedis::getSlave();
+        Common_Tool::prePrint($slaveRedis->get($key2), false); // 如果键不存在，返回false
+        
+        $key3 = 'yc';
+        $masterRedis->set($key3, '难道真的一点延迟都没有吗');
+        $slaveRedis = BRedis::getSlave();
+        Common_Tool::prePrint($slaveRedis->get($key3), false);
+        var_dump($_SERVER['SERVER_PORT']);
+        var_dump($_SERVER['SERVER_ADDR']);
     }
     
 }
