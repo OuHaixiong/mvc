@@ -7,6 +7,8 @@
  */
 class Backend_C_Db extends Backend_C_Controller
 {
+    public function init() {}
+    
     /**
      * 查询
      */
