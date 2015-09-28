@@ -254,11 +254,13 @@ class Backend_C_Db extends Backend_C_Controller
      * 主从同步测试
      */
     public function masterSlave() {
+        var_dump($_SERVER['SERVER_PORT']);
+        var_dump($_SERVER['SERVER_ADDR']);
         // 主写，主读
         $backendUser = new Backend_M_User();
         $masterDb = $backendUser->getMaster();
         $tableName = 't';
-        $data = array('a'=>60, 'b'=>60);
+        $data = array('a'=>66, 'b'=>66);
         $id = $masterDb->insert($tableName, $data);
         if ($id > 0) {
             $where = array('id'=>$id);
