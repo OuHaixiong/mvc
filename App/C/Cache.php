@@ -228,10 +228,13 @@ class C_Cache extends BController
      * redis主从练习
      */
     public function masterSlave() {
+        var_dump($_SERVER['SERVER_PORT']);
+        var_dump($_SERVER['SERVER_ADDR']);
+        echo '<br />';
         $key = 'test_key';
         $masterRedis = BRedis::getMaster();
 //         $masterRedis->set($key, '你好我也hao!');
-        Common_Tool::prePrint($masterRedis->get($key), false);
+        Common_Tool::prePrint($masterRedis->get($key));
         
         // 主写，从读
         $key2 = 'mWrite_sRead';
@@ -243,8 +246,6 @@ class C_Cache extends BController
         $masterRedis->set($key3, '难道真的一点延迟都没有吗');
         $slaveRedis = BRedis::getSlave();
         Common_Tool::prePrint($slaveRedis->get($key3), false);
-        var_dump($_SERVER['SERVER_PORT']);
-        var_dump($_SERVER['SERVER_ADDR']);
     }
     
 }
