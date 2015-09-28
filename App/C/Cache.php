@@ -244,7 +244,7 @@ class C_Cache extends BController
         Common_Tool::prePrint($slaveRedis->get($key2), false); // redis中如果键不存在，返回false
         
         $key3 = 'yc';
-        $masterRedis->set($key3, '难道真的一点延迟都没有吗');
+        $masterRedis->set($key3, '难道真的一点延迟都没有吗？。。在测试');
         $slaveRedis = BRedis::getSlave();
         Common_Tool::prePrint($slaveRedis->get($key3), false);
         echo '<br />';
