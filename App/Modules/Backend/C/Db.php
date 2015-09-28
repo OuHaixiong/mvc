@@ -256,17 +256,19 @@ class Backend_C_Db extends Backend_C_Controller
         $backendUser = new Backend_M_User();
         $masterDb = $backendUser->getMaster();
         $tableName = 't';
-        $data = array('a'=>50, 'b'=>50);
+        $data = array('a'=>60, 'b'=>60);
         $id = $masterDb->insert($tableName, $data);
         if ($id > 0) {
             $where = array('id'=>$id);
-            $row = $masterDb->load($tableName, $where);
-            Common_Tool::prePrint($row);
+//             $row = $masterDb->load($tableName, $where);
+//             Common_Tool::prePrint($row, false);
         } else {
             die('插入数据失败');
         }
         // 主写，从读
-        
+        $slaveDb = $backendUser->getSlave();
+        $row = $slaveDb->load($tableName, $where);
+        Common_Tool::prePrint($row, false);
         // 主写，从删
         
     }

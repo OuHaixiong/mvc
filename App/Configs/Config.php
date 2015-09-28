@@ -24,15 +24,19 @@ return array(
     ),
     'slave_db' => array( // 多个从数据库，这里要设置为二维数组
         array(
-            'dsn' => 'mysql:host=127.0.0.1;dbname=mvc',
+            'dsn' => 'mysql:host=192.168.17.134;dbname=mvc',
             'emulatePrepare' => true,
-            'username' => 'root',
+            'username' => 'slaveMvc',
             'password' => '123456',
             'charset' => 'utf8'
         ),
-//         array(
-            
-//         ),
+        array(
+            'dsn' => 'mysql:host=192.168.17.139;dbname=mvc',
+            'emulatePrepare' => true,
+            'username' => 'slaveMvc',
+            'password' => '123456',
+            'charset' => 'utf8',
+        ),
     ),
     'modules' => array( // 多模块设置
         'backend',

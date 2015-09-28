@@ -38,7 +38,7 @@ class Db_Slave
             // PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
         } else {
             throw new PDOException('未设置数据库编码');
-        }
+        }Common_Tool::prePrint($config, false);
         $this->pdo = new PDO($config['dsn'], $config['username'], $config['password'], $driverOptions);
         //$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
