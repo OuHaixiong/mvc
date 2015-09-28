@@ -41,7 +41,7 @@ class Db_Master
             // PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true,
         } else {
             throw new PDOException('未设置数据库编码');
-        }
+        }var_dump($config);
         $this->pdo = new PDO($config['dsn'], $config['username'], $config['password'], $driverOptions);
     }
     

@@ -150,6 +150,9 @@ abstract class BController
         $string = '时间：' . date('Y-m-d H:i:s') . '  IP：' . $ip . '； 请求路径：' . $urlPath . 
                   '  完整URL：' . $url . '  USER_AGENT:' . $userAgent . '  来源网址：' . $refererUrl . "\r\n";
         $filePath = ROOT_PATH . '/data/log/request.log';
+        var_dump($_SERVER['SERVER_PORT']);
+        var_dump($_SERVER['SERVER_ADDR']);
+        
         $boolean = Common_Tool::writeFileFromString($filePath, $string, true);
         if (!$boolean) {
             die(Common_Tool::getError());

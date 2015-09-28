@@ -247,5 +247,28 @@ class Backend_C_Db extends Backend_C_Controller
         $rowset = $entity->batchLoad($primaryKeys, $column);
         Common_Tool::prePrint($rowset);
     }
+    
+    /**
+     * 主从同步测试
+     */
+    public function masterSlave() {
+        // 主写，主读
+        $backendUser = new Backend_M_User();
+        $masterDb = $backendUser->getMaster();
+        $tableName = 't';
+        $data = array('a'=>50, 'b'=>50);
+        $id = $masterDb->insert($tableName, $data);
+        if ($id > 0) {
+            $where = array('id'=>$id);
+            $row = $masterDb->load($tableName, $where);
+            Common_Tool::prePrint($row);
+        } else {
+            die('插入数据失败');
+        }
+        // 主写，从读
+        
+        // 主写，从删
+        
+    }
 
 }
