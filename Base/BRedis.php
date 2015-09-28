@@ -56,7 +56,7 @@ class BRedis
         if (self::$_slave === null) {
             $slaveRedis = BConfig::getConfig(self::SLAVE_KEY);
             self::$_slave = new Redis();
-            $oneSlave = $slaveRedis[array_rand($slaveRedis, 1)];Common_Tool::prePrint($oneSlave, false);
+            $oneSlave = $slaveRedis[array_rand($slaveRedis, 1)];
             self::$_slave->connect($oneSlave['host'], $oneSlave['port'], $oneSlave['timeout']);
         }
         if (!empty($db)) {
