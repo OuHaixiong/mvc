@@ -240,13 +240,14 @@ class C_Cache extends BController
         // 主写，从读
         $key2 = 'mWrite_sRead';
 //         $masterRedis->set($key2, '主写进去的数据，从能马上读出来吗?');
-        $slaveRedis = BRedis::getSlave();
-        Common_Tool::prePrint($slaveRedis->get($key2), false); // redis中如果键不存在，返回false
+//         $slaveRedis = BRedis::getSlave();
+//         Common_Tool::prePrint($slaveRedis->get($key2), false); // redis中如果键不存在，返回false
         
         $key3 = 'yc';
-        $masterRedis->set($key3, '难道真的一点延迟都没有吗？。。在测试');
+        $masterRedis->set($key3, '难道真的一点延迟都没有吗？。。再测试，经过测试，感觉一点延迟都没有，就不知道，网络慢的情况下是否会延迟');
         $slaveRedis = BRedis::getSlave();
         Common_Tool::prePrint($slaveRedis->get($key3), false);
+        // 经过测试，感觉一点延迟都没有，就不知道，网络慢的情况下是否会延迟
         echo '<br />';
         echo '页面总共运行： ' . Common_Tool::executeEndTime() . ' 秒';
     }
