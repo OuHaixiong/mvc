@@ -282,7 +282,7 @@ class Backend_C_Db extends Backend_C_Controller
                 return 0;
             } else {
                 foreach ($where as $k=>$v) {
-                    $where[$k] = "`{$k}`={$this->pdo->quote($v)}";
+                    $where[$k] = "`{$k}`={$pdo->quote($v)}";
                 }
                 $where = implode(' AND ', $where);
             }
