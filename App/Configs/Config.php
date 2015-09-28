@@ -18,7 +18,7 @@ return array(
     'master_db' => array( // 主数据库设置
         'dsn' => 'mysql:host=192.168.253.4;dbname=mvc',
         'emulatePrepare' => true,
-        'username' => 'root',
+        'username' => 'mvcUser',
         'password' => '123456',
         'charset' => 'utf8',
     ),
