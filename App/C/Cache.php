@@ -231,21 +231,24 @@ class C_Cache extends BController
         var_dump($_SERVER['SERVER_PORT']);
         var_dump($_SERVER['SERVER_ADDR']);
         echo '<br />';
+        // 主写，主读
         $key = 'test_key';
         $masterRedis = BRedis::getMaster();
 //         $masterRedis->set($key, '你好我也hao!');
-        Common_Tool::prePrint($masterRedis->get($key));
-        
+        Common_Tool::prePrint($masterRedis->get($key), false);
+        Common_Tool::executeStartTime();
         // 主写，从读
         $key2 = 'mWrite_sRead';
 //         $masterRedis->set($key2, '主写进去的数据，从能马上读出来吗?');
         $slaveRedis = BRedis::getSlave();
-        Common_Tool::prePrint($slaveRedis->get($key2), false); // 如果键不存在，返回false
+        Common_Tool::prePrint($slaveRedis->get($key2), false); // redis中如果键不存在，返回false
         
         $key3 = 'yc';
         $masterRedis->set($key3, '难道真的一点延迟都没有吗');
         $slaveRedis = BRedis::getSlave();
         Common_Tool::prePrint($slaveRedis->get($key3), false);
+        echo '<br />';
+        echo '页面总共运行： ' . Common_Tool::executeEndTime() . ' 秒';
     }
     
 }
