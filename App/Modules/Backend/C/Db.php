@@ -254,8 +254,6 @@ class Backend_C_Db extends Backend_C_Controller
      * 主从同步测试
      */
     public function masterSlave() {
-        var_dump($_SERVER['SERVER_PORT']);
-        var_dump($_SERVER['SERVER_ADDR']);
         // 主写，主读
         $backendUser = new Backend_M_User();
         $masterDb = $backendUser->getMaster();
@@ -274,7 +272,24 @@ class Backend_C_Db extends Backend_C_Controller
         $row = $slaveDb->load($tableName, $where);
         Common_Tool::prePrint($row, false);
         // 主写，从删
+        $data = array('a'=>100, 'b'=>100);
+        $id2 = $masterDb->insert($tableName, $data);
+        $pdo = $slaveDb->getPdo();
+        $where = array('id'=>$id2);
         
+        if (is_array($where)) {
+            if (empty($where)) {
+                return 0;
+            } else {
+                foreach ($where as $k=>$v) {
+                    $where[$k] = "`{$k}`={$this->pdo->quote($v)}";
+                }
+                $where = implode(' AND ', $where);
+            }
+        }
+        $sql = "DELETE FROM `{$tableName}` WHERE {$where}";
+        Common_Tool::prePrint($sql);
+        Common_Tool::prePrint($pdo->exec($sql));
     }
 
 }
