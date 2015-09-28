@@ -258,7 +258,7 @@ class Backend_C_Db extends Backend_C_Controller
         $backendUser = new Backend_M_User();
         $masterDb = $backendUser->getMaster();
         $tableName = 't';
-        $data = array('a'=>66, 'b'=>66);
+        $data = array('a'=>88, 'b'=>88);
         $id = $masterDb->insert($tableName, $data);
         if ($id > 0) {
             $where = array('id'=>$id);
@@ -272,7 +272,7 @@ class Backend_C_Db extends Backend_C_Controller
         $row = $slaveDb->load($tableName, $where);
         Common_Tool::prePrint($row, false);
         // 主写，从删
-        $data = array('a'=>100, 'b'=>100);
+        $data = array('a'=>99, 'b'=>99);
         $id2 = $masterDb->insert($tableName, $data);
         $pdo = $slaveDb->getPdo();
         $where = array('id'=>$id2);
@@ -289,7 +289,7 @@ class Backend_C_Db extends Backend_C_Controller
         }
         $sql = "DELETE FROM `{$tableName}` WHERE {$where}";
         Common_Tool::prePrint($sql);
-        Common_Tool::prePrint($pdo->exec($sql));
+        var_dump($pdo->exec($sql));
     }
 
 }
