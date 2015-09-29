@@ -289,7 +289,7 @@ class Backend_C_Db extends Backend_C_Controller
         }
         $sql = "DELETE FROM `{$tableName}` WHERE {$where}";
         Common_Tool::prePrint($sql);
-        var_dump($pdo->exec($sql));
+        var_dump($pdo->exec($sql)); // 这里执行失败了，不返回任何值，连null都没有
         // 从局域网的测试来看，没有看到延迟的现象，也就是说，插入进去了就能直接读取出来
     }
 
