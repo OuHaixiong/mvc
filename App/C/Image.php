@@ -700,6 +700,36 @@ class C_Image extends BController
 // 	    $this->_helper->layout()->disableLayout();
 // 	}
 	
+    /**
+     * 测试表单上传图片
+     */
+    public function formPost() {
+        var_dump($_SERVER['SERVER_PORT']);
+        var_dump($_SERVER['SERVER_ADDR']);
+        if (Common_Tool::isPost()) {
+            if ($_FILES['file_data']['size'] > 0) {
+                $image = new Common_Image();
+                $image->read($_FILES['file_data']['tmp_name']);
+                $width = 80;
+                $heigth = 80;
+                $image->resize($width, $heigth);
+                $fileName = Common_Tool::random(8) . date('ymdHis');
+                $filePath = '/user_pic/' . date('y') . '_' . date('m') . '_' . date('d') . '/' . $fileName . '.' . $image->getSourceType();
+                $targetPath = IMG_PATH . $filePath;
+                $boolean = $image->write($targetPath);
+                if ($boolean) {
+                    echo '上传图片成功，上传的绝对路径是：' . $targetPath;
+                    echo '<br />';
+                    echo '<img src="' . IMG_URL . $filePath . '" />';
+                    die();
+                } else {
+                    Common_Tool::prePrint($image->getError());
+                }
+            }
+        }
+        $this->_view->setIsView(true);
+        $this->render();
+    }
 	
 }
 

@@ -230,7 +230,8 @@ class C_Cache extends BController
     public function masterSlave() {
         var_dump($_SERVER['SERVER_PORT']);
         var_dump($_SERVER['SERVER_ADDR']);
-        echo '<br />';
+        Common_Tool::prePrint(Common_Tool::getClientRealIp());
+        echo '<br />';exit;
         // 主写，主读
         $key = 'test_key';
         $masterRedis = BRedis::getMaster();
