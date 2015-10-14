@@ -41,17 +41,13 @@ defined('IMG_PATH') || define('IMG_PATH', realpath(ROOT_PATH . '/../../img')); /
 defined('CONFIG_PATH') || define('CONFIG_PATH', ROOT_PATH . '/../../Configs'); // 定义config文件的目录(不包括/)
 defined('STATIC_URL') || define('STATIC_URL', 'http://res.mvc.com'); // 定义静态文件（css、js、样式图片、flash等）的url路径(不包括/)
 defined('IMG_URL') || define('IMG_URL', 'http://img.mvc.com'); // 定义图片服务器的url路径(不包括/)
-
-include_once BASE_PATH . '/BConfig.php';
-$masterRedis = BConfig::getConfig('master_redis');
-// 保存session进redis
-ini_set('session.save_handler', 'redis');
-ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}");
-
-
 defined('DEBUG') || define('DEBUG', true); // 是否开启调试模式
 
 require_once BASE_PATH . '/AutoLoadClass.php';
-
+// 保存session进redis
+$masterRedis = BConfig::getConfig('master_redis');
+ini_set('session.save_handler', 'redis');
+ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}");
+// 启动应用
 $app = new BApp();
 $app->run();
