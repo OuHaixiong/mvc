@@ -708,8 +708,6 @@ class C_Image extends BController
         var_dump($_SERVER['SERVER_ADDR']);
         if (Common_Tool::isPost()) {
             if ($_FILES['file_data']['size'] > 0) {
-                $width = 80;
-                $heigth = 80;
                 $img = new Share_Img();
                 $filePath = $img->saveOriginByGd($_FILES['file_data']['tmp_name'], '/user_pic/');
                 if ($filePath) {
@@ -717,10 +715,24 @@ class C_Image extends BController
                     echo '上传图片成功，上传的绝对路径是：' . $filePath;
                     echo '<br />';
                     echo '<img src="' . IMG_URL . $filePath . '" />';
-                    die();
+                    echo '<br /><br />';
                 } else {
                     Common_Tool::prePrint($img->getError());
+                    die();
                 }
+                $width = 80;
+                $heigth = 80;
+                $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height);
+                if ($filePath) {
+                    echo '缩略图的相对路径是：' . $filePath;
+                    echo '<br />';
+                    echo '<img src="' . IMG_URL . $filePath . '" />';
+                    echo '<br /><br />';
+                } else {
+                    Common_Tool::prePrint($img->getError());
+                    die();
+                }
+                
             }
         }
         $this->_view->setIsView(true);

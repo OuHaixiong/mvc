@@ -13,10 +13,12 @@ class Share_Img
      * 处理图片出错信息
      * @var string
      */
-    private $_error; 
+    private $_error;
+    
+    const ABC = array('n'=>'no', 'y'=>'yes');
     
     /**
-     * 保存源图片
+     * 保存源图片（用gd库）
      * @param string $originImg 源图片完整路径（完整的绝对路径）
      * @param string $module 图片所属:大模块_小模块；如：用户模块下的用户头像：user_pic
      * @return string | boolean 成功保存，返回源图片存储的相对路径，失败返回false，可掉用getError()方法获取错误信息
@@ -29,6 +31,38 @@ class Share_Img
         $module = trim($module, '/');
         $filePath = '/' . $module . '/' . date('y') . '_' . date('m') . '_' . date('d') . '/origin/' . $fileName . '.' . $image->getSourceType();
         $targetPath = IMG_PATH . $filePath;
+        $boolean = $image->write($targetPath);
+        if ($boolean) {
+            return $filePath;
+        } else {
+            $this->_error = $image->getError();
+            return false;
+        }
+    }
+    
+    /**
+     * 缩放图片（用gd库）
+     * @param string $originImg 源图片完整路径（完整的绝对路径）
+     * @param string $module 图片所属:大模块_小模块；如：用户模块下的用户头像：user_pic
+     * @param integer $width 目标图片的宽
+     * @param integer $height 目标图片的高 （如果tooWideCutPosition和tooHightCutPosition都为null时不进行缩放后裁剪）
+     * @param string $tooWideCutPosition 超过是否进行裁剪，如果宽超过 ； c：居中裁剪，w：居左裁剪，e：居右裁剪
+     * @param string $tooHighCutPosition 超过是否进行裁剪，如果宽超过 ； c：居中裁剪，n：居上裁剪； s：居下裁剪 
+     * @return string | boolean 成功保存，返回缩略图片存储的相对路径，失败返回false，可掉用getError()方法获取错误信息
+     */
+    public function scaleByGd($originImg, $module, $width, $height, $tooWideCutPosition = null, $tooHighCutPosition = null) {
+        $image = new Common_Image($originImg);
+        if (empty($tooWideCutPosition) && empty($tooHighCutPosition)) { // 只是等比例缩放，不进行任何裁剪
+            $image->thumbnail($width, $height);
+            $fileName = $this->random(8) . date('ymdHis');
+            $module = trim($module, '/');
+            $filePath = '/' . $module . '/' . date('y') . '_' . date('m') . '_' . date('d') . '/' . $fileName . '.' . $image->getSourceType();
+            $targetPath = $filePath;
+        } else { // 等比例缩放后进行裁剪
+            
+            $image->resize($width, $height);
+        }
+        $targetPath = IMG_PATH . $targetPath;
         $boolean = $image->write($targetPath);
         if ($boolean) {
             return $filePath;
