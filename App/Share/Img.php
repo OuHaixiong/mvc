@@ -15,7 +15,8 @@ class Share_Img
      */
     private $_error;
     
-    const ABC = array('n'=>'no', 'y'=>'yes');
+    private $_widthPlace = array('c'=>'center', 'w'=>'west', 'e'=>'east');
+    private $_heigthPlace = array('c'=>'center', 'n'=>'north', 's'=>'south');
     
     /**
      * 保存源图片（用gd库）
