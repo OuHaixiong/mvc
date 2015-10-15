@@ -738,9 +738,9 @@ class C_Image extends BController
                     die();
                 }
                 $width = 100;
-                $width = 100;
-                $tooWidthCut = 'w';
-                $tooHeightCut = 's';
+                $height = 100;
+                $tooWidthCut = 'e';
+                $tooHeightCut = 'n';
                 $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height, $tooWidthCut, $tooHeightCut);
                 if ($filePath) {
                     echo '等比例缩放后，进行居中裁剪后的图的相对路径是：' . $filePath;
