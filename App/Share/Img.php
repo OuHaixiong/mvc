@@ -75,13 +75,13 @@ class Share_Img
         } else { // 等比例缩放后进行裁剪
             $widthCut = 'c';
             $heightCut = 'c';
-            if (array_key_exists($tooWideCutPosition, $this->_widthPlace)) {
+            if (array_key_exists($tooWideCutPosition, self::$_widthPlace)) {
                 $widthCut = $tooWideCutPosition;
             }
-            if (array_key_exists($tooHighCutPosition, $this->_heightPlace)) {
+            if (array_key_exists($tooHighCutPosition, self::$_heightPlace)) {
                 $heightCut = $tooHighCutPosition;
             }
-            $image->resize($width, $height, $this->_widthPlace[$widthCut], $this->_heightPlace[$heightCut]);
+            $image->resize($width, $height, self::$_widthPlace[$widthCut], self::$_heightPlace[$heightCut]);
             $targetPath = $moduleDate . $fileName . '_' . $width . self::W_JOIN_H . $height . '_' 
                 . $widthCut . '_' . $heightCut . '.' . $image->getSourceType();;
         }
