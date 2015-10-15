@@ -706,6 +706,11 @@ class C_Image extends BController
     public function formPost() {
         var_dump($_SERVER['SERVER_PORT']);
         var_dump($_SERVER['SERVER_ADDR']);
+        
+//         $filePath = '/user_pic/15_10_15/fBjmVpy4151015101330.jpeg';
+//         $imgUrl = Share_Img::formatImgPath($filePath, 100, 100, 'w', 's');
+//         Common_Tool::prePrint($imgUrl);
+        
         if (Common_Tool::isPost()) {
             if ($_FILES['file_data']['size'] > 0) {
                 $img = new Share_Img();
@@ -724,15 +729,28 @@ class C_Image extends BController
                 $height = 80;
                 $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height);
                 if ($filePath) {
-                    echo '缩略图的相对路径是：' . $filePath;
+                    echo '等比例缩略图的相对路径是：' . $filePath;
                     echo '<br />';
-                    echo '<img src="' . IMG_URL . $filePath . '" />';
+                    echo '<img src="' . $img->formatImgPath($filePath, $width, $height) . '" />';
                     echo '<br /><br />';
                 } else {
                     Common_Tool::prePrint($img->getError());
                     die();
                 }
-                
+//                 $width = 100;
+//                 $width = 100;
+                $tooWidthCut = 'c';
+                $tooHeightCut = 'c';
+                $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height, $tooWidthCut);
+                if ($filePath) {
+                    echo '等比例缩放后，进行居中裁剪后的图的相对路径是：' . $filePath;
+                    echo '<br />';
+                    echo '<img src="' . $img->formatImgPath($filePath, $width, $height, $tooWidthCut, $tooHieghtCut) . '" />';
+                    echo '<br /><br />';
+                } else {
+                    Common_Tool::prePrint($img->getError());
+                    die();
+                }
             }
         }
         $this->_view->setIsView(true);
