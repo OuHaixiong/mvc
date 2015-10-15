@@ -737,15 +737,15 @@ class C_Image extends BController
                     Common_Tool::prePrint($img->getError());
                     die();
                 }
-//                 $width = 100;
-//                 $width = 100;
-                $tooWidthCut = 'c';
-                $tooHeightCut = 'c';
-                $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height, $tooWidthCut);
+                $width = 100;
+                $width = 100;
+                $tooWidthCut = 'w';
+                $tooHeightCut = 's';
+                $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height, $tooWidthCut, $tooHeightCut);
                 if ($filePath) {
                     echo '等比例缩放后，进行居中裁剪后的图的相对路径是：' . $filePath;
                     echo '<br />';
-                    echo '<img src="' . $img->formatImgPath($filePath, $width, $height, $tooWidthCut, $tooHieghtCut) . '" />';
+                    echo '<img src="' . $img->formatImgPath($filePath, $width, $height, $tooWidthCut, $tooHeightCut) . '" />';
                     echo '<br /><br />';
                 } else {
                     Common_Tool::prePrint($img->getError());
