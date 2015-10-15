@@ -712,7 +712,7 @@ class C_Image extends BController
                 $filePath = $img->saveOriginByGd($_FILES['file_data']['tmp_name'], '/user_pic/');
                 if ($filePath) {
                     $targetPath = IMG_PATH . $filePath;
-                    echo '上传图片成功，上传的绝对路径是：' . $filePath;
+                    echo '上传图片成功，源图上传的绝对路径是：' . $filePath;
                     echo '<br />';
                     echo '<img src="' . IMG_URL . $filePath . '" />';
                     echo '<br /><br />';
@@ -721,7 +721,7 @@ class C_Image extends BController
                     die();
                 }
                 $width = 80;
-                $heigth = 80;
+                $height = 80;
                 $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height);
                 if ($filePath) {
                     echo '缩略图的相对路径是：' . $filePath;
