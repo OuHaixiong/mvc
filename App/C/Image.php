@@ -706,11 +706,7 @@ class C_Image extends BController
     public function formPost() {
         var_dump($_SERVER['SERVER_PORT']);
         var_dump($_SERVER['SERVER_ADDR']);
-        
-//         $filePath = '/user_pic/15_10_15/fBjmVpy4151015101330.jpeg';
-//         $imgUrl = Share_Img::formatImgPath($filePath, 100, 100, 'w', 's');
-//         Common_Tool::prePrint($imgUrl);
-        
+
         if (Common_Tool::isPost()) {
             if ($_FILES['file_data']['size'] > 0) {
                 $module = 'user_pic';

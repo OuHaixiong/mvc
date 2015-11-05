@@ -103,7 +103,7 @@ class Share_Img
      * @param string $tooWideCutPosition 如果宽超过是否进行裁剪 ； c：居中裁剪，w：居左裁剪，e：居右裁剪
      * （如果不传$tooWideCutPosition和$tooHighCutPosition参数代表仅缩放，不缩放后裁剪）
      * @param string $tooHighCutPosition 如果高超过是否进行裁剪 ； c：居中裁剪，n：居上裁剪； s：居下裁剪
-     * @return string 返回图片的url地址；如：http://img.mvc.com/user_pic/15_10_15/fBjmVpy4151015101330.jpeg
+     * @return string 返回图片的url地址；如：http://img.mvc.com/user_pic/15_11_05/xdVb0105151105194601_100x100_e_n.jpeg
      */
     public static function formatImgPath($filePath, $width = null, $height = null, $tooWideCutPosition = null, $tooHighCutPosition = null) {
         if (empty($width) && empty($height)) {
@@ -132,7 +132,7 @@ class Share_Img
      * 根据模块，保存缩略图（使用imagick）
      * @param string $originImg 源图片完整路径（完整的绝对路径）
      * @param string $module 图片所属:大模块_小模块；如：用户模块下的用户头像：user_pic
-     * @return string 返回保存入数据库的图片路径，不包括格式化图片路径；如：
+     * @return string 返回保存入数据库的图片路径，不包括格式化图片路径；如：/user_pic/15_11_05/xdVb0105151105194601.jpeg
      */
     public function save($originImg, $module) {
         $module = trim($module, '/');
