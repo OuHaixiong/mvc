@@ -713,43 +713,39 @@ class C_Image extends BController
         
         if (Common_Tool::isPost()) {
             if ($_FILES['file_data']['size'] > 0) {
+                $module = 'user_pic';
                 $img = new Share_Img();
-                $filePath = $img->saveOriginByGd($_FILES['file_data']['tmp_name'], '/user_pic/');
+                $filePath = $img->save($_FILES['file_data']['tmp_name'], $module);
                 if ($filePath) {
-                    $targetPath = IMG_PATH . $filePath;
-                    echo '上传图片成功，源图上传的绝对路径是：' . $filePath;
+                    $dirname = pathinfo($filePath, PATHINFO_DIRNAME); // 文件目录，不包括斜杠/
+                    $basename = pathinfo($filePath, PATHINFO_BASENAME); // 完整文件名
+                    $filePathOrigin = $dirname . '/origin/' . $basename;
+                    echo '上传图片成功，源图上传的绝对路径是：' . $filePathOrigin;
                     echo '<br />';
-                    echo '<img src="' . IMG_URL . $filePath . '" />';
+                    echo '<img src="' . IMG_URL . $filePathOrigin . '" />';
                     echo '<br /><br />';
                 } else {
                     Common_Tool::prePrint($img->getError());
                     die();
                 }
-                $width = 80;
-                $height = 80;
-                $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height);
-                if ($filePath) {
-                    echo '等比例缩略图的相对路径是：' . $filePath;
+                $moduleConfig = BConfig::getImgThumbnail($module);
+                foreach ($moduleConfig as $k=>$v) {
+                    $key = '';
+                    if (is_string($k)) { // 图片需要缩略后进行裁剪
+                        $key = $k;
+                        $k = str_replace('X', 'x', $k);
+                        $widthAndHeight = explode('x', $k);
+                        $src = Share_Img::formatImgPath($filePath, $widthAndHeight[0], $widthAndHeight[1], $v['tooWideCutPosition'], $v['tooHighCutPosition']);
+                    } else { // 直接进行等比例缩放
+                        $key = $v;
+                        $v = str_replace('X', 'x', $v);
+                        $widthAndHeight = explode('x', $v);
+                        $src = Share_Img::formatImgPath($filePath, $widthAndHeight[0], $widthAndHeight[1]);
+                    }
+                    echo '缩略图格式是：' . $key;
                     echo '<br />';
-                    echo '<img src="' . $img->formatImgPath($filePath, $width, $height) . '" />';
+                    echo '<img src="' . $src . '" />';
                     echo '<br /><br />';
-                } else {
-                    Common_Tool::prePrint($img->getError());
-                    die();
-                }
-                $width = 100;
-                $height = 100;
-                $tooWidthCut = 'e';
-                $tooHeightCut = 'n';
-                $filePath = $img->scaleByGd($targetPath, 'user_pic', $width, $height, $tooWidthCut, $tooHeightCut);
-                if ($filePath) {
-                    echo '等比例缩放后，进行居中裁剪后的图的相对路径是：' . $filePath;
-                    echo '<br />';
-                    echo '<img src="' . $img->formatImgPath($filePath, $width, $height, $tooWidthCut, $tooHeightCut) . '" />';
-                    echo '<br /><br />';
-                } else {
-                    Common_Tool::prePrint($img->getError());
-                    die();
                 }
             }
         }

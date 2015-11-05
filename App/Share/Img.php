@@ -83,7 +83,7 @@ class Share_Img
             }
             $image->resize($width, $height, self::$_widthPlace[$widthCut], self::$_heightPlace[$heightCut]);
             $targetPath = $moduleDate . $fileName . '_' . $width . self::W_JOIN_H . $height . '_' 
-                . $widthCut . '_' . $heightCut . '.' . $image->getSourceType();;
+                . $widthCut . '_' . $heightCut . '.' . $image->getSourceType();
         }
         $targetPath = IMG_PATH . $targetPath;
         $boolean = $image->write($targetPath);
@@ -105,12 +105,10 @@ class Share_Img
      * @param string $tooHighCutPosition 如果高超过是否进行裁剪 ； c：居中裁剪，n：居上裁剪； s：居下裁剪
      * @return string 返回图片的url地址；如：http://img.mvc.com/user_pic/15_10_15/fBjmVpy4151015101330.jpeg
      */
-    public static function formatImgPath($filePath, $width = null, $height=null, $tooWideCutPosition = null, $tooHighCutPosition = null) {
+    public static function formatImgPath($filePath, $width = null, $height = null, $tooWideCutPosition = null, $tooHighCutPosition = null) {
         if (empty($width) && empty($height)) {
             return IMG_URL . $filePath;
         }
-        $width = (int) $width;
-        $height = (int) $height;
         $fileName = pathinfo($filePath, PATHINFO_FILENAME); // 文件名，不包括后缀
         $extension = pathinfo($filePath, PATHINFO_EXTENSION); // 后缀，不包括点
         $dirname = pathinfo($filePath, PATHINFO_DIRNAME); // 文件目录，不包括斜杠/
@@ -130,8 +128,68 @@ class Share_Img
         }
     }
     
-    public function save() {
-        
+    /**
+     * 根据模块，保存缩略图（使用imagick）
+     * @param string $originImg 源图片完整路径（完整的绝对路径）
+     * @param string $module 图片所属:大模块_小模块；如：用户模块下的用户头像：user_pic
+     * @return string 返回保存入数据库的图片路径，不包括格式化图片路径；如：
+     */
+    public function save($originImg, $module) {
+        $module = trim($module, '/');
+        // 通过读取配置文件，查看对应的模块生成多个缩略图
+        $moduleConfig = BConfig::getImgThumbnail($module);
+		if (empty($moduleConfig)) {
+		    $this->_error = '不存在此模块的缩略图配置或配置为空';
+		    return false;
+		}
+        // 最先保存原图，返回保存入数据库的图片路径
+		$imagick = new Common_Imagick($originImg);
+		$imagick->thumbnail();
+        $fileName = $this->random(8) . date('ymdHis');
+        $moduleDate = '/' . $module . '/' . date('y') . '_' . date('m') . '_' . date('d') . '/';
+        $filePath = $moduleDate . $fileName . '.' . $imagick->getSourceType();
+        $originPath = IMG_PATH . $moduleDate . 'origin/' . $fileName . '.' . $imagick->getSourceType();
+        $boolean = $imagick->write($originPath);
+        if (!$boolean) {
+            $this->_error = $imagick->getError();
+            return false;
+        }
+        // 批量生成对应的缩略图
+        foreach ($moduleConfig as $k=>$v) {
+            $targetPath = '';
+            $imagick->read($originPath);
+            if (is_string($k)) { // 图片需要缩略后进行裁剪
+                $k = str_replace('X', self::W_JOIN_H, $k);
+                $widthAndHeight = explode(self::W_JOIN_H, $k);
+                $widthCut = 'c';
+                $heightCut = 'c';
+                if (array_key_exists($v['tooWideCutPosition'], self::$_widthPlace)) {
+                    $widthCut = $v['tooWideCutPosition'];
+                }
+                if (array_key_exists($v['tooHighCutPosition'], self::$_heightPlace)) {
+                    $heightCut = $v['tooHighCutPosition'];
+                }
+                $imagick->resize($widthAndHeight[0], $widthAndHeight[1], self::$_widthPlace[$widthCut], self::$_heightPlace[$heightCut]);
+                $targetPath = $moduleDate . $fileName . '_' . $widthAndHeight[0] . self::W_JOIN_H . $widthAndHeight[1] . '_'
+                    . $widthCut . '_' . $heightCut . '.' . $imagick->getSourceType();
+                
+            } else { // 直接进行等比例缩放
+                $width = null;
+                $height = null;
+                $v = str_replace('X', self::W_JOIN_H, $v);
+                $widthAndHeight = explode(self::W_JOIN_H, $v);
+                if (!empty($widthAndHeight[0])) {
+                    $width = $widthAndHeight[0];
+                }
+                if (!empty($widthAndHeight[1])) {
+                    $height = $widthAndHeight[1];
+                }
+                $imagick->thumbnail($width, $height);
+                $targetPath = $moduleDate . $fileName . '_' . $width . self::W_JOIN_H . $height . '.' . $imagick->getSourceType();
+            }
+            $imagick->write(IMG_PATH . $targetPath);
+        }
+        return $filePath;
     }
     
     

@@ -13,4 +13,46 @@
   ?>">到一个php页面进行下载(2)</a>
 </p>
 </form>
-
+<!-- 下面是屏蔽按住F5键不停刷新按钮 -->
+<script type="text/javascript" src="<?php echo STATIC_URL; ?>/js/base/jquery-1.10.2.js"></script>
+<!--[if lt IE 9]>
+  <script>
+   function document.onkeydown() 
+    { 
+    	if ( event.keyCode==116) 
+    	{ 
+    		event.keyCode = 0; 
+    		event.cancelBubble = true; 
+    		return false; 
+    	}
+    }
+    function document.onkeyup() 
+    { 
+    	if ( event.keyCode==116) 
+    	{ 
+    		window.location.reload();
+    	}
+    }
+  </script>
+<![endif]-->
+<script type="text/javascript">
+$(document).ready(function () {
+    if (navigator.userAgent.indexOf("MSIE") === -1 || parseInt(/msie\s*(\d*)\..*/i.exec(navigator.userAgent)[1], 10) > 8) {
+		$(document).keydown(function (event) {
+	        if (event.keyCode == 116) {
+// 	            console.log('按下F5键了');
+	            event.keyCode = 0; 
+	            event.cancelBubble = true;
+	            return false;
+	        }
+	    });
+	    
+	    $(document).keyup(function (event) {
+	        if (event.keyCode == 116) {
+// 	            console.log('弹起F5键了');
+	            window.location.reload();
+	        }
+	    });
+    }
+});
+</script>
