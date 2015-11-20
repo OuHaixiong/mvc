@@ -41,6 +41,9 @@ class BRedis
             } */
             self::$_master->connect($masterRedis['host'], $masterRedis['port'], $masterRedis['timeout']);
             // 还可以用pconnect来进行长链接
+            if (isset($masterRedis['password'])) {
+                self::$_master->auth($masterRedis['password']);
+            }
         }
         if (!empty($db)) {
             self::$_master->select($db);
@@ -58,6 +61,9 @@ class BRedis
             self::$_slave = new Redis();
             $oneSlave = $slaveRedis[array_rand($slaveRedis, 1)];
             self::$_slave->connect($oneSlave['host'], $oneSlave['port'], $oneSlave['timeout']);
+            if (isset($oneSlave['password'])) {
+                self::$_master->auth($oneSlave['password']);
+            }
         }
         if (!empty($db)) {
             self::$_slave->select($db);

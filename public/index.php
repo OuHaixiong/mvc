@@ -47,7 +47,8 @@ require_once BASE_PATH . '/AutoLoadClass.php';
 // 保存session进redis
 $masterRedis = BConfig::getConfig('master_redis');
 ini_set('session.save_handler', 'redis');
-ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}");
+ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}?auth={$masterRedis['password']}");
+
 // 启动应用
 $app = new BApp();
 $app->run();

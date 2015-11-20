@@ -47,6 +47,7 @@ return array(
     'master_redis' => array( // redis 主服务器配置
         'host' => '192.168.253.4',
         'port' => 6379,
+        'password' => 'ouhaixiong',
         'timeout' => 0
 	),
     'slave_redis' => array( // 多个 redis 从服务器配置
