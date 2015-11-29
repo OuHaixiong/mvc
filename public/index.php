@@ -1,4 +1,5 @@
 <?php
+
 ini_set('session.cookie_path', '/'); // 设置cookie保存在跟目录
 ini_set('session.cookie_domain', '.mvc.com'); // cookie保存在主域下
 ini_set('session.cookie_lifetime', '1800'); // 设置cookie的生命周期（时间）
