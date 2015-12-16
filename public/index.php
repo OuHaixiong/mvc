@@ -44,6 +44,14 @@ defined('STATIC_URL') || define('STATIC_URL', 'http://res.mvc.com'); // 定义�
 defined('IMG_URL') || define('IMG_URL', 'http://img.mvc.com'); // 定义图片服务器的url路径(不包括/)
 defined('DEBUG') || define('DEBUG', true); // 是否开启调试模式
 
+if (DEBUG) { // 报所有错误
+    ini_set('error_reporting', E_ALL);
+    error_reporting(E_ALL);
+} else { // 不报任何错误
+    ini_set('error_reporting', 0);
+    error_reporting(0);
+}
+
 require_once BASE_PATH . '/AutoLoadClass.php';
 // 保存session进redis
 $masterRedis = BConfig::getConfig('master_redis');

@@ -60,7 +60,7 @@ CREATE TABLE `Property` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
   `name` varchar(50) DEFAULT '' COMMENT '属性名称',
   `value` varchar(255) DEFAULT '' COMMENT '属性值（多个属性值用数组存储）',
-  `isParent` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否父级属性，默认0：否；1：是。（备用）',
+  `isParent` tinyint(1) unsigned NOT NULL DEFAULT 0 COMMENT '是否父级属性，默认0：否；1：是。',
   `remark` varchar(255)  DEFAULT '' COMMENT '备注',
   `createdTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
   `updatedTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
@@ -74,9 +74,11 @@ CREATE TABLE `CategoryProperty` (
   `categoryId` int(10) unsigned default 0 COMMENT '分类id',
   `propertyId` int(10) unsigned DEFAULT 0 COMMENT '属性id',
   `sort` tinyint(2) unsigned NOT NULL DEFAULT 0 COMMENT '排序',
+  `status` tinyint(2) unsigned NOT NULL DEFAULT 1 COMMENT '状态：默认1：已关联（有效）；0：已删除（无效）',
   `createdTime` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
   `updatedTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `categoryId` (`categoryId`,`propertyId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='分类和属性关联表' AUTO_INCREMENT=1;
 
 -- 产品和属性表关联表

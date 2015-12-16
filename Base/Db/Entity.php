@@ -8,77 +8,19 @@
  * @copyright http://maimengmei.com
  * @property Db_Master $master 主数据库对象
  * @property Db_Slave $slave 从数据库对象
+ * @property string $tableName 数据库的表名
  * @created 2015-5-6 17:04
  * @example
  */
-abstract class Db_Entity
+abstract class Db_Entity extends BAbstract
 {
+    /**
+     * 数据表名
+     * @var string
+     */
     protected $tableName;
     protected $primaryKey = 'id';
-    
-    /**
-     * 主数据库对象
-     * @var Db_Master
-     */
-    protected $master;
-    
-    /**
-     * 从数据库对象
-     * @var Db_Slave
-     */
-    protected $slave;
 
-    /**
-     * 获取属性
-     * @param string $k
-     * @return PDO | mixed
-     */
-    public function __get($k) {
-        return $this->$k;
-    }
-
-    /**
-     * 连接主数据库
-     * @param string $masterConfig 配置文件中主数据库配置的key
-     * @throws Exception
-     * @return Db_Master
-     */
-    public function connectMaster($masterConfig = null) {
-        if ($this->master != null) {
-            return $this->master;
-        }
-        if ($masterConfig == null) {
-            $masterConfig = 'master_db';
-        }
-        $masterConfig = BConfig::getConfig($masterConfig);
-        if (empty($masterConfig)) {
-            throw new Exception('无主数据库配置'); 
-        }
-        $this->master = new Db_Master($masterConfig);
-        return $this->master;
-    }
-
-    /**
-     * 连接从数据库
-     * @param string $slaveConfig 配置文件中从数据库配置的key
-     * @throws Exception
-     * @return Db_Slave
-     */
-    public function connectSlave($slaveConfig = null) {
-        if ($this->slave != null) {
-            return $this->slave;
-        }
-        if ($slaveConfig == null) {
-            $slaveConfig = 'slave_db';
-        }
-        $slaveConfig = BConfig::getConfig($slaveConfig);
-        if (empty($slaveConfig)) {
-            throw new Exception('无从数据库配置');
-        }
-        $this->slave = new Db_Slave($slaveConfig);
-        return $this->slave;
-    }
-    
     public function save($data) {
     
     }
@@ -89,7 +31,6 @@ abstract class Db_Entity
      * @return integer 成功返回大于0的整数(插入记录的主键id)，失败返回0
      */
     public function add($data) {
-        $this->connectMaster();
         return $this->master->insert($this->tableName, $data);
     }
     
@@ -99,7 +40,6 @@ abstract class Db_Entity
      * @return integer 失败返回0；成功返回删除的行数
      */
     public function del($primaryKey) {
-        $this->connectMaster();
         $primaryKey = (int) $primaryKey;
         $where = array($this->primaryKey=>$primaryKey);
         return $this->master->delete($this->tableName, $where);
@@ -117,7 +57,6 @@ abstract class Db_Entity
         }
         $primaryKey = (int) $primaryKey;
         $where = array($this->primaryKey=>$primaryKey);
-        $this->connectMaster();
         return $this->master->update($this->tableName, $data, $where);
     }
     
@@ -129,7 +68,6 @@ abstract class Db_Entity
      */
     public function load($primaryKey, $column = '*') {
         $primaryKey = (int) $primaryKey;
-        $this->connectSlave();
         $where = array($this->primaryKey=>$primaryKey);
         return $this->slave->load($this->tableName, $where, $column);
     }
@@ -142,7 +80,6 @@ abstract class Db_Entity
      */
     public function loadByMaster($primaryKey, $column = '*') {
         $primaryKey = (int) $primaryKey;
-        $this->connectMaster();
         $where = array($this->primaryKey=>$primaryKey);
         return $this->master->load($this->tableName, $where, $column);
     }
@@ -156,7 +93,6 @@ abstract class Db_Entity
         if (empty($datas)) {
             return false;
         }
-        $this->connectMaster();
         $this->master->pdo->beginTransaction();
         foreach ($datas as $data) {
             $id = $this->add($data);
@@ -183,7 +119,6 @@ abstract class Db_Entity
         }
         $primaryKeys = implode(',', $primaryKeys);
         $where = "{$this->primaryKey} in ({$primaryKeys})";
-        $this->connectMaster();
         return $this->master->delete($this->tableName, $where);
     }
     
@@ -202,7 +137,6 @@ abstract class Db_Entity
         }
         $primaryKeys = implode(',', $primaryKeys);
         $where = "{$this->primaryKey} in ({$primaryKeys})";
-        $this->connectMaster();
         return $this->master->update($this->tableName, $data, $where);
     }
     
@@ -220,7 +154,6 @@ abstract class Db_Entity
             $primaryKeys[$k] = (int) $v;
         }
         $primaryKeys = implode(',', $primaryKeys);
-        $this->connectSlave();
         $result = $this->slave->select($this->tableName, "`{$this->primaryKey}` in ({$primaryKeys})", null, null, null, null, $column);
         return $result['rowset'];
     }

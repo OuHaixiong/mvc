@@ -33,7 +33,7 @@ class Db_Master
         if (empty($config)) {
             $config = BConfig::getConfig('master_db');
         }
-        if (!is_array($config)) {
+        if ((!is_array($config)) || (empty($config))) {
             throw new PDOException('无主数据库配置');
         }
         if (isset($config['charset'])) {
@@ -42,6 +42,7 @@ class Db_Master
         } else {
             throw new PDOException('未设置数据库编码');
         }
+
         $this->pdo = new PDO($config['dsn'], $config['username'], $config['password'], $driverOptions);
     }
     

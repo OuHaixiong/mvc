@@ -39,7 +39,9 @@ class BUrlRule
             $_GET[$k] = trim($v);
         }
         foreach ($_POST as $k=>$v) {
-            $_POST[$k] = trim($v);
+            if (is_string($v)) {
+                $_POST[$k] = trim($v);
+            }
         }
 
         $urlPath = preg_replace('/\?.*/', '', $urlPath);

@@ -23,17 +23,24 @@ return array(
         'charset' => 'utf8',
     ),
     'slave_db' => array( // 多个从数据库，这里要设置为二维数组
-        array(
-            'dsn' => 'mysql:host=192.168.17.134;dbname=mvc',
+//         array(
+//             'dsn' => 'mysql:host=192.168.17.134;dbname=mvc',
+//             'emulatePrepare' => true,
+//             'username' => 'slaveMvc',
+//             'password' => '123456',
+//             'charset' => 'utf8'
+//         ),
+//         array(
+//             'dsn' => 'mysql:host=192.168.17.139;dbname=mvc',
+//             'emulatePrepare' => true,
+//             'username' => 'slaveMvc',
+//             'password' => '123456',
+//             'charset' => 'utf8',
+//         ),
+        array( // 主数据库设置
+            'dsn' => 'mysql:host=192.168.253.4;dbname=mvc',
             'emulatePrepare' => true,
-            'username' => 'slaveMvc',
-            'password' => '123456',
-            'charset' => 'utf8'
-        ),
-        array(
-            'dsn' => 'mysql:host=192.168.17.139;dbname=mvc',
-            'emulatePrepare' => true,
-            'username' => 'slaveMvc',
+            'username' => 'mvcUser',
             'password' => '123456',
             'charset' => 'utf8',
         ),

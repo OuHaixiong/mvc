@@ -96,15 +96,17 @@ class Db_Slave
      */
     public function select($tableName, $where = null, $offset = null, $limit = null, $orderField = null, $orderMode = null, $column = '*') {
         $sql = "SELECT {$column} FROM `{$tableName}`";
-        
+        $w = '';
         if (is_array($where) && (!empty($where))) {
             foreach ($where as $k=>$v) {
                 $where[$k] = "`{$k}`={$this->pdo->quote($v)}";
             }
-            $where = implode(' AND ', $where);
+            $w = implode(' AND ', $where);
+        } else if (is_string($where)) {
+            $w = $where;
         }
-        if (strlen($where) > 0) {
-            $sql .= " WHERE {$where}";
+        if (strlen($w) > 0) {
+            $sql .= " WHERE {$w}";
         }
 
         if (($orderField != null) && is_string($orderField)) { // 需要排序
@@ -116,8 +118,8 @@ class Db_Slave
                 $sql .= " ORDER BY {$orderField}";
             }
         }
-        
-        if ($offset != null && $limit != null) {
+
+        if ($offset !== null && $limit != null) {
             $offset = (int) $offset;
             $limit = (int) $limit;
             $limits = " LIMIT {$offset},{$limit}";
@@ -150,7 +152,7 @@ class Db_Slave
      * @return boolean | object 有数据返回对象，无数据返回false
      */
     public function load($tableName, $where = '', $column = '*') {
-        if (is_array($where) && (!empty($where))) {
+        if (is_array($where)) {
             foreach ($where as $k=>$v) {
                 $where[$k] = "`{$k}`={$this->pdo->quote($v)}";
             }

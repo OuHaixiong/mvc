@@ -161,7 +161,6 @@ class Backend_C_Db extends Backend_C_Controller
         $entity = new Backend_M_Row_World();
         $row = $entity->load($id, '`world_id`,`world_name`');
         Common_Tool::prePrint($row, false);
-        $slave = $entity->connectSlave();
         Common_Tool::prePrint($slave, false);
         
         $id = '12';
@@ -241,7 +240,6 @@ class Backend_C_Db extends Backend_C_Controller
         $tableName = 'tb_world';
         $column = '`id`,`world_name`,`world_id`';
         $entity = new Backend_M_Row_World();
-        $entity->connectSlave();
         $result = $entity->slave->select($tableName, null, null, null, null, null, $column);
         Common_Tool::prePrint($result, false);
 

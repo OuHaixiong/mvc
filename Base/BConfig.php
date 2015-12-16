@@ -12,6 +12,7 @@ class BConfig
 	private static $_constant;
 	private static $_config;
 	private static $_imgThumbnail;
+	private static $_field;
 	
 	/**
 	 * 通过键名读取站点常量
@@ -65,6 +66,57 @@ class BConfig
         }
         if (isset(self::$_imgThumbnail[$key])) {
             return self::$_imgThumbnail[$key];
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * 根据表名
+     * @param string $tableName 表名[key]或公共字段名[key]
+     * @param string $key 字段名，对应于配置文件中数组的键
+     * @param string $fileName 对应的文件名（以后考虑按业务划分时，可以用到）
+     * @return null | string
+     */
+    public static function getFieldName($tableName, $key = null, $fileName = 'Field.php') {
+        $field = self::cacheConfig('_field', $fileName, $tableName);
+        if (empty($field)) {
+            return null;
+        } else {
+            if ($key === null) { // 返回整个表的所有字段名或返回公共字段名
+                return $field;
+            } else { // 返回表中对应的字段名
+                if (isset($field[$key])) {
+                    return $field[$key];
+                } else {
+                    return null;
+                }
+            }
+        }
+    }
+    
+    /**
+     * 缓存配置文件，并根据key返回对应的值
+     * @param string $cacheKey 当前类中对应的静态变量名
+     * @param string $fileName 配置文件名(全名，包括后缀，最前面不带 / )
+     * @param string $key 配置中的键
+     * @return NULL | string | array | integer
+     */
+    private static function cacheConfig($cacheKey, $fileName, $key) {
+        // 提取公共部分
+        if (self::${$cacheKey} === null) {
+            $configPath = CONFIG_PATH . '/' . $fileName;
+            if (!(is_file($configPath))) {
+                $configPath = APP_PATH . '/Configs/' . $fileName;
+            }
+            if (is_file($configPath)) {
+                self::${$cacheKey} = include_once $configPath;
+            } else {
+                return null;
+            }
+        }
+        if (isset(self::${$cacheKey}[$key])) {
+            return self::${$cacheKey}[$key];
         } else {
             return null;
         }
