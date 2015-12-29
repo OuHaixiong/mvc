@@ -1,6 +1,6 @@
 <br /><br /><br />
 <div>
- <form action="#" method="post" enctype="multipart/form-data">
+ <form id="product_info" action="#" method="post" enctype="multipart/form-data">
   <div id="categories">
            分类：
      <select>
@@ -16,6 +16,9 @@
   </div>
   <div>
   产品属性：
+   <div id="show_property">
+     
+   </div>
   </div>
   <div>
   产品标题： <input name="name" id="name" type="text" value="" />

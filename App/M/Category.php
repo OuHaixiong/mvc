@@ -79,6 +79,20 @@ class M_Category extends BModel
         return $result['rowset'];
     }
     
+    /**
+     * 通过名称查找一个分类
+     * @param string $name
+     * @return boolean | object 有数据返回对象，无数据返回false
+     */
+    public function findOneByName($name) {
+        $entity = $this->getEntity('Category');
+        $fieldName = BConfig::getFieldName($entity->tableName, 'name');
+        $where = array($fieldName=>$name);
+        $row = $entity->slave->load($entity->tableName, $where, '*');
+        return $row;
+    }
+    
+    
     // 添加子分类，需要把父级分类所关联的所有属性删除掉（或不删也可以，貌似不受影响）
     // 删除子分类（末级分类），需要把此分类所关联的所有属性删除掉（或不删也可以，貌似不受影响）
     

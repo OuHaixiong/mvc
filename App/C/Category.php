@@ -116,26 +116,15 @@ class C_Category extends BController
     /**
      * 通过末级分类id，获取所有已关联的属性
      */
-    public function getProperty() {
+    public function getProperties() {
         if (Common_Ajax::isAJAX()) {
-            $categoryId = intval($this->getParam('category_id'));
+            $categoryId = intval($this->getPost('category_id'));
             if ($categoryId < 1) {
                 Common_Ajax::output('category_id参数不对', -1, array());
             }
-            $categoryProperty = new M_Row_CategoryProperty();
-            $fieldCategoryId = BConfig::getFieldName($categoryProperty->tableName, 'categoryId');
-            $where = array($fieldCategoryId=>$categoryId);
-            $column = BConfig::getFieldName($categoryProperty->tableName, 'propertyId');
-            $result = $categoryProperty->batchSelect($categoryProperty::STATUS_YES, $where);
-            if (empty($result['rowset'])) {
-                $propertyIds = array();
-            } else {
-                $propertyIds = array();
-                foreach ($result['rowset'] as $v) {
-                    $propertyIds[] = $v->$column;
-                }
-            }
-            Common_Ajax::output('获取属性id成功', 1, $propertyIds);
+            $property = new M_Property();
+            $rowset = $property->getPropertiesByCategoryId($categoryId);
+            Common_Ajax::output('获取已关联的属性成功', 1, $rowset);
         }
     }
     

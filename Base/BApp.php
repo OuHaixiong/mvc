@@ -10,6 +10,14 @@
  */
 class BApp
 {
+    /**
+     * 默认模块名
+     * @var string
+     */
+    const MODULE_DEFAULT_NAME = 'Default';
+    const CONTROLLER_DEFAULT_NAME = 'Index';
+    const ACTION_DEFAULT_NAME = 'index';
+    
     private static $_module;
 	private static $_controller;
 	private static $_action;
@@ -28,7 +36,7 @@ class BApp
 		self::$_controller = $result['controller'];
 		self::$_action = $result['action'];
 
-		if (self::$_module == 'Default') {
+		if (self::$_module == self::MODULE_DEFAULT_NAME) {
 		    $controller = 'C_' . self::$_controller;
 		} else {
 		    $controller = self::$_module . '_C_' . self::$_controller;

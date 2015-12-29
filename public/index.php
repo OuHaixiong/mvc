@@ -53,10 +53,15 @@ if (DEBUG) { // 报所有错误
 }
 
 require_once BASE_PATH . '/AutoLoadClass.php';
+
 // 保存session进redis
 $masterRedis = BConfig::getConfig('master_redis');
 ini_set('session.save_handler', 'redis');
-ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}?auth={$masterRedis['password']}");
+if (isset($masterRedis['password'])) {
+    ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}?auth={$masterRedis['password']}");    
+} else {
+    ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}");
+}
 
 // 启动应用
 $app = new BApp();

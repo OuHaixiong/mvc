@@ -90,7 +90,7 @@ class Db_Slave
      * @param integer $offset 从第几条开始查询
      * @param integer $limit 需要查询多少条，如果不需要limit，传null即可
      * @param string $orderField 排序字段，如果不需要排序传null即可
-     * @param string $orderMode 排序模式，desc：降序；asc：升序。（只能为这两个值）
+     * @param string $orderMode 排序模式，DESC：降序；ASC：升序。（只能为这两个值,大小写均可）
      * @param string $column 需要查询的字段
      * @return array
      */

@@ -6,8 +6,6 @@
  * @author Bear
  * @version 1.0.0
  * @copyright http://maimengmei.com
- * @property Db_Master $master 主数据库对象
- * @property Db_Slave $slave 从数据库对象
  * @property string $tableName 数据库的表名
  * @created 2015-5-6 17:04
  * @example
@@ -21,6 +19,10 @@ abstract class Db_Entity extends BAbstract
     protected $tableName;
     protected $primaryKey = 'id';
 
+    /**
+     * 公共保存方法
+     * @param unknown $data
+     */
     public function save($data) {
     
     }

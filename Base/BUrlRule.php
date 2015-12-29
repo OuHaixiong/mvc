@@ -2,6 +2,7 @@
 
 /**
  * url网址生成和解析规则
+ * TODO url优化时，如何去做
  * @author Bear
  * @copyright http://maimengmei.com
  * @version 1.0.0
@@ -13,20 +14,80 @@ class BUrlRule
     
     /**
      * 生成url地址
-     * @param string $route 路由，由 模块/控制器/行为 组成 且不能省略（index）
-     * @param array $params 参数
+     * @param string $route 路由，由 “模块/控制器/行为” 组成， 如果是默认模块，也可以是 “控制器/行为”
+     * 如果是默认行为（index），也可以不传，如果传空字符串或/，默认为/Default/Index/index
+     * @param array $params 参数(最多支持二维数组；比如三维数组或以上，直接舍弃掉)
      * @param string $ampersand 连接两个参数之前的&符号
      * @return string
      */
     public function createUrl($route, $params = array(), $ampersand='/') {
-        foreach ($params as $k=>$v) {
-            $params[$k] = $k . '/' . $v;
+        if (!is_string($route)) {
+            return '';
         }
-        $params = implode($ampersand, $params);
-        $route = trim($route, '/');
         $route = trim($route);
-        $route = '/' . $route . '/';
-        return $route . $params . self::URL_SUFFIX;
+        $route = trim($route, '/');
+        if (strlen($route) == 0) {
+            $route = BApp::CONTROLLER_DEFAULT_NAME . '/' . BApp::ACTION_DEFAULT_NAME;
+        }
+        $route = explode('/', $route);
+        if (ucfirst($route[0]) == BApp::MODULE_DEFAULT_NAME) { // 默认模块
+            unset($route[0]);
+        }
+        foreach ($route as $key=>$value) {
+            $route[$key] = lcfirst($value);
+        }
+        if (count($route) < 2) {
+            if (empty($params)) {
+                if (empty($route)) {
+                    return '';
+                } else {
+                    $route = implode('/', $route);
+                    return '/' . $route . self::URL_SUFFIX;
+                }
+            } else {
+                if (empty($route)) {
+                    $route[] = lcfirst(BApp::CONTROLLER_DEFAULT_NAME);
+                    $route[] = lcfirst(BApp::ACTION_DEFAULT_NAME);
+                } else {
+                    $route[] = BApp::ACTION_DEFAULT_NAME;
+                }
+            }
+        }
+        $route = implode('/', $route);
+        $route = '/' . $route;
+        
+        $p = '';
+        $arrayParams = array();
+        if (is_array($params)) {
+            // TODO 考虑多维数组
+            $p = array();
+            foreach ($params as $k=>$v) {//var_dump($v);
+                if (is_array($v)) { // 数组
+                    foreach ($v as $vKey=>$vValue) {
+                        if (is_array($vValue)) {
+                            // 舍弃
+                        } else {
+                            $arrayParams[] = $k . '[' . $vKey .']=' . urlencode($vValue);
+                        }
+                    }
+                } else { // 所有都当字符串
+                    $p[] = $k . '/' . urlencode($v); // 如果是中文,是需要编码的
+                }
+            }
+            if (empty($p)) {
+                $p = '';
+            } else {
+                $p = implode($ampersand, $p);
+                $p = '/' . $p;
+            }
+        }
+        
+        $url = $route . $p . self::URL_SUFFIX;
+        if (!empty($arrayParams)) {
+            $arrayParams = implode('&', $arrayParams);
+            $url .= '?' . $arrayParams;
+        }
+        return $url;
     }
     
     /**
@@ -36,7 +97,17 @@ class BUrlRule
      */
     public function parseUrl($urlPath) {
         foreach ($_GET as $k=>$v) {
-            $_GET[$k] = trim($v);
+            if (is_array($v)) {
+                foreach ($v as $vKey=>$vValue) {
+                    if (is_string($vValue)) {
+                        $_GET[$k][$vKey] = trim($vValue);
+                    } else {
+                        // 多维数组不考虑，切记在控制器端，一定是单个参数获取，然后再传入业务逻辑层
+                    }
+                }
+            } else {
+                $_GET[$k] = trim($v);
+            }
         }
         foreach ($_POST as $k=>$v) {
             if (is_string($v)) {

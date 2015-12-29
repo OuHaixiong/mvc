@@ -6,8 +6,6 @@
  * @copyright http://maimengmei.com
  * @version 1.0.0
  * @created 2015-04-16 09:59
- * @property 
- * @property 
  * @property Db_Master $master 主数据库对象
  * @property Db_Slave $slave 从数据库对象
  */

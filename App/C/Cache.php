@@ -234,8 +234,8 @@ class C_Cache extends BController
         echo '<br />';
         // 主写，主读
         $key = 'test_key';
-        $masterRedis = BRedis::getMaster();
-//         $masterRedis->set($key, '你好我也hao!');
+        $masterRedis = BRedis::getMaster();var_dump($masterRedis);
+        $masterRedis->set($key, '你好我也hao!');
         Common_Tool::prePrint($masterRedis->get($key), false);
         Common_Tool::executeStartTime();
         $masterRedis->del($key);

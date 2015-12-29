@@ -109,7 +109,7 @@ class M_Row_CategoryProperty extends Db_Entity
      * @param string $orderBy
      * @return array
      */
-    public function batchSelect($status = null, $where = array(), $column = '*', $page = null, $pageSize = null, $orderBy = null) {
+    public function batchSelect($status = null, $where = array(), $column = '*', $page = null, $pageSize = null, $orderField = null, $orderMode = null) {
         if ($status !== null) {
             $status = (int) $status;
             $where[BConfig::getFieldName('status')] = $status;
@@ -120,8 +120,9 @@ class M_Row_CategoryProperty extends Db_Entity
             $pageSize = (int) $pageSize;
             $offset = ($page-1)*$pageSize;
         }
-        $result = $this->slave->select($this->tableName, $where, $offset, $pageSize, null, null, $column);
+        $result = $this->slave->select($this->tableName, $where, $offset, $pageSize, $orderField, $orderMode, $column);
         return $result;
     }
+
     
 }
