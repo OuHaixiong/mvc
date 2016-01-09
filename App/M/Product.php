@@ -145,4 +145,72 @@ class M_Product extends BModel
         }
     }
     
+    /**
+     * 通过迅搜建立产品搜索的全量索引
+     * @return boolean
+     */
+    public function createIndex() {
+        require_once ROOT_PATH . '/../../libraries/xunsearch/lib/XS.php';
+
+        $productEntity = $this->getEntity('Product');
+        $fieldId = BConfig::getFieldName('id');
+        $fieldName = BConfig::getFieldName($productEntity->tableName, 'name');
+        $fieldCategoryId = BConfig::getFieldName($productEntity->tableName, 'categoryId');
+        $fieldDescription = BConfig::getFieldName($productEntity->tableName, 'description');
+        $fieldPrice = BConfig::getFieldName($productEntity->tableName, 'price');
+        $fieldCreatedTime = BConfig::getFieldName('createdTime');
+        $propertyModel = new M_Property();
+        $productPropertyEntity = $this->getEntity('ProductProperty');
+        $fieldPropertyId = BConfig::getFieldName($productPropertyEntity->tableName, 'propertyId');
+        $fieldPropertyValue = BConfig::getFieldName($productPropertyEntity->tableName, 'value');
+
+        try {
+            $pdo = $this->slave->pdo;
+            $sql = 'SELECT * FROM `' . $productEntity->tableName . '`'; // SELECT * FROM `Product`
+            $statement = $pdo->query($sql, PDO::FETCH_OBJ);
+            
+            $sum = 0;
+            if ($statement instanceof PDOStatement) {
+                $xs = new XS('product');
+                $xs->index->clean();
+                print_r('已清空索引' . "\n");
+                foreach ($statement as $row) {
+                    // [id][name][categoryId][description][price][createdTime][properties]
+                    $data = array();
+                    $data['id'] = $row->$fieldId;
+                    $data['name'] = $row->$fieldName;
+                    $data['categoryId'] = $row->$fieldCategoryId;
+                    $data['description'] = $row->$fieldDescription;
+                    $data['price'] = $row->$fieldPrice;
+                    $data['createdTime'] = (int) strtotime($row->$fieldCreatedTime);
+                    
+                    // 获取该商品的所有属性和属性值
+                    $propertiesArr = $propertyModel->getPropertiesByProductId($row->$fieldId);
+                    $properties = array();
+                    foreach ($propertiesArr as $property) {
+                        $properties[] = 'P_' . $property->$fieldPropertyId . '=' . $property->$fieldPropertyValue;
+                    }
+                    $properties = implode('|', $properties);
+                    $data['properties'] = $properties;
+
+                    $doc = new XSDocument();
+                    $doc->setFields($data);
+                    $xs->index->add($doc); // 添加数据到索引中
+                }
+                $sum = $this->slave->getSum($sql);
+            }
+
+            print_r('添加索引成功，共添加 ' . $sum . ' 条索引记录；正在关闭数据库连接' . "\n");
+             // 关闭数据库连接
+             
+        } catch (CDbException $e) {
+            if (2005 == $e->getCode()) {
+                Common_Tool::prePrint('无法连接数据库');
+            }
+            Common_Tool::prePrint($e->getMessage());
+        } catch (Exception $e) {
+            Common_Tool::prePrint($e->getMessage());
+        }
+    }
+    
 }

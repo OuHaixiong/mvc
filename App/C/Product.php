@@ -85,4 +85,46 @@ class C_Product extends BController
         $this->render();
     }
     
+    /**
+     * 创建产品索引
+     */
+    public function createIndex() {
+        $product = new M_Product();
+        $product->createIndex();
+    }
+    
+    /**
+     * 搜索微盟成员索引
+     */
+    public function searchProduct() {
+        require_once ROOT_PATH . '/../../libraries/xunsearch/lib/XS.php';
+
+        $xs = new XS('product');
+        $search = $xs->search;
+//         $search->setMultiSort(array('fansNumber'=>false)); // true：正序，小到大；flase：倒序，大到小
+//                 $search->setQuery('qq.com');
+//         $search->setLimit(20, 0); // limit(条数, 偏移量)
+//         $search->setFuzzy();
+        $docs = $search->search('properties:black AND properties:P_4=1');
+        //         $docs = $search->search('id:3');
+        //         $docs = $xs->search->search('140 OR id:3');
+        //         $docs = $xs->search->setFuzzy()->search('13');
+        $html = '';
+        foreach ($docs as $doc) {
+            $html .= 'id:' . $doc->id . '  
+                    name:' . $doc->name . '  
+             description:' . $doc->description . '  
+              categoryId:' . $doc->categoryId . '  
+                   price:' . $doc->price . '  
+             createdTime:' . date('Y-m-d H:i:s', $doc->createdTime) . '
+              properties:' . $doc->properties . '
+                 
+                 <br />';
+             
+        }
+        //Common_Tool::prePrint($xs->search->getQuery(), false);
+        echo $html;
+    }
+    
+    
 }

@@ -1,10 +1,15 @@
-<?php
+<?php // 有些帮助类，可以命名为：XXXHelper.php
+
+set_time_limit(60);
+ini_set('max_execution_time', 60);
 
 ini_set('session.cookie_path', '/'); // 设置cookie保存在跟目录
 ini_set('session.cookie_domain', '.mvc.com'); // cookie保存在主域下
 ini_set('session.cookie_lifetime', '1800'); // 设置cookie的生命周期（时间）
 // 上面三句是跨子域，保存cookie
 header('Content-Type:text/html;charset=utf-8'); //定义字符集
+header("Content-Type:text/html; charset=utf-8");
+header("Cache-Control: no-store, no-cache, must-revalidate");
 
 /*
 var_dump($_SERVER['REMOTE_ADDR']);

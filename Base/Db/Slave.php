@@ -134,7 +134,7 @@ class Db_Slave
         $data['offset'] = $offset;
         $data['limit'] = $limit;
         $data['rowset'] = array();
-//         var_dump($sql);exit;
+
         $statement = $this->pdo->query($sql);
         if ($statement instanceof PDOStatement) {
             $sum = $this->getSum($sql);

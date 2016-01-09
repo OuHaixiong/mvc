@@ -29,7 +29,7 @@ class BApp
 	 */
 	public function run() {
 // 		$phpSelf = $_SERVER['PHP_SELF']; // 操！在有些服务器上这里不能返回浏览器的请求地址
-// 		var_dump($phpSelf);exit;
+
 		$urlRule = new BUrlRule();
 		$result = $urlRule->parseUrl($_SERVER['REQUEST_URI']);// 这个貌似可以，暂时用这个
 		self::$_module = $result['module'];

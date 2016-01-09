@@ -71,6 +71,7 @@ abstract class Db_Entity extends BAbstract
     public function load($primaryKey, $column = '*') {
         $primaryKey = (int) $primaryKey;
         $where = array($this->primaryKey=>$primaryKey);
+        // TODO 如果在一次请求中有多次调用，同一条件，需要做下缓存
         return $this->slave->load($this->tableName, $where, $column);
     }
     
