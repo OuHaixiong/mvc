@@ -1,5 +1,6 @@
-<?php // 有些帮助类，可以命名为：XXXHelper.php
+<?php 
 
+// 有些帮助类，可以命名为：XXXHelper.php
 set_time_limit(60); // 指定了当前所在php脚本的最大执行时间为60秒
 ini_set('max_execution_time', 60);
 
