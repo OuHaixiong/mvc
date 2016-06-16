@@ -138,4 +138,8 @@ class C_Test extends BController
 	    
 	}
 	
+	public function nima() {
+	    
+	}
+	
 }
