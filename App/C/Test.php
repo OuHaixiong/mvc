@@ -3,7 +3,7 @@
 /**
  * 测试
  * @author bear
- *
+ * @copyright http://maimengmei.com
  */
 class C_Test extends BController
 {
