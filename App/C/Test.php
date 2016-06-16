@@ -139,7 +139,7 @@ class C_Test extends BController
 	}
 	
 	public function nima() {
-	    
+	    echo '再测试';
 	}
 	
 }
