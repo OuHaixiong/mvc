@@ -137,6 +137,24 @@ class C_Test extends BController
 	    echo $str;
 	    
 	}
-	
-	
+
+    /**
+     * 测试跨域加载页面，并读取密码
+     * 经过测试，同源策略下iframe下面的元素是可以获取的，非同源是无法获取的，提示没有权限
+     * 在iframe中获取父窗口的元素
+     * window.parent.document.getElementById("父窗口的元素ID").click();
+     */
+    public function iframe() {
+        $this->render();
+    }
+    
+    /**
+     * 测试跨域加载页面，内嵌页面
+     */
+    public function innerIframe() {
+    	$this->_view->setIsLayout();
+        $this->render();
+    }
+
+
 }
