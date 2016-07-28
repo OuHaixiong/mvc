@@ -1,9 +1,11 @@
 <?php
 header('Access-Control-Allow-Origin: http://res.mvc.com');
-//设置http://www.baidu.com允许跨域访问，这里是写post上来图片的来源域名
+//设置http://www.baidu.com允许跨域访问，这里是写post上来图片的来源域名；多个域名之间用逗号分隔
 // header('Access-Control-Allow-Origin: *'); // 允许任意域名发起的跨域请求
 header('Access-Control-Allow-Headers: X-Requested-With,X_Requested_With'); // 设置允许的跨域header
+//Access-Control-Allow-Headers: Content-Type, Authorization, Accept, Range, Origin
 // 解决上传图片跨域问题，上两句对单图上传没有影响。解决火狐谷歌跨域上传图片问题
+// header('Access-Control-Request-Method: GET, POST');
 /**
  * 百度的Ueditor练习
  * @author Bear

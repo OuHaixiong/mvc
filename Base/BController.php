@@ -32,6 +32,10 @@ abstract class BController
      */
     public function init() { // $_SERVER['PHP_SELF']; // 返回 /index.php  和 $_SERVER['SCRIPT_NAME']一样
         // $_SERVER['QUERY_STRING'] 返回问号（?）后面的参数；如：ab=bc&cc=d&q=&ni=8
+        $isIntercept = BConfig::getConfig('isIntercept');
+        if ($isIntercept == false) { // 未开启拦截功能，不对频繁请求的用户进行屏蔽操作
+            return;
+        }
         $userIp = Common_Tool::getIP(); // 获取当前访问者的ip
         $userAgent = $_SERVER['HTTP_USER_AGENT'];
         $requestUrl = Common_Tool::getCurrentUrl(); // http://mvc.com/ueditor/ueditor1_4_3?ab=bc&cc=d&q=&ni=8

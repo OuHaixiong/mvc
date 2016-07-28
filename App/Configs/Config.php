@@ -69,5 +69,7 @@ return array(
             'timeout' => 0
         ),
     ),
+    'isIntercept' => false, // 是否开启拦截功能；false：未开启拦截功能，不对频繁请求的用户进行屏蔽操作
+    
 		
 );
