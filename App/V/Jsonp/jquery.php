@@ -15,6 +15,7 @@ $.ajax({
 	'type' : 'POST', // 如果是Jsonp，这里的post是无效的，默认（也只能）jsonp是通过get方式请求
 	'dataType' : 'jsonp', // 如果是jsonp那么就和ajax无关了
 	'jsonp' : 'callback', // 用以获得jsonp回调函数名的参数名
+	//'jsonpCallback' : 'doSomething', // 自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据
 	//'data' : $datas,
 	'timeout' : 5000,
 	'success' : function (response) {
