@@ -20,9 +20,9 @@ class C_Test extends BController
 	}
 	
 	/**
-	 * 测试用
+	 * 猴子选大王
 	 */
-	public function test() {
+	public function numKing() {
 	    $this->_view->setIsView();
 	    $this->_view->setIsLayout();
 		//测试100只猴子 出局报数5 算出猴王的编号为47
@@ -156,5 +156,25 @@ class C_Test extends BController
         $this->render();
     }
 
+    /**
+     * 获取html中图片img的src属性值
+     */
+    public function isImg() {
+        $arrayHttpImg[] = ' http://4r4weyxd/product_images/uploaded_images/stem-header-01.php ';
+        $arrayHttpImg[] = ' https://img.alicdn.com/tps/TB1A5jbMVXXXXboXFXXXXXXXXXX-476-260.jpg_240x5000q100.jpg';
+        
+        $folderPath = '/temp/abc';
+        $result = Common_Tool::httpImg2LocalFolder($arrayHttpImg, $folderPath);
+        var_dump($result);exit;
+    }
+    
+    /**
+     * 临时测试
+     */
+    public function test() {
+//         $url = 'http://www.php100.com/html/php/hanshu/2013/0905/4682.html';
+        $string = Common_Tool::dataUri(ROOT_PATH . '/images/kao.jpg', 'image/jpeg');
+        echo ("<img src='$string' />");
+    }
 
 }
