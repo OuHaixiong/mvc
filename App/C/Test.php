@@ -172,9 +172,11 @@ class C_Test extends BController
      * 临时测试
      */
     public function test() {
-//         $url = 'http://www.php100.com/html/php/hanshu/2013/0905/4682.html';
-        $string = Common_Tool::dataUri(ROOT_PATH . '/images/kao.jpg', 'image/jpeg');
-        echo ("<img src='$string' />");
+        $str = "<div style=\"font-size:18px;\">sdaf<del>这里是删除的文字OK</del><SPAN style='dfdff'>我<em lang='fd' style='89'>靠文</em>字哦</SPAN>的撒范德萨\n
+                <font>word 字体</font>dsaf
+                第三方十大发生的\ndsaf dsaf<p class=\"abc\"> 第三方</p></div>";
+        $str = Common_ClearTag::clearWordHtml($str);
+        print_r($str);
     }
 
 }
