@@ -172,6 +172,8 @@ class C_Test extends BController
      * 临时测试
      */
     public function test() {
+        
+        
         $str = "<div style=\"font-size:18px;\">sdaf<del>这里是删除的文字OK</del><SPAN style='dfdff'>我<em lang='fd' style='89'>靠文</em>字哦</SPAN>的撒范德萨\n
                 <font>word 字体</font>dsaf
                 第三方十大发生的\ndsaf dsaf<p class=\"abc\"> 第三方</p></div>";
