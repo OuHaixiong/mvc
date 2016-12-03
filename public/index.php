@@ -41,7 +41,7 @@ exit; */
 // var_dump($requestUri);
 
 defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录(最后不包含/): /home/xiqiyanyan/www/mvc 
-defined('BASE_PATH') || define('BASE_PATH', realpath(ROOT_PATH . '/../Base')); //定义本框架基本类库目录(不包括/) 
+defined('BASE_PATH') || define('BASE_PATH', realpath(ROOT_PATH . '/../Base')); //定义本框架基本类库目录(不包括/) ，这里如果是多个项目公用一个框架时，是可以外移的
 defined('APP_PATH') || define('APP_PATH', realpath(ROOT_PATH . '/../App')); //定义应用根目录
 defined('IMG_PATH') || define('IMG_PATH', realpath(ROOT_PATH . '/../../img')); // 定义上传图片的目录
 defined('CONFIG_PATH') || define('CONFIG_PATH', ROOT_PATH . '/../../Configs'); // 定义config文件的目录(不包括/)
