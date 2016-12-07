@@ -172,10 +172,8 @@ class C_Test extends BController
      * 临时测试
      */
     public function test() {
-        $url = 'http://m.com/en';
-        $savePath = ROOT_PATH . '/data/log/curl_get_cookies';
-        $str = Common_Tool::getCookie($url, $savePath);
-        var_dump($str);exit;
+        var_dump($_SERVER['REQUEST_TIME']);
+        var_dump(time());
     }
 
 

@@ -34,7 +34,7 @@ class BConfig
 	public static function getConfig($key) {
 		if (self::$_config === null) {
 		    $configPath = CONFIG_PATH . '/Config.php';
-		    if (!(is_file($configPath))) {
+		    if (!(is_file($configPath))) { // 如果在外部配置的配置文件中没有找到配置文件，就使用应用内的配置文件
 		        $configPath = APP_PATH . '/Configs/Config.php';
 		    }
 			self::$_config = require_once $configPath; //  __DIR__ . '/config/config.php' __DIR__ 获取本页脚本执行的绝对路径

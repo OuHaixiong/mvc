@@ -11,7 +11,7 @@ class M_User extends BModel
 {
     const START_NUM = 59999;
     const BATCH_NUM = 20000;
-    
+
     /**
      * 为后台创建一批数字账号，预先存储
      * @return boolean

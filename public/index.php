@@ -40,22 +40,13 @@ exit; */
 // $requestUri = $_SERVER['REQUEST_URI'];
 // var_dump($requestUri);
 
-defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录(最后不包含/): /home/xiqiyanyan/www/mvc 
+defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定义根目录(最后不包含/): /home/xiqiyanyan/www/mvc/public 
 defined('BASE_PATH') || define('BASE_PATH', realpath(ROOT_PATH . '/../Base')); //定义本框架基本类库目录(不包括/) ，这里如果是多个项目公用一个框架时，是可以外移的
 defined('APP_PATH') || define('APP_PATH', realpath(ROOT_PATH . '/../App')); //定义应用根目录
 defined('IMG_PATH') || define('IMG_PATH', realpath(ROOT_PATH . '/../../img')); // 定义上传图片的目录
 defined('CONFIG_PATH') || define('CONFIG_PATH', ROOT_PATH . '/../../Configs'); // 定义config文件的目录(不包括/)
 defined('STATIC_URL') || define('STATIC_URL', 'http://res.mvc.com'); // 定义静态文件（css、js、样式图片、flash等）的url路径(不包括/)
 defined('IMG_URL') || define('IMG_URL', 'http://img.mvc.com'); // 定义图片服务器的url路径(不包括/)
-defined('DEBUG') || define('DEBUG', true); // 是否开启调试模式
-
-if (DEBUG) { // 报所有错误
-    ini_set('error_reporting', E_ALL);
-    error_reporting(E_ALL);
-} else { // 不报任何错误
-    ini_set('error_reporting', 0);
-    error_reporting(0);
-}
 
 require_once BASE_PATH . '/AutoLoadClass.php';
 
@@ -67,6 +58,10 @@ if (isset($masterRedis['password'])) {
 } else {
     ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}");
 }
+
+// 设置错误信息处理函数；
+set_error_handler(array('BLog', 'errorHandler'), E_ALL);
+// 静态方法就可以在数组中直接写类名，否则需要new出来塞对象
 
 // 启动应用
 $app = new BApp();

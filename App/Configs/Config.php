@@ -49,7 +49,7 @@ return array(
         'backend',
     ),
     'thireLibrariesPath' => array( // 第三方类库路径
-        realpath(ROOT_PATH . '/../../libraries')
+        realpath(ROOT_PATH . '/../../libraries') // 如果有此第三方库，此目录必需存在且可写
     ),
     'master_redis' => array( // redis 主服务器配置
         'host' => '192.168.253.4',
@@ -70,6 +70,6 @@ return array(
         ),
     ),
     'isIntercept' => false, // 是否开启拦截功能；false：未开启拦截功能，不对频繁请求的用户进行屏蔽操作
-    
-		
+    'debug' => true, // 是否开启调试模式；true：直接报错，false：不报错，把错误写入日记文件
+    'logPath' => realpath(ROOT_PATH . '/../../logs/mvc'), // 日记文件目录；特别注意此文件需要存在且可写
 );
