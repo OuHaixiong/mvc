@@ -152,3 +152,41 @@ alert(dom.Sex);  // 这里也返回undefined。因为在函数（不是对象）
 var d = new dom(); // 对象（如：{}）不能实例化，函数可以实例化
 alert(d.Sex); // 这里返回Boy，相当于public变量
 alert(d.Name); // 这里返回undefined,因为这个变量是局部变量 */
+
+(function () { // 闭包内的所有变量和函数，只能在该闭包内使用
+    function abc() {
+	var self = this;
+	var wokao = '我靠'; // var定义的是局部变量，外面是无法访问的，无论new还是直接函数名.变量名
+	this.name = 'OuHaixiong'; // this定义的是对象公共属性，只能通过new出的对象来访问
+	this.wori = 'wo ri ---';
+	
+	this.dahao = function () { // 使用this声明的函数和prototype是一样的
+	    alert('this -- dahao');
+	    alert(this.name);
+	};
+	
+    }
+    abc.prototype.nihao = function () { // 用prototype声明的函数是非静态函数，需要通过new对象，才能调用，且函数内部可以使用this对象
+	alert('prototype -- nihao');
+	alert(this.name);
+    };
+    abc.haha = function () { // 直接用.声明的函数是静态函数，外部直接用类名[函数名]进行调用
+	alert('abc.haha');
+//	alert(this.name); // 返回函数名:abc
+//	alert(this.wori); // 返回undefined
+	alert(this.wokao); // 返回undefined
+    }
+//    abc.dahao(); // 报错，提示：TypeError: abc.dahao is not a function
+//    abc.nihao(); // 报错，提示：TypeError: abc.nihao is not a function
+    var abcObj = new abc();
+//    abcObj.nihao();
+//    abcObj.dahao();
+//    alert(abcObj.wokao); // 返回：undefined 
+//    alert(abcObj.name); // 返回：OuHaixiong
+//    alert(abc.wori); // undefined 
+//    alert(abc.wokao); // undefined
+//    abc.haha();
+})();
+
+
+
