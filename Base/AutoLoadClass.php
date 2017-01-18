@@ -44,8 +44,5 @@ function __autoload($classname) {
 	        return;
 	    }
 	}
-    if (DEBUG) {
-        echo 'File(' . __FILE__ . ') on line 50: ';
-    }
-	die('文件： ' . $filePath . ' 不存在！');
+	die('File(' . __FILE__ . ') on line 47: 文件 ' . $filePath . ' 不存在！');
 }
