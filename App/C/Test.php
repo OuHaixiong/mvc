@@ -172,8 +172,10 @@ class C_Test extends BController
      * 临时测试
      */
     public function test() {
-        var_dump($_SERVER['REQUEST_TIME']);
-        var_dump(time());
+        $string = 'abcdef';
+        var_dump($string);
+        $string = Common_String::reversal($string);
+        var_dump($string);
     }
 
 
