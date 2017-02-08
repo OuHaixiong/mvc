@@ -172,7 +172,7 @@ class C_Test extends BController
      * 临时测试
      */
     public function test() {
-        $string = 'ad我bc是def偶海雄';
+        $string = 'abcdef';
         var_dump($string);
         $string = Common_String::reversal($string);
         var_dump($string);
