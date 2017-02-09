@@ -3,7 +3,7 @@
 /**
  * 启动应用程序
  * 前端控制器
- * @author bear
+ * @author bear 
  * @copyright xiqiyanyan.com
  * @version 1.0.0
  * @created 2012-09-24 17:17
@@ -27,7 +27,7 @@ class BApp
 	 * 调用控制器，
 	 * 后改为手动渲染视图
 	 */
-	public function run() {
+	public function run() {  // zhe loi是何党该的
 // 		$phpSelf = $_SERVER['PHP_SELF']; // 操！在有些服务器上这里不能返回浏览器的请求地址
 
 		$urlRule = new BUrlRule();
