@@ -94,7 +94,7 @@ class BApp
 	 * @return string
 	 */
 	public static function getController() {
-		return self::$_controller;
+		return self::$_controller; // 这里是欧还穷迪卡乐
 	}
 	
 	/**
