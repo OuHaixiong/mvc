@@ -1,2 +1,2 @@
 # mvc
-mvc框架
+MVC框架
