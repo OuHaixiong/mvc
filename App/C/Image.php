@@ -711,7 +711,7 @@ class C_Image extends BController
             if ($_FILES['file_data']['size'] > 0) {
                 $module = 'user_pic';
                 $img = new Share_Img();
-                $filePath = $img->save($_FILES['file_data']['tmp_name'], $module);
+                $filePath = $img->save($_FILES['file_data']['tmp_name'], $module);var_dump($filePath);exit;
                 if ($filePath) {
                     $dirname = pathinfo($filePath, PATHINFO_DIRNAME); // 文件目录，不包括斜杠/
                     $basename = pathinfo($filePath, PATHINFO_BASENAME); // 完整文件名
