@@ -175,6 +175,16 @@ class C_Test extends BController
         var_dump($_SERVER['REQUEST_TIME']);
         var_dump(time());
     }
+    
+    public function killMan() {
+        $allMan = array();
+        $sum = 10;
+        for($i=1; $i<11; $i++) {
+            $allMan[] = $i;
+        }
+        var_dump($allMan);
+        
+    }
 
 
 }
