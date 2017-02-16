@@ -178,14 +178,43 @@ class C_Test extends BController
         var_dump($string);
     }
     
+    /**
+     * 600个人站一排，每次随机杀掉一个奇数位的人，几号最安全？
+     * 反正不是第一个人，靠一半的后面的人几率大些
+     */
     public function killMan() {
-        $allMan = array();
-        $sum = 10;
-        for($i=1; $i<11; $i++) {
-            $allMan[] = $i;
+        $sum = 600; // 总人数
+        $liveTimes = array(); // 存活统计
+        for($i=1; $i<=$sum; $i++) {
+            $liveTimes[$i] = 0;
         }
-        var_dump($allMan);
         
+        for ($p=0; $p<30000; $p++) {
+            $allMan = array();
+            for($i=1; $i<=$sum; $i++) {
+                $allMan[] = $i;
+            }
+            while (count($allMan) != 1) { // 每次随机杀死一个奇数位的人
+                if (count($allMan) == 2) {
+                    array_splice($allMan, 0, 1);
+                    continue;
+                }
+                $randNumber = mt_rand(0, (count($allMan)-1));
+                $remainder = $randNumber%2;
+                if ($remainder) { // 下标为偶数的数，即是奇数位
+                } else {
+                    $randNumber = $randNumber-1;
+                }
+                array_splice($allMan, $randNumber, 1);
+            }
+            $liveTimes[$allMan[0]] += 1;
+        }
+        
+        //var_dump($liveTimes);
+        echo '最有可能存活（存活概率最高）的是：';
+        $max = max($liveTimes);
+        $liveTimes = array_flip($liveTimes);
+        var_dump($liveTimes[$max]);
     }
 
 
