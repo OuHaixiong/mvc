@@ -25,4 +25,9 @@ class C_Js extends BController
         $this->render();
     }
     
+    public function test() {
+        $this->_view->setLayoutFile('html5Layout.php');
+        $this->render();
+    }
+    
 }
