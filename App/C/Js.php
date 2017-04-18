@@ -46,4 +46,12 @@ class C_Js extends BController
         }
     }
     
+    /**
+     * 未实现字符串的查找和替换，但可以做为参考
+     */
+    public function searchReplace() {
+        $this->_view->setLayoutFile('html5Layout.php');
+        $this->render();
+    }
+    
 }
