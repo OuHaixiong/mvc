@@ -54,4 +54,11 @@ class C_Js extends BController
         $this->render();
     }
     
+    /**
+     * 测试js合并加载
+     */
+    public function compress() {
+        $this->render();
+    }
+    
 }
