@@ -61,4 +61,9 @@ class C_Js extends BController
         $this->render();
     }
     
+    public function testXss() {
+        $this->abc = $this->getParam('abc');
+        $this->render();
+    }
+    
 }

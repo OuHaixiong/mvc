@@ -176,5 +176,12 @@ class BView
         return self::$_urlRule->createUrl($route, $params, $ampersand);
     }
 	
+    /**
+     * 对输出的字符串进行编码并输出（主要为了防止XSS攻击）
+     * @param string $string
+     */
+    public function encodeEcho($string) {
+        echo htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    }
 	
 }

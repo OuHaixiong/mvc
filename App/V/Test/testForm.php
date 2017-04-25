@@ -62,5 +62,8 @@ $(document).ready(function () {
 <div>用户名：<input type="text" name="username" value="" /></div>
 
 <div><input type="submit" value="注册" /></div>
-
+<?php
+// 防XSS攻击
+echo htmlspecialchars(base64_decode('PGh0bWw+PHNjcmlwdD5hbGVydCgiWFNTIik8L3NjcmlwdD48L2h0bWw+'), ENT_QUOTES, 'UTF-8'); 
+?>
 </form>
