@@ -52,22 +52,22 @@ return array(
         realpath(ROOT_PATH . '/../../libraries') // 如果有此第三方库，此目录必需存在且可写
     ),
     'master_redis' => array( // redis 主服务器配置
-        'host' => '192.168.253.4',
+        'host' => '172.16.51.128',
         'port' => 6379,
         'password' => 'ouhaixiong',
         'timeout' => 0
 	),
     'slave_redis' => array( // 多个 redis 从服务器配置
         array(
-            'host' => '192.168.17.134',
+            'host' => '172.16.51.128',
             'port' => 6379,
             'timeout' => 0
         ),
-        array(
-            'host' => '192.168.17.139',
-            'port' => 6379,
-            'timeout' => 0
-        ),
+//         array(
+//             'host' => '192.168.17.139',
+//             'port' => 6379,
+//             'timeout' => 0
+//         ),
     ),
     'isIntercept' => false, // 是否开启拦截功能；false：未开启拦截功能，不对频繁请求的用户进行屏蔽操作
     'debug' => true, // 是否开启调试模式；true：直接报错，false：不报错，把错误写入日记文件
@@ -75,6 +75,6 @@ return array(
     'compressJs' => array(
         'originPath' => ROOT_PATH . '/js', // [源]引入页面的js文件根目录
         //'targetPath' => ROOT_PATH . '/assets', // [目标]打包后的js文件存放路径 (此配置作废，目前固定为网站根目录下的assets文件夹)
-        'isDevelop' => false, // 是否开启开发者模式，true：是，所有的js文件不会进行打包，原样输出；false：否【线上正式环境】，所有的js文件会自动打包压缩  
+        'isDevelop' => false, // 是否开启开发者模式，true：是，所有的js文件不会进行打包，原样输出；false：否【线上正式环境】，所有的js文件会自动打包压缩
     ),
 );
