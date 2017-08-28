@@ -58,6 +58,7 @@ if (isset($masterRedis['password'])) {
 } else {
     ini_set('session.save_path', "tcp://{$masterRedis['host']}:{$masterRedis['port']}");
 }
+session_start();
 
 // 设置错误信息处理函数；
 set_error_handler(array('BLog', 'errorHandler'), E_ALL);
