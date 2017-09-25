@@ -148,8 +148,8 @@ class BUrlRule
                         $result['action'] = 'index';
                     }
                     unset($urlPath[0], $urlPath[1], $urlPath[2]);
-                    if (empty($urlPath)) {
-                        $result['params'] = array();
+                    if (empty($urlPath)) { // 这里特别注意了，可能有GET参数
+                        $result['params'] = $_GET; // 重名参数以?后面的为主
                         return $result;
                     }
                     $sum = count($urlPath);

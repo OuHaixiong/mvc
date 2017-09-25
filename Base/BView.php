@@ -178,10 +178,16 @@ class BView
 	
     /**
      * 对输出的字符串进行编码并输出（主要为了防止XSS攻击）
-     * @param string $string
+     * @param string $string 需要输出的字符串
+     * @param boolean $isReturn 是否返回字符串，默认false：不返回，直接输出；true：返回字符串
+     * @return null | string
      */
-    public function encodeEcho($string) {
-        echo htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+    public function encodeEcho($string, $isReturn = false) {
+        if ($isReturn) {
+            return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+        } else {
+            echo htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+        }
     }
 	
 }
