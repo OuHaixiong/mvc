@@ -217,5 +217,13 @@ class C_Test extends BController
         var_dump($liveTimes[$max]);
     }
 
+    /**
+     * 测试ga设置事件代码
+     */
+    public function ga() {
+        $this->title = '测试ga事件跟踪代码';
+        $this->_view->setLayoutFile('gaLayout.php');
+        $this->render();
+    }
 
 }
