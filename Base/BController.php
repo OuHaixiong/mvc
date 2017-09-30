@@ -221,4 +221,25 @@ abstract class BController
 	    $this->_view->$key = $value;
 	}
 	
+	/**
+	 * 跳转（重定向）到一个网址
+	 * @param string $url 重定向的网址
+	 * @param number $statusCode 状态码
+	 */
+	public function redirect($url, $statusCode = 302) {
+	    if ((strpos($url, '/') === 0) && (strpos($url, '//') !== 0)) { // 本站url，未带头信息
+	        $port = '';
+	        if ($_SERVER['SERVER_PORT'] != '80') {
+	            $port = ':' . $_SERVER['SERVER_PORT'];
+	        }
+	        $host = '';
+	        if (isset($_SERVER['HTTP_HOST'])) {
+	            $host = $_SERVER['HTTP_HOST'];
+	        } else {
+	            $host = $_SERVER['SERVER_NAME'];
+	        }
+	        $url = $_SERVER['REQUEST_SCHEME'] . '://' . $host . $port . $url;
+	    }
+	    header('Location:' . $url, true, $statusCode);
+	}
 }
