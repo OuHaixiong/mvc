@@ -1,0 +1,26 @@
+- App 应用程序目录
+--  C 所有控制器存放目录
+--  Configs 所有配置文件目录
+--  M 服务层和模型层目录，主要的业务逻辑都写在这里
+---   Row 所有的表实体目录，一张表对应一个文件（一个类）
+--  Modules 所有的模块存放目录，一个模块对应一个目录，如：后台模块的Backend
+--  Share 本站公共类存放目录
+--  V 所有视图文件存放目录
+
+- Base 框架核心代码目录
+--  Db 数据库处理类
+--  BApp 框架应用入口类
+--  BConfig.php 读取配置文件类
+--  BRedis redis缓存服务器类
+
+- Docs 框架说明文档存放目录
+
+- public 网站根目录
+--  assets 前段资源包（Asset Bundle）
+--  data 数据备份
+--  fonts 字体文件目录
+--  images 样式相关图片目录
+--  img 用户上传图片目录
+--  js js文件目录
+--  upload 编辑器上传文件目录
+--  index.php web应用入口文件
