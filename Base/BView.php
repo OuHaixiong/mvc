@@ -184,7 +184,7 @@ class BView
      */
     public function encodeEcho($string, $isReturn = false) {
         if ($isReturn) {
-            return htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
+            return htmlspecialchars($string, ENT_QUOTES, 'UTF-8'); // htmlentities($string, [ENT_COMPAT])
         } else {
             echo htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
         }
