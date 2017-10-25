@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>mEos email add</title>
+    <script type="text/javascript" src="/js/base/jquery-1.10.2.js"></script>
+</head>
+<body>
+<form action="importCsv.php" method="post">
+    邮箱：
+    <input id="input_email" type="text" name="email" value="" />
+    <br />
+    <br />
+    语言：
+    <select id="select_language" name="type">
+        <option value="en-US">English</option>
+        <option value="zh-CN">中文</option>
+    </select>
+    <br />
+    <br />
+    <input id="add_email" type="submit" value="订阅" />
+</form>
+<script type="text/javascript">
+$(function () {
+    $('#add_email').click(function (e) {
+	    e.preventDefault();
+	    var email = $('#input_email').val();
+	    // 对邮箱进行验证
+	    $.ajax({
+		    'type' : 'POST',
+		    'url' : '/importCsv.php',
+		    'dataType' : 'json',
+		    'data' : {
+			    'language':$('#select_language').val(),
+			    'email' : email
+			},
+			success : function (response) {
+			    if (response.status == 1) { 
+				    // 成功
+			    } else {
+				    // 失败
+			    }
+			    alert(response.message);
+			}
+	    });
+	    return false;
+    });
+});
+
+</script>
+</body>
+</html>
