@@ -66,4 +66,18 @@ class C_Js extends BController
         $this->render();
     }
     
+    /**
+     * 返回页面顶部测试
+     */
+    public function backToTop() {
+        $this->render();
+    }
+    
+    /**
+     * 预防对表单进行多次提交
+     */
+    public function disabledSubmit() {
+        $this->render();
+    }
+    
 }
