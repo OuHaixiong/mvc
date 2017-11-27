@@ -62,7 +62,7 @@ class BRedis
             $oneSlave = $slaveRedis[array_rand($slaveRedis, 1)];
             self::$_slave->connect($oneSlave['host'], $oneSlave['port'], $oneSlave['timeout']);
             if (isset($oneSlave['password'])) {
-                self::$_master->auth($oneSlave['password']);
+                self::$_slave->auth($oneSlave['password']);
             }
         }
         if (!empty($db)) {
