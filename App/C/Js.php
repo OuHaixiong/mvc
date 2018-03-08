@@ -80,4 +80,19 @@ class C_Js extends BController
         $this->render();
     }
     
+    /**
+     * 谷歌地图练习
+     */
+    public function googleMap() {
+        $this->_view->setIsLayout(false);
+        $this->render();
+    }
+    
+    /**
+     * 百度地图练习
+     */
+    public function baiduMap() {
+        $this->_view->setIsLayout();
+        $this->render();
+    }
 }

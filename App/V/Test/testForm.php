@@ -58,9 +58,9 @@ $(document).ready(function () {
 </script>
 <p>下面测试注册</p>
 
-<form action="http://member.csc86.com/upload" method="post" enctype="multipart/form-data">
+<form action="/test/testPost" method="post" enctype="multipart/form-data">
 <div>用户名：<input type="text" name="username" value="" /></div>
-
+<div>密码：<input type="password" name="password" value="" /></div>
 <div><input type="submit" value="注册" /></div>
 <?php
 // 防XSS攻击
