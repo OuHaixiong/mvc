@@ -225,5 +225,38 @@ class C_Test extends BController
         $this->_view->setLayoutFile('gaLayout.php');
         $this->render();
     }
+    
+    /**
+     * 测试读取区域信息
+     */
+    public function readLocation() {
+/*         $filePath = ROOT_PATH . '/../data/locationListEnglish.xml';
+        $xmlString = file_get_contents($filePath);
+        $xmlObj = new SimpleXMLElement($xmlString);
+        $country = '';
+        foreach ($xmlObj->CountryRegion as $k=>$v) {
+            $attributes = $v->attributes();
+            $country .= "\n" . $attributes['Name'];
+        }
+        $country = trim($country, "\n");
+        $countryWriteFilePath = ROOT_PATH . '/data/localtionListEnglish';
+        file_put_contents($countryWriteFilePath, $country);
+        
+        $filePath = ROOT_PATH . '/../data/locationListChinese.xml';
+        $xmlString = file_get_contents($filePath);
+        $xmlObj = new SimpleXMLElement($xmlString);
+        $country = '';
+        foreach ($xmlObj->CountryRegion as $k=>$v) {
+            $attributes = $v->attributes();
+            $country .= "\n" . $attributes['Name'];
+        }
+        $country = trim($country, "\n");
+        $countryWriteFilePath = ROOT_PATH . '/data/localtionListChinese';
+        file_put_contents($countryWriteFilePath, $country); */
+        $locationArea = new M_LocationArea();
+//         $boolean = $locationArea->loadFileToDatabase();
+        $boolean = $locationArea->loadFileToDatabaseForEnUs();
+        var_dump($boolean);
+    }
 
 }

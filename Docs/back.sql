@@ -101,3 +101,30 @@ CREATE TABLE `ProductProperty` (
 -- 属性值
 
 
+-- 地区表
+DROP TABLE IF EXISTS `zh-CN_LocationArea`;
+CREATE TABLE `zh-CN_LocationArea` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `name` VARCHAR(255) default '' COMMENT '地区名',
+  `parentId` int(10) unsigned DEFAULT 0 COMMENT '父级地区id',
+  `code` varchar(50) DEFAULT '' COMMENT '地区code',
+  `firstLetter` char(1) DEFAULT '' COMMENT '地区拼音首字母',
+  `pinyin` varchar(255) default '' comment '地区名拼音',
+  `createdTime` datetime DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `updatedTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='地区表(中文)' AUTO_INCREMENT=1;
+
+DROP TABLE IF EXISTS `en-US_LocationArea`;
+CREATE TABLE `en-US_LocationArea` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `name` VARCHAR(255) default '' COMMENT '地区名',
+  `parentId` int(10) unsigned DEFAULT 0 COMMENT '父级地区id',
+  `code` varchar(50) DEFAULT '' COMMENT '地区code',
+  `createdTime` datetime DEFAULT '0000-00-00 00:00:00' COMMENT '创建时间',
+  `updatedTime` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='地区表(英文)' AUTO_INCREMENT=1;
+
+
+
