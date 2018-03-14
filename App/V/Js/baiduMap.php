@@ -55,6 +55,49 @@
 	marker1.addEventListener("click", function(){          
 		map.openInfoWindow(infoWindow1,point1); //开启信息窗口
 	});
+
+	function renderMap() {
+	    var map = new BMap.Map("allmap");
+		map.enableScrollWheelZoom();
+		map.centerAndZoom('中国湖南', 5);
+		var point = new BMap.Point(106.663188,29.452422);
+		var marker = new BMap.Marker(point);  // 创建标注
+		map.addOverlay(marker);              // 将标注添加到地图中
+		//map.centerAndZoom(point, 15);
+		
+		var opts = {
+//	 	  width : 200,     // 信息窗口宽度
+		 // height: 500,     // 信息窗口高度 , 不能写百分比
+		  title : "海底捞王府井店" , // 信息窗口标题
+		  enableMessage:true,//设置允许信息窗发送短息
+		  message:"亲耐滴，晚上一起吃个饭吧？戳下面的链接看下地址喔~"
+		}
+		var messageHtml = '<div><p>地址：北京市东城区王府井大街88号乐天银泰百货八层</p><p>点后：0755-89654321</p><p>营业时间：08:59-19:78</p></div>';
+//	 	var messageHtml = '地址：北京市东城区王府井大街88号乐天银泰百货八层 电话：0755-89654321';
+		var infoWindow = new BMap.InfoWindow(messageHtml, opts);  // 创建信息窗口对象 
+		marker.addEventListener("click", function(){          
+			map.openInfoWindow(infoWindow,point); //开启信息窗口
+		});
+
+
+		var point1 = new BMap.Point(115.723856,28.796138);
+		var marker1 = new BMap.Marker(point1);  // 创建标注
+		map.addOverlay(marker1);              // 将标注添加到地图中
+		//var opts = {
+//	 	  width : 200,     // 信息窗口宽度
+		 // height: 500,     // 信息窗口高度 , 不能写百分比
+		 // title : "海底捞王府井店" , // 信息窗口标题
+		//  enableMessage:true,//设置允许信息窗发送短息
+		 // message:"亲耐滴，晚上一起吃个饭吧？戳下面的链接看下地址喔~"
+		//}
+		var messageHtml = '<div><p>深圳创客工场科技有限公司</p><p>地址：深圳市南山智园C3栋4楼</p><p>电话：0755-89654321</p><p>营业时间：06:00-19:58</p></div>';
+//	 	var messageHtml = '地址：北京市东城区王府井大街88号乐天银泰百货八层 电话：0755-89654321';
+		var infoWindow1 = new BMap.InfoWindow(messageHtml);  // 创建信息窗口对象 
+		marker1.addEventListener("click", function(){          
+			map.openInfoWindow(infoWindow1,point1); //开启信息窗口
+		});
+    }
 </script>
+<p onclick="renderMap()">点击这里重新渲染地图</p>
 </body>
 </html>
