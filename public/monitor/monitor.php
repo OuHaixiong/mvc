@@ -1,7 +1,7 @@
 <?php
 
 $url = 'http://www.mblock.cc/zh-home/';
-$timeout = 10;
+$timeout = 30;
 $maxExecuteTime = 5; // 超过此时间，发邮件
 $method = 'GET';
 $data = null;
