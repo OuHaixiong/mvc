@@ -56,7 +56,7 @@
 		map.openInfoWindow(infoWindow1,point1); //开启信息窗口
 	});
 
-	function renderMap() {
+	function renderMap3() {
 	    var map = new BMap.Map("allmap");
 		map.enableScrollWheelZoom();
 		map.centerAndZoom('中国湖南', 5);
@@ -96,6 +96,39 @@
 		marker1.addEventListener("click", function(){          
 			map.openInfoWindow(infoWindow1,point1); //开启信息窗口
 		});
+    }
+
+	function renderMap() {
+	    window.map = new BMap.Map("allmap");
+		window.map.enableScrollWheelZoom();
+		window.map.centerAndZoom('中国湖南', 5);
+		
+		var response = [];
+		response[0] = {
+			'lat' : 106.663188,
+			'lng' : 29.452422,
+			'message' : '<div><p>地址：北京市东城区王府井大街88号乐天银泰百货八层</p><p>点后：0755-89654321</p><p>营业时间：08:59-19:78</p></div>',
+		};
+		response[1] = {
+			'lat' : 115.723856,
+			'lng' : 28.796138,
+			'message' : '<div><p>深圳创客工场科技有限公司</p><p>地址：深圳市南山智园C3栋4楼</p><p>电话：0755-89654321</p><p>营业时间：06:00-19:58</p></div>',
+		};
+		
+		var point = [];
+		window.marker = [];
+		var infoWindow = [];
+		var length = response.length;
+		for (var i=0; i<length; i++) {
+			point[i] = new BMap.Point(response[i]['lat'], response[i]['lng']);
+			window.marker[i] = new BMap.Marker(point[i]);  // 创建标注
+			window.map.addOverlay(window.marker[i]);              // 将标注添加到地图中
+			infoWindow[i] = new BMap.InfoWindow(response[i]['message']);  // 创建信息窗口对象 
+			window.marker[i].addEventListener("click", function(){          
+				window.map.openInfoWindow(infoWindow[i], point[i]); //开启信息窗口
+			});
+		}
+
     }
 </script>
 <p onclick="renderMap()">点击这里重新渲染地图</p>
