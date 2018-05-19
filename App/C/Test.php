@@ -169,13 +169,24 @@ class C_Test extends BController
     }
     
     /**
-     * 临时测试
+     * 测试curl请求
      */
-    public function test() {
-        $string = 'abcdef';
-        var_dump($string);
-        $string = Common_String::reversal($string);
-        var_dump($string);
+    public function testCurl() {
+        // $url = 'https://openlab.makeblock.com/user/delete';
+		// $params = array(
+            // 'loginname' => 'ouhaixiong@bear.com',
+            // 'accessKey' => 'xxx'
+        // );
+		// $httpHeader = array('Content-Type' => 'application/json');
+		// $method = 'POST';
+		// $result = Common_HttpClient::sendRequest($url, $params, $method, $httpHeader);
+		
+		$url = 'https://openlab.makeblock.com';
+		$method = 'GET';
+		$userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0';
+		$result = Common_HttpClient::sendRequest($url, '', $method, '', '', '', $userAgent, false, 10); 
+		
+        var_dump($result);
     }
     
     /**
