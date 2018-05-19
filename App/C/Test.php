@@ -172,20 +172,22 @@ class C_Test extends BController
      * 测试curl请求
      */
     public function testCurl() {
-        // $url = 'https://openlab.makeblock.com/user/delete';
-		// $params = array(
-            // 'loginname' => 'ouhaixiong@bear.com',
-            // 'accessKey' => 'xxx'
-        // );
-		// $httpHeader = array('Content-Type' => 'application/json');
-		// $method = 'POST';
-		// $result = Common_HttpClient::sendRequest($url, $params, $method, $httpHeader);
+        $url = 'https://openlab.makeblock.com/user/delete';
+		$params = array(
+            'loginname' => 'ouhaixiong@bear.com',
+            'accessKey' => 'xxx'
+        );
+		$httpHeader = array('Content-Type' => 'application/json');
+		$method = 'POST';
+        $userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0';
+// Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:59.0) Gecko/20100101 Firefox/59.0
+		// $result = Common_HttpClient::sendRequest($url, $params, $method, $httpHeader, '', '', $userAgent, false, 20);
+        $result = Common_HttpClient::sendRequest($url, $params, $method, $httpHeader, '', '', $_SERVER['HTTP_USER_AGENT']);
 		
-		$url = 'https://openlab.makeblock.com';
-		$method = 'GET';
-		$userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0';
-		$result = Common_HttpClient::sendRequest($url, '', $method, '', '', '', $userAgent, false, 10); 
-		
+		// $url = 'https://openlab.makeblock.com';
+		// $method = 'GET';
+		// $result = Common_HttpClient::sendRequest($url, '', $method, '', '', '', $userAgent, false, 20); 
+		// $result = Common_HttpClient::sendRequest($url, '', $method); // 如果是https的话，最好带上user_agent
         var_dump($result);
     }
     

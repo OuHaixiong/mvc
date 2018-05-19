@@ -16,7 +16,7 @@ return array(
         'charset'  => 'utf8'
     ),
     'master_db' => array( // 主数据库设置
-        'dsn' => 'mysql:host=192.168.253.4;dbname=mvc',
+        'dsn' => 'mysql:host=172.16.51.131;dbname=mvc',
         'emulatePrepare' => true,
         'username' => 'mvcUser',
         'password' => '123456',
@@ -38,7 +38,7 @@ return array(
 //             'charset' => 'utf8',
 //         ),
         array( // 主数据库设置
-            'dsn' => 'mysql:host=192.168.253.4;dbname=mvc',
+            'dsn' => 'mysql:host=172.16.51.131;dbname=mvc',
             'emulatePrepare' => true,
             'username' => 'mvcUser',
             'password' => '123456',
@@ -52,14 +52,14 @@ return array(
         realpath(ROOT_PATH . '/../../libraries') // 如果有此第三方库，此目录必需存在且可写
     ),
     'master_redis' => array( // redis 主服务器配置
-        'host' => '172.16.51.128',
+        'host' => '172.16.51.133',
         'port' => 6379,
         'password' => 'ouhaixiong',
         'timeout' => 0
 	),
     'slave_redis' => array( // 多个 redis 从服务器配置
         array(
-            'host' => '172.16.51.128',
+            'host' => '172.16.51.133',
             'port' => 6379,
             'timeout' => 0
         ),

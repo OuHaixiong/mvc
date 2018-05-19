@@ -35,6 +35,9 @@ class BApp
 		self::$_module = $result['module'];
 		self::$_controller = $result['controller'];
 		self::$_action = $result['action'];
+		if (self::$_action == 'init') {
+		    die('Action cannot is "init".');
+		}
 
 		if (self::$_module == self::MODULE_DEFAULT_NAME) {
 		    $controller = 'C_' . self::$_controller;
