@@ -1,4 +1,5 @@
 <?php
+// 此文件已修改过；在php7中each已废除
 /*~ class.smtp.php
 .---------------------------------------------------------------------------.
 |  Software: PHPMailer - PHP email class                                    |
@@ -128,7 +129,7 @@ class SMTP {
     }
 
     // connect to the smtp server
-    $this->smtp_conn = @fsockopen($host,    // the host of the server
+    $this->smtp_conn = fsockopen($host,    // the host of the server
                                  $port,    // the port to use
                                  $errno,   // error number if any
                                  $errstr,  // error message if any
@@ -387,8 +388,9 @@ class SMTP {
     }
 
     $max_line_length = 998; // used below; set here for ease in change
-
-    while(list(,$line) = @each($lines)) {
+// var_dump($lines);exit;
+//     while(list(,$line) = @each($lines)) {// 在php7中each已废除
+    foreach ($lines as $line) {   
       $lines_out = null;
       if($line == "" && $in_headers) {
         $in_headers = false;
@@ -417,7 +419,8 @@ class SMTP {
       $lines_out[] = $line;
 
       // send the lines to the server
-      while(list(,$line_out) = @each($lines_out)) {
+//       while(list(,$line_out) = @each($lines_out)) { // 在php7中each已废除
+      foreach ($lines_out as $line_out) {
         if(strlen($line_out) > 0)
         {
           if(substr($line_out, 0, 1) == ".") {

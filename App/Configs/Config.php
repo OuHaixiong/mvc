@@ -49,19 +49,19 @@ return array(
         'backend',
     ),
     'thireLibrariesPath' => array( // 第三方类库路径
-        realpath(ROOT_PATH . '/../../libraries') // 如果有此第三方库，此目录必需存在且可写
+        realpath(ROOT_PATH . '/../../libraries') // 如果有此第三方库，此目录必需存在且可读
     ),
     'master_redis' => array( // redis 主服务器配置
-        'host' => '172.16.51.133',
+        'host' => '172.17.6.140',
         'port' => 6379,
-        'password' => 'ouhaixiong',
-        'timeout' => 0
+        'password' => '123456',
+        'timeout' => 3
 	),
     'slave_redis' => array( // 多个 redis 从服务器配置
         array(
             'host' => '172.16.51.133',
             'port' => 6379,
-            'timeout' => 0
+            'timeout' => 3
         ),
 //         array(
 //             'host' => '192.168.17.139',
@@ -76,5 +76,13 @@ return array(
         'originPath' => ROOT_PATH . '/js', // [源]引入页面的js文件根目录
         //'targetPath' => ROOT_PATH . '/assets', // [目标]打包后的js文件存放路径 (此配置作废，目前固定为网站根目录下的assets文件夹)
         'isDevelop' => false, // 是否开启开发者模式，true：是，所有的js文件不会进行打包，原样输出；false：否【线上正式环境】，所有的js文件会自动打包压缩
+    ),
+    'email' => array( // 发送邮件配置
+        'host' => 'smtp-mail.outlook.com',
+        'port' => 587,
+        'username' => 'ouyang**ong@outlook.com',
+        'password' => 'X***',
+        'fromName' => '欧阳海雄',
+        'secure' => 'tls',  
     ),
 );

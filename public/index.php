@@ -9,7 +9,7 @@ ini_set('session.cookie_domain', '.mvc.com'); // cookie保存在主域下
 ini_set('session.cookie_lifetime', '1800'); // 设置cookie的生命周期（时间）
 // 上面三句是跨子域，保存cookie
 header('Content-Type:text/html;charset=utf-8'); //定义字符集
-header("Cache-Control: no-store, no-cache, must-revalidate");
+header("Cache-Control: no-store, no-cache, must-revalidate"); // 定义不缓存页面
 
 /*
 var_dump($_SERVER['REMOTE_ADDR']);
@@ -44,11 +44,11 @@ defined('ROOT_PATH') || define('ROOT_PATH', realpath(dirname(__FILE__))); //定�
 defined('BASE_PATH') || define('BASE_PATH', realpath(ROOT_PATH . '/../Base')); //定义本框架基本类库目录(不包括/) ，这里如果是多个项目公用一个框架时，是可以外移的
 defined('APP_PATH') || define('APP_PATH', realpath(ROOT_PATH . '/../App')); //定义应用根目录
 defined('IMG_PATH') || define('IMG_PATH', realpath(ROOT_PATH . '/../../img')); // 定义上传图片的目录
-defined('CONFIG_PATH') || define('CONFIG_PATH', ROOT_PATH . '/../../Configs'); // 定义config文件的目录(不包括/)
+defined('CONFIG_PATH') || define('CONFIG_PATH', ROOT_PATH . '/../../mvcConfigs'); // 定义config文件的目录(不包括/)
 defined('STATIC_URL') || define('STATIC_URL', 'http://res.mvc.com'); // 定义静态文件（css、js、样式图片、flash等）的url路径(不包括/)
 defined('IMG_URL') || define('IMG_URL', 'http://img.mvc.com'); // 定义图片服务器的url路径(不包括/)
 
-require_once BASE_PATH . '/AutoLoadClass.php';
+require_once BASE_PATH . '/BAutoLoad.php';
 
 // 保存session进redis
 $masterRedis = BConfig::getConfig('master_redis');
