@@ -53,8 +53,23 @@ class C_SendEmail extends BController
         }
 	}
 	
+	/**
+	 * 测试发邮件
+	 */
 	public function test() {
-	    
+	    $subject = '偶啊有欧阳海雄';
+	    $html = 'dsfgffgfdgdfgdfs dsfdsa ';
+	    $addressList = [
+	        'ouhaixiong@yunfan.com',
+	        '258333309@qq.com'
+	    ];
+	    $sendEmail = new Share_SendEmail();
+	    $boolean = $sendEmail->send($subject, $html, $addressList);
+	    if ($boolean) {
+	        echo 'Send Email Succeed!';
+	    } else {
+	        var_dump($sendEmail->getErrorInfo());
+	    }
 	}
 	
 
