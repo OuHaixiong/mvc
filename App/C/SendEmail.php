@@ -57,14 +57,25 @@ class C_SendEmail extends BController
 	 * 测试发邮件
 	 */
 	public function test() {
-	    $subject = '偶啊有欧阳海雄';
-	    $html = 'dsfgffgfdgdfgdfs dsfdsa ';
+	    $subject = '测试发送附件';
+	    $html = '<h2>通过aol发送的邮件</h2><p>详情请看附件</p><div>测试发送html内容</div>';
 	    $addressList = [
 	        'ouhaixiong@yunfan.com',
-	        '258333309@qq.com'
+	        '258333309@qq.com',
+	        'weilijian@yunfan.com',
+	        '258333309@163.com',
 	    ];
+	    $attachments = array();
+// 	    $attachments[] = array(
+// 	        'path' => ROOT_PATH . '/../data/mEos_en-US.csv',
+// 	        'name' => 'mEos_en-US.csv',
+// 	    );
+	    $attachements[] = array(
+	        'path' => ROOT_PATH . '/../data/abc.zip',
+	        'name' => 'abc.zip'
+	    );
 	    $sendEmail = new Share_SendEmail();
-	    $boolean = $sendEmail->send($subject, $html, $addressList);
+	    $boolean = $sendEmail->send($subject, $html, $addressList, $attachements);
 	    if ($boolean) {
 	        echo 'Send Email Succeed!';
 	    } else {
