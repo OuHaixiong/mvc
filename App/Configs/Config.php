@@ -79,10 +79,11 @@ return array(
     ),
     'email' => array( // 发送邮件配置
         'host' => 'smtp-mail.outlook.com',
-        'port' => 587,
+        'port' => 587, // 465,587,25
         'username' => 'ouyang**ong@outlook.com',
         'password' => 'X***',
+        'fromAddress' => '258333309@163.com', // 亚马逊的ses比较特殊，这里是账号是asw账号，其他的邮件，可以直接填空，或和username一样
         'fromName' => '欧阳海雄',
-        'secure' => 'tls',  
+        'secure' => 'tls',  // tls, ssl
     ),
 );

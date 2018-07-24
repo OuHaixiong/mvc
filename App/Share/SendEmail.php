@@ -89,9 +89,9 @@ class Share_SendEmail
         if (isset($configs['fromName'])) { // 这个参数在某些邮件服务器中也是没有用的，邮件服务器用的是自己在那里注册的姓名，比如outlook
             $this->_fromName = $configs['fromName'];
         }
-//         if (isset($configs['fromAddress'])) { // 去掉，实践证明发件人邮箱一定需要和[邮箱]用户名一样
-//             $this->_fromAddress = $configs['fromAddress'];
-//         }
+        if (isset($configs['fromAddress'])) { // 去掉，实践证明发件人邮箱一定需要和[邮箱]用户名一样（大部分情况是这样的），也有一些特殊的需求
+            $this->_fromAddress = $configs['fromAddress'];
+        }
         if (isset($configs['secure'])) {
             $this->_secure = $configs['secure'];
         }
@@ -112,11 +112,11 @@ class Share_SendEmail
     public function send($subject, $html, $addressList, $attachments = array()) {
         $addressList = (array) $addressList;
         try {
-            $mail = new PHPMailer();
+            $mail = new PHPMailer(); // 如果是开发环境还可以开启debug模式，进行调试
             $mail->IsSMTP();
-            $mail->SMTPSecure = $this->_secure;
+            $mail->SMTPSecure = $this->_secure; // 设置使用什么样的加密方式登录鉴权
             $mail->CharSet = $this->_charSet;
-            $mail->SMTPAuth = true;
+            $mail->SMTPAuth = true; // smtp需要鉴权 这个必须是true
             $mail->Host = $this->_host;
             $mail->Port = $this->_port;
             $mail->Username = $this->_username;
@@ -133,7 +133,7 @@ class Share_SendEmail
             }
             $mail->SetFrom($fromAddress, $fromName); // 发件人邮箱和发件人
             $mail->Subject = $subject;
-            $mail->MsgHTML($html);
+            $mail->MsgHTML($html); // 如果是纯文本，可以直接设置内容： $mail->body = $html;
             foreach ($addressList as $address) {
                 $mail->AddAddress($address);
             }
