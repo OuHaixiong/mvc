@@ -57,24 +57,25 @@ class C_SendEmail extends BController
 	 * 测试发邮件
 	 */
 	public function test() {
-	    $subject = date('Y-m-d H:i:s') . '测试发送附件';
-	    $fromService = '亚马逊';
-	    $html = '<h2>通过 ' . $fromService . ' 发送的邮件</h2><p>详情请看附件</p><div>测试发送html内容</div>';
+	    $subject = date('Y-m-d H:i:s') . '这是我的个人简历，请查收';
+	    $fromService = 'SendGrid';
+	    $html = '<h2>通过 ' . $fromService . ' 发送的，附件是我的个人简历</h2><p>如果有任何问题</p><div>欢迎和我联系</div>';
 	    $addressList = [
 	        'ouhaixiong@yunfan.com',
 	        '258333309@qq.com',
-// // 	        'weilijian@yunfan.com',
+// 	        'weilijian@yunfan.com',
 	        '258333309@163.com',
+// 	        '1052172509@qq.com'
 	    ];
 	    $attachments = array();
-	    $attachments[] = array(
-	        'path' => ROOT_PATH . '/../data/abc.zip',
-	        'name' => 'abc.zip'
-	    );
-	    $attachments[] = array(
-	        'path' => ROOT_PATH . '/../data/data.zip',
-	        'name' => 'data.zip',
-	    );
+// 	    $attachments[] = array(
+// 	        'path' => ROOT_PATH . '/../data/abc.zip',
+// 	        'name' => 'abc.zip'
+// 	    );
+// 	    $attachments[] = array(
+// 	        'path' => ROOT_PATH . '/../data/data.zip',
+// 	        'name' => 'data.zip',
+// 	    );
 	    
 	    $sendEmail = new Share_SendEmail();
 	    $boolean = $sendEmail->send($subject, $html, $addressList, $attachments);
