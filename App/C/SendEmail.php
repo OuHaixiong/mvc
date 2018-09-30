@@ -57,15 +57,15 @@ class C_SendEmail extends BController
 	 * 测试发邮件
 	 */
 	public function test() {
-	    $subject = date('Y-m-d H:i:s') . '这是我的个人简历，请查收';
-	    $fromService = 'SendGrid';
-	    $html = '<h2>通过 ' . $fromService . ' 发送的，附件是我的个人简历</h2><p>如果有任何问题</p><div>欢迎和我联系</div>';
+	    $subject = date('Y-m-d H:i:s') . '试试第二封邮件是否能收到';
+	    $fromService = 'sparkpostmail';
+	    $html = '<h2>通过 ' . $fromService . ' 发送的，这是第二次发送的共四个地址</h2><p>qq和163的</p><div>看看都收到了吗？</div>';
 	    $addressList = [
 	        'ouhaixiong@yunfan.com',
 	        '258333309@qq.com',
 // 	        'weilijian@yunfan.com',
 	        '258333309@163.com',
-// 	        '1052172509@qq.com'
+	        '1052172509@qq.com'
 	    ];
 	    $attachments = array();
 // 	    $attachments[] = array(
@@ -78,7 +78,7 @@ class C_SendEmail extends BController
 // 	    );
 	    
 	    $sendEmail = new Share_SendEmail();
-	    $boolean = $sendEmail->send($subject, $html, $addressList, $attachments);
+	    $boolean = $sendEmail->send($subject, $html, $addressList, $attachments, true);
 // 	    $boolean = $sendEmail->send($subject, $html, $addressList);
 	    if ($boolean) {
 	        echo 'Send Email Succeed!';

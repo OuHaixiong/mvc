@@ -271,5 +271,12 @@ class C_Test extends BController
         $boolean = $locationArea->loadFileToDatabaseForEnUs();
         var_dump($boolean);
     }
+    
+    /**
+     * 测试上传图片
+     */
+    public function upload() {
+        $this->render();
+    }
 
 }

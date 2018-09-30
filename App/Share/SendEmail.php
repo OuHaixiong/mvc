@@ -109,11 +109,12 @@ class Share_SendEmail
      * ]
      * @return boolean
      */
-    public function send($subject, $html, $addressList, $attachments = array()) {
+    public function send($subject, $html, $addressList, $attachments = array(), $debug = false) {
         $addressList = (array) $addressList;
         try {
             $mail = new PHPMailer(); // 如果是开发环境还可以开启debug模式，进行调试
             $mail->IsSMTP();
+            $mail->SMTPDebug = $debug;
             $mail->SMTPSecure = $this->_secure; // 设置使用什么样的加密方式登录鉴权
             $mail->CharSet = $this->_charSet;
             $mail->SMTPAuth = true; // smtp需要鉴权 这个必须是true

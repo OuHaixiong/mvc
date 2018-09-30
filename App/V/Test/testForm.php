@@ -1,4 +1,4 @@
-<form action="http://member.csc86.com/upload" method="post" enctype="multipart/form-data">
+<form action="/test/testPost" method="post" enctype="multipart/form-data">
 <div><input type="file" name="file_data" /></div>
 <div><input type="text" name="type" value="texteditor" /></div>
 
@@ -13,6 +13,8 @@
   ?>">到一个php页面进行下载(2)</a>
 </p>
 </form>
+
+
 <!-- 下面是屏蔽按住F5键不停刷新按钮 -->
 <script type="text/javascript" src="<?php echo STATIC_URL; ?>/js/base/jquery-1.10.2.js"></script>
 <!--[if lt IE 9]>
@@ -56,6 +58,8 @@ $(document).ready(function () {
     }
 });
 </script>
+
+
 <p>下面测试注册</p>
 
 <form action="/test/testPost" method="post" enctype="multipart/form-data">
