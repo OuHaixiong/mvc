@@ -172,24 +172,178 @@ class C_Test extends BController
      * 测试curl请求
      */
     public function testCurl() {
-        $url = 'https://openlab.makeblock.com/user/delete';
-		$params = array(
-            'loginname' => 'ouhaixiong@bear.com',
-            'accessKey' => 'xxx'
-        );
+        $url = 'http://a.yunex.io/api/coin/bonus/snap/?count=3&day=&start=1';
+		
 		$httpHeader = array('Content-Type' => 'application/json');
-		$method = 'POST';
+		$method = 'GET';
         $userAgent = 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:49.0) Gecko/20100101 Firefox/49.0';
 // Mozilla/5.0 (Macintosh; Intel Mac OS X 10.12; rv:59.0) Gecko/20100101 Firefox/59.0
 		// $result = Common_HttpClient::sendRequest($url, $params, $method, $httpHeader, '', '', $userAgent, false, 20);
-        $result = Common_HttpClient::sendRequest($url, $params, $method, $httpHeader, '', '', $_SERVER['HTTP_USER_AGENT']);
+// 		sendRequest($url, $data = null, $method = 'GET', $httpHeader = array(), $cookie = array(), $refererUrl = '', $userAgent = '', $proxy = false, $timeout = 30) {
+
+		$params = array(
+		    'count' => 3,
+		    'day' => '',
+		    'start' => 1,
+		);
+		$str = '';
+		foreach ($params as $k=>$v) {
+		    $str .= $k . '=' . urlencode($v) . '&';
+		}
+		$str = rtrim($str, '&');
+		$x_ts = time();
+		$x_nonce = $this->random(3);
+		$app_secrete = 'eYe5NbeLqUeVmHuMyk6NM4Lms8IC3cl64z2wmLgsu2JwwIzC8PSPk2ZqHn80RrFR';
+		$app_key ='cfeeb463d508229b90ad39635d29df13596a3a6240826535ccc05384c66e49e6';
+		$str .= $x_ts . $x_nonce . $app_secrete;
+
+		$sha256 = hash('sha256', $str, true);
+		$signString = bin2hex($sha256);
+
+		$httpHeader['-x-ts'] = $x_ts;
+		$httpHeader['-x-nonce'] = $x_nonce;
+		$httpHeader['-x-key'] = $app_key;
+		$httpHeader['-x-sign'] = $signString;
+		$params = array();
+//         $result = $this->sendRequest($url, $params, $method, $httpHeader, '', '', $_SERVER['HTTP_USER_AGENT']);
 		
-		// $url = 'https://openlab.makeblock.com';
-		// $method = 'GET';
-		// $result = Common_HttpClient::sendRequest($url, '', $method, '', '', '', $userAgent, false, 20); 
-		// $result = Common_HttpClient::sendRequest($url, '', $method); // 如果是https的话，最好带上user_agent
+
+		$postParams = array(
+		    'bonus'=> array(
+		        array('to_uid'=>142, 'symbol'=>'usdt', 'amount'=>'0.13', 'date'=>'2018-10-18', 'order_id'=>'YBO201810180014'),
+		        array('to_uid'=>142, 'symbol'=>'eth',  'amount'=>'0.02', 'date'=>'2018-10-18', 'order_id'=>'YB0201810180015')
+            )
+		);
+		$postParamsString = json_encode($postParams);
+		$url = 'http://a.yunex.io/api/coin/bonus/transfer/';
+		$method = 'POST';
+		$app_key = '77746177327d86cdcd92935e78de68f8f858b6259880d8c4ad911fee33537fbc';
+		$app_secrete = 'SJQe3INeRe2KK2mTi3D0aisYhBbCez2nWflhSJUCTw8C87rNQaAZ23XnIFMqwz5u';
+		$str = '';
+		$str = $postParamsString . $x_ts . $x_nonce . $app_secrete;
+		var_dump($str);
+		$sha256 = hash('sha256', $str, true);
+		$httpHeader['-x-key'] = $app_key;
+		$httpHeader['-x-sign'] = bin2hex($sha256);
+		var_dump($httpHeader['-x-sign']);
+		$result = $this->sendRequest($url, $postParams, $method, $httpHeader, '', '', $userAgent, false, 20); 
+
+		
+        
+        
         var_dump($result);
     }
+    
+    public function random($length = 6) {
+        $hash = '';
+        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+        mt_srand((double)microtime()*1000000); // 播下一个更好的随机数发生器种子
+        //自 PHP 4.2.0 起，不再需要用 srand() 或 mt_srand() 给随机数发生器播种 ，因为现在是由系统自动完成的。
+        $len = strlen($chars)-1;
+        for ($i=0; $i<$length; $i++) {
+            $hash .= $chars[mt_rand(0, $len)];
+        }
+        return $hash;
+    }
+    
+    
+    public function sendRequest($url, $data = null, $method = 'GET', $httpHeader = array(), $cookie = array(), $refererUrl = '', $userAgent = '', $proxy = false, $timeout = 30) {
+        $url = trim($url);
+        $method = strtoupper($method);
+        if (!in_array($method, array('GET', 'POST'))) {
+            return false;
+        }
+        if ('GET' === $method) { // 如果是get请求，并且需要发送数据，就把数据拼接在url后面
+            if (!empty($data)) {
+                if (is_string($data)) {
+                    $url .= (strpos($url, '?') === false ? '?' : '') . $data;
+                } else {
+                    $url .= (strpos($url, '?') === false ? '?' : '') . http_build_query($data);
+                }
+            }
+        }
+        $ch = curl_init($url); // curl_setopt($ch, CURLOPT_URL, $url); // 设置请求（抓取）url
+        curl_setopt($ch, CURLOPT_HEADER, 0); // 不返回header部分（设置头文件的信息作为数据流输出）
+        curl_setopt($ch, CURLOPT_AUTOREFERER, true); // 当根据Location:重定向时，自动设置header中的Referer:信息
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); // 将curl_exec()获取的信息以文件流的形式返回，而不是直接输出。
+        curl_setopt($ch, CURLOPT_TIMEOUT, $timeout); // 设置超时限制防止死循环
+        //		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
+        $isFormData = false; // Content-Type: multipart/form-data
+        $isJson = false; // Content-Type: application/json
+        if (!empty($httpHeader)) { // 请求头信息
+            $headerData = array();
+            foreach ($httpHeader as $k=>$v) {
+                if ((strtolower($k) == 'content-type') && ($v == 'application/json')) {
+                    $isJson = true;
+                }
+                if ((strtolower($k) == 'content-type') && ($v == 'multipart/form-data')) {
+                    $isFormData = true;
+                }
+                $headerData[] = $k . ':' . $v; // array('Content-Type:application/json')
+            }
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headerData); // 声明请求头信息
+            //            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
+        }
+        if ($userAgent) {
+            curl_setopt($ch, CURLOPT_USERAGENT, $userAgent); // 模拟用户使用的浏览器代理
+        }
+        // 判断是否https请求
+        $scheme = parse_url($url, PHP_URL_SCHEME);
+        if ('https' === $scheme) { // 是https请求
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 规避对认证证书来源的检查(不验证证书)
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // 从证书中检查SSL加密算法是否存在。这里是跳过host验证
+        }
+        if ((is_array($cookie)) && (!empty($cookie))) { // 请求cookie值
+            $cookieData = array();
+            foreach ($cookie as $k=>$v) {
+                $cookieData[] = $k . '=' . $v;
+            }
+            $cookieData = implode(';', $cookieData);
+            curl_setopt($ch, CURLOPT_COOKIE, $cookieData);
+        }
+        if ('POST' === $method) { // post请求
+            curl_setopt($ch, CURLOPT_POST, 1); // curl_setopt($ch, CURLOPT_POST, true);
+            //             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');  // 貌似这个写法和上面是一样的（待验证）
+            curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+            curl_setopt($ch, CURLOPT_FORBID_REUSE, 1);
+            if (!empty($data)) {
+                if (is_string($data)) {
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+                } else {
+                    if ($isJson) {
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                    } else if ($isFormData) {
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $data); // 数组对应multipart/form-data，也是默认的
+                    } else {
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data)); // http_build_query对应application/x-www-form-urlencoded
+                    }
+                }
+            }
+        } else {
+            //             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+            //             curl_setopt($ch, CURLOPT_POST, false);
+        }
+        if ($refererUrl) {
+            curl_setopt($ch, CURLOPT_REFERER, $refererUrl); // 来源网址
+        }
+        if ($proxy) {
+            curl_setopt($ch, CURLOPT_PROXY, $proxy);
+        }
+        $response = curl_exec($ch); // 执行命令（请求）
+        $info = curl_getinfo($ch);
+        //         var_dump($response);var_dump(curl_error($ch));var_dump($info);exit;
+        //        TODO 如果返回码不是200，写异常日记
+    
+        //         $nowTime = date('Y-m-d H:i:s');
+        //         $logFilePath = LOGS_PATH . '/http_response_err.log';
+        //         Tool::writeFileFromString($logFilePath, $nowTime . ' 调用http请求，错误日记是：', true);
+        //         $string = Tool::printVariable($info);
+        //         Tool::writeFileFromString($logFilePath, $string, true);
+    
+        curl_close($ch); // 关闭请求
+        return $response;
+    }
+    
     
     /**
      * 600个人站一排，每次随机杀掉一个奇数位的人，几号最安全？

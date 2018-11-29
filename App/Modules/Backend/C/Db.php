@@ -290,5 +290,59 @@ class Backend_C_Db extends Backend_C_Controller
         var_dump($pdo->exec($sql)); // 这里执行失败了，不返回任何值，连null都没有
         // 从局域网的测试来看，没有看到延迟的现象，也就是说，插入进去了就能直接读取出来
     }
+    
+    /**
+     * postgreSql 原生操作
+     */
+    public function pgSql() {
+        $host = '172.17.6.140';
+        $port = '5432';
+        $dbName = 'ybapi';
+        $user = 'ybapi';
+        $password = '123456';
+        $db = pg_connect("host=$host port=$port dbname=$dbName user=$user password=$password");
+        if (!$db) {
+            die("Error:Unable to open PostgreSql database\n");
+        }
+
+        $sql = <<<EOF
+        select * from product LIMIT 10 OFFSET 0;
+EOF;
+        $result = pg_query($db, $sql);
+        if (!$result) {
+            die("Query error". pg_last_error($db));
+        }
+        $rowset = pg_fetch_all($result);
+        $html = '';
+        foreach ($rowset as $row) {
+            $html .= "id=>{$row['id']} name={$row['title']} info={$row['info']} <br />";
+        }
+        echo $html;
+        pg_close($db);
+    }
+    
+    /**
+     * PostgreSQL PDO 操作 
+     */
+    public function pgPdo() {
+        $dbName = 'ybapi';
+        $host = '172.17.6.140';
+        $port = '5432';
+        $user = 'ybapi';
+        $password = '123456';
+        $pdo = new PDO("pgsql:dbname={$dbName};host={$host};port={$port}", $user, $password);
+        $statement = $pdo->prepare('select * from product LIMIT 10 OFFSET 0');
+        if (!$statement) {
+            die($statement->errorInfo());
+        }
+//         $statement->bindParam(":id",$id);
+        $statement->execute();
+        $rowset = $statement->fetchAll();
+        $html = '';
+        foreach ($rowset as $row) {
+            $html .= "id=>{$row['id']} name={$row['title']} info={$row['info']} <br />";
+        }
+        echo $html;
+    }
 
 }
