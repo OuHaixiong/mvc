@@ -11,6 +11,7 @@ class BRedis
 {
     const MASTER_KEY = 'master_redis';
     const SLAVE_KEY = 'slave_redis';
+    const SLAVE_DEFAULT_DB = 'slave_redis_default_db';
     
     /**
      * 主redis
@@ -26,11 +27,12 @@ class BRedis
 
     /**
      * 获取主redis服务，负责读和写
+     * @param integer $db 数据库id（如果不传且已设置默认数据库，就操作默认数据库）
      * @return Redis
      */
     public static function getMaster($db = null) {
+        $masterRedis = BConfig::getConfig(self::MASTER_KEY);
         if (self::$_master === null) {
-            $masterRedis = BConfig::getConfig(self::MASTER_KEY);
             self::$_master = new Redis();
             /* try {
                 self::$_master->connect($masterRedis['host'], $masterRedis['port'], $masterRedis['timeout']);
@@ -45,17 +47,22 @@ class BRedis
                 self::$_master->auth($masterRedis['password']);
             }
         }
-        if (!empty($db)) {
+        if (($db === null) && isset($masterRedis['db'])) {
+            $db = $masterRedis['db'];
+        }
+        if ($db !== null) {
             self::$_master->select($db);
         }
-        return self::$_master;
+        return self::$_master; 
     }
     
     /**
      * 获取从redis服务，只负责读
+     * @param integer $db 需从哪个数据库进行读取（如果不传且已设置默认数据库，就从默认数据库进行读取）
      * @return Redis
      */
     public static function getSlave($db = null) {
+        $defaultDb = BConfig::getConfig(self::SLAVE_DEFAULT_DB);
         if (self::$_slave === null) {
             $slaveRedis = BConfig::getConfig(self::SLAVE_KEY);
             self::$_slave = new Redis();
@@ -65,7 +72,10 @@ class BRedis
                 self::$_slave->auth($oneSlave['password']);
             }
         }
-        if (!empty($db)) {
+        if (($db === null) && ($defaultDb !== null)) {
+            $db = $defaultDb;
+        }
+        if ($db !== null) {
             self::$_slave->select($db);
         }
         return self::$_slave;

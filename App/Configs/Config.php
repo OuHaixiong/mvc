@@ -55,13 +55,15 @@ return array(
         'host' => '172.17.6.140',
         'port' => 6379,
         'password' => '123456',
-        'timeout' => 3
+        'timeout' => 3,
+        'db' => 0, // 默认redis数据库
 	),
     'slave_redis' => array( // 多个 redis 从服务器配置
         array(
             'host' => '172.16.51.133',
             'port' => 6379,
-            'timeout' => 3
+            'timeout' => 3,
+            'password' => '123456',
         ),
 //         array(
 //             'host' => '192.168.17.139',
@@ -69,6 +71,7 @@ return array(
 //             'timeout' => 0
 //         ),
     ),
+    'slave_redis_default_db' => 0, // 从redis默认数据库
     'isIntercept' => false, // 是否开启拦截功能；false：未开启拦截功能，不对频繁请求的用户进行屏蔽操作
     'debug' => true, // 是否开启调试模式；true：直接报错，false：不报错，把错误写入日记文件
     'logPath' => realpath(ROOT_PATH . '/../../logs/mvc'), // 日记文件目录；特别注意此文件需要存在且可写
