@@ -50,6 +50,8 @@ defined('IMG_URL') || define('IMG_URL', 'http://img.mvc.com'); // 定义图片�
 
 require_once BASE_PATH . '/BAutoLoad.php';
 
+// require(__DIR__ . '/../../common/AutoLoader.php'); // 注册第三方类库
+
 // 保存session进redis
 $masterRedis = BConfig::getConfig('master_redis');
 ini_set('session.save_handler', 'redis');
