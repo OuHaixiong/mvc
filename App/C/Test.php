@@ -434,12 +434,7 @@ class C_Test extends BController
     }
 
     public function test2() {
-        $a = array(6,9,22,1,56,89,78,4,11,145);
-        $this->printArr($a);
-        $b = $this->bubbleSort($a);
-        $this->printArr($b);
-        $c = $this->bubbleSort($b, 1);
-        $this->printArr($c);
+
     }
     
     private function printArr($arr) {
@@ -451,39 +446,5 @@ class C_Test extends BController
         echo $str . '<br />';
     }
     
-    public  function bubbleSort(array $array, $num = 0) {
-        $count = count($array);
-        if ($count <= 0) {
-            return array();
-        }
-        if ($num == 1) {
-            for($i=0;$i<$count-1; ++$i)
-            {
-                for($j=0;$j<$count-$i-1; ++$j)
-                {
-                    if($array[$j] < $array[$j+1])
-                    {
-                        $temp        = $array[$j];
-                        $array[$j]   = $array[$j+1];
-                        $array[$j+1] = $temp;
-                    }
-                }
-            }
-        } else {
-            for($i=0;$i<$count-1; ++$i)
-            {
-                for($j=0;$j<$count-$i-1; ++$j)
-                {
-                    if($array[$j] > $array[$j+1])
-                    {
-                        $temp        = $array[$j];
-                        $array[$j]   = $array[$j+1];
-                        $array[$j+1] = $temp;
-                    }
-                }
-            }
-        }
-        return $array;
-    }
     
 }

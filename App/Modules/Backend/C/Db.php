@@ -349,8 +349,10 @@ EOF;
      * 测试事务
      */
     public function transaction() {
+//         $userAccount = new Backend_M_UserAccount();
+//         $userAccount->testTransaction();
         $userAccount = new Backend_M_UserAccount();
-        $userAccount->testTransaction();
+        $userAccount->multipleTransactionCommit();
     }
 
 }

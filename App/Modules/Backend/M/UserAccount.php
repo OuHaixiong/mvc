@@ -10,7 +10,7 @@
 class Backend_M_UserAccount extends BModel
 {
     /**
-     * 测试PDO事务处理
+     * 测试PDO事务处理；未提交直接进行查询
      * @throws Exception
      */
     public function testTransaction() {
@@ -53,4 +53,53 @@ class Backend_M_UserAccount extends BModel
         print_r($row3);
 
     }
+    
+    /**
+     * 测试多重事务提交（特别注意了：事务是不允许嵌套的）
+     */
+    public function multipleTransactionCommit() {
+        $pdo = $this->master->pdo;
+        $pdo->beginTransaction();
+        try {
+            // 插入一条数据
+            $data = array(
+                'accountNumber' => 87654321,
+                'status' => 1,
+            );
+            $entity = $this->getEntity('UserAccount');
+            $number = $entity->add($data);
+            var_dump('插入：' . $number);
+            
+            // 又开启一个事务
+            try {
+                $pdo->beginTransaction(); // 这里直接就抛异常了，事务是不允许嵌套的：There is already an active transaction
+                $data = array(
+                    'accountNumber' => 999999,
+                    'status' => 0,
+                );
+                $entity = $this->getEntity('UserAccount');
+                $number = $entity->add($data);
+                var_dump('插入2：' . $number);
+                if ($number < 1) {
+                    throw new PDOException('无法插入数据', 100444);
+                } else {
+                    $pdo->commit();
+                }
+            } catch (Exception $e) { // 
+                var_dump($e);
+                $pdo->rollBack();
+                print_r('内层事务抛异常了。。。');exit;
+            }
+            
+            throw new Exception('主动抛异常，外层事务：不插入数据', 10002);
+            $pdo->commit();
+        } catch (PDOException $e) {
+            var_dump('数据库异常');
+            $pdo->rollBack();
+        } catch (Exception $e) {
+            var_dump($e->getCode() . ' : ' . $e->getMessage());
+            $pdo->rollBack();
+        }
+        print_r('OK');
+    } 
 }
