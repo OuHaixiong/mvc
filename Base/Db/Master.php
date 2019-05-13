@@ -176,6 +176,7 @@ class Db_Master
         $statement = $this->pdo->prepare($sql);
         foreach ($bindValue as $k=>$v) {
 //             $statement->bindParam(':' . $k, $bindValue[$k]); // 特别注意这里，不能用$v
+// bindParam和bindValue的区别是：bindParam的参数一定是个php变量，而bindValue可以是变量，也可以是值，还有就是如果bindParam是多个值是需要用多个变量，如上
             $statement->bindValue(':' . $k, $v);
         }
         return $statement->execute();
@@ -285,4 +286,5 @@ class Db_Master
         }
     }
     
+    // 事务支持嵌套； nestingLevel嵌套层级 savepoint
 }
