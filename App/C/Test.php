@@ -11,12 +11,22 @@ class C_Test extends BController
 //         parent::init();
         
 	}
-	
+
 	public function index() {
-//        $newfile = new M_New_Newfile();
-//        $newfile->mm();
-        $supportLanguages = array('cn', 'en', 'zh-cn', 'zh');
-        Common_Tool::prePrint(Common_Tool::getClientLanguage($supportLanguages));
+        $email = 'addd@dd_d.com.cn';
+        $boolean = Common_Validate_Base::isEmail($email);
+        
+        var_dump($boolean);
+        $boolean = Common_Tool::isEmail($email);
+        var_dump($boolean);
+//         $supportLanguages = array('cn', 'en', 'zh-cn', 'zh');
+//         Common_Tool::prePrint(Common_Tool::getClientLanguage($supportLanguages));
+
+	    if (Common_Tool::isPost()) {
+	        
+	        var_dump($_POST['ck']);exit;
+	    }
+	    $this->render();
 	}
 	
 	/**
