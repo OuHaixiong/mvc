@@ -1,4 +1,7 @@
 <?php
+
+require_once(dirname(__FILE__) . '/../examples/lang/chi.php');
+
 //============================================================+
 // File name   : tcpdf_config.php
 // Begin       : 2004-06-11
@@ -154,7 +157,7 @@ define ('PDF_MARGIN_RIGHT', 15);
 /**
  * Default main font name.
  */
-define ('PDF_FONT_NAME_MAIN', 'helvetica');
+define ('PDF_FONT_NAME_MAIN', 'droidsansfallback');
 
 /**
  * Default main font size.
@@ -164,7 +167,7 @@ define ('PDF_FONT_SIZE_MAIN', 10);
 /**
  * Default data font name.
  */
-define ('PDF_FONT_NAME_DATA', 'helvetica');
+define ('PDF_FONT_NAME_DATA', 'droidsansfallback');
 
 /**
  * Default data font size.
@@ -172,9 +175,9 @@ define ('PDF_FONT_NAME_DATA', 'helvetica');
 define ('PDF_FONT_SIZE_DATA', 8);
 
 /**
- * Default monospaced font name.
+ * Default monospaced font name. 默认等宽字体
  */
-define ('PDF_FONT_MONOSPACED', 'courier');
+define ('PDF_FONT_MONOSPACED', 'droidsansfallback');
 
 /**
  * Ratio used to adjust the conversion of pixels to user units.
