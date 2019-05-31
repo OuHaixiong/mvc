@@ -31,11 +31,13 @@ class C_Pdf extends BController
      */
     public function read() {
         $filePath = ROOT_PATH . '/../data/merge_test2.pdf';
-        $filePath = ROOT_PATH . '/../data/22.pdf';
+//         $filePath = ROOT_PATH . '/../data/Modern-PHP.pdf';
+//         $filePath = ROOT_PATH . '/../data/1.6.pdf';
         include_once APP_PATH . '/Share/PDFMerger/tcpdf/tcpdf.php';
         include_once APP_PATH . '/Share/PDFMerger/tcpdf/tcpdi.php';
         include_once APP_PATH . '/Share/PDFMerger/tcpdf/tcpdf_parser.php';
         include_once APP_PATH . '/Share/PDFMerger/tcpdf/tcpdi_parser.php';
+        include_once APP_PATH . '/Share/PDFMerger/tcpdf/tcpdf_import.php';
 //         $tcpdi = new TCPDI();
 //         $totalPages = $tcpdi->setSourceFile($filePath); // 返回总页数
 //         var_dump($totalPages);
@@ -51,14 +53,24 @@ class C_Pdf extends BController
 //         var_dump($parsedData); // 这里返回的就是所有的pdf的相关信息
         $uniqueId = 8; // 这个自己随便定义
         $tcpdiParser = new tcpdi_parser($data, $uniqueId);
-        $totalPages = $tcpdiParser->getPageCount();
-        var_dump($totalPages);
-        $pdfVersion = $tcpdiParser->getPDFVersion();
-        var_dump($pdfVersion);
-//         $tcpdiParser->setPageno(5);
-        $parsedData = $tcpdiParser->getParsedData();
-        $pages = $parsedData[2];
-        var_dump($pages);
+        
+        
+//         $fileOpen = fopen($filePath, 'r'); // 打开文件用于只读
+//         while (!feof($fileOpen)) { // 判断是否到了文件结尾
+//             $lineContent = fgets($fileOpen); // 获取一行数据
+//             print_r($lineContent);
+//             echo '<br />';
+//         }
+//         var_dump(ftell($fileOpen)); // 获取文件的当前位置，相当于从文件头到此处的字节数（大小）
+
+//         exit;
+// //         $tcpdiParser->setPageno(5);
+//         $parsedData = $tcpdiParser->getParsedData();
+
+//         var_dump(count($parsedData[2]));
+        $filePath = $pdfPath = ROOT_PATH . '/../data/merge_test2.pdf';
+//         $tcpdfImport = new TCPDF_IMPORT();
+//         $tcpdfImport->importPDF($filePath);
     }
     
     /**
@@ -255,6 +267,93 @@ class C_Pdf extends BController
 //         $tcpdf->Output($fileName, 'I'); // 浏览器之间浏览   。   D：直接浏览器下载。 E：返回base64 MIME多部分电子邮件附件(Rfc 2045)
         $tcpdf->Output($outputPath, 'FI'); // 保存成文件（在服务器本地）。  S：返回字符串，第一个参数会忽略。 可以有多个参数进行组合，比如：FI、FD
         $tcpdf->Close();
+    }
+    
+    /**将pdf转为png图片列表
+     * @param $pdf_path string pdf文件的绝对路径
+     * @param $out_path string 生成图片存放位置的绝对路径
+     * @param int $from int  从第几页开始转
+     * @param int $to int 截止于第几页
+     * @return array
+     * @throws SystemInnerException
+     */
+    public function convertPdf2Images($pdf_path,$out_path,$from=1,$to=1)
+    {
+        $im = new \Imagick();
+        $im->setResolution(200, 200); // 200X200的分辨率就差不多
+        $im->setCompressionQuality(98); // 设置图片的质量，不管怎么设置对pdf是图片的会有一定的色差，对纯文字生成图片清晰度很好
+        $im->readImage($pdf_path);
+        $pages = count($im);
+        if($pages == 0)
+            throw new Exception('empty pdf file!');
+        $index = 1;
+    
+        $data = [];
+        foreach ($im as $k=>$v)
+        {//var_dump($from);var_dump($to);exit;
+            if($index == $from)
+            {
+                if($from<=$to) {
+    
+    
+                    $v->setImageFormat('png');
+                    $tmp_name = 'abcxyz'. $index . '.png';
+                    if ($v->writeImage($out_path.$tmp_name) == true)
+                        $data[] = $tmp_name;
+                    $index++;
+                    $from++;
+                }else
+                    break;
+            }else
+                $index++;
+        }
+    
+        return $data;
+    }
+
+    
+    public function toImage() {
+        $pdfPath = ROOT_PATH . '/../data/merge_test2.pdf';
+        $pngPath = ROOT_PATH . '/../data/xyz.png';
+        $outputPath = ROOT_PATH . '/../data/temp/';
+//         $boolean = $this->pdf2png($pdfPath, $pngPath);
+        //$boolean = $this->convertPdf2Images($pdfPath, $outputPath, 1, 10);
+        //var_dump($boolean);
+        $image = new Imagick();
+		$pdfPath = ROOT_PATH . '/../data/Modern-PHP.pdf';
+        $image->pingImage($pdfPath);
+        echo $image->getNumberImages();
+		//echo $this->getPageTotal($pdfPath); // 速度差不多
+    }
+    
+    /**
+     * 获取PDF的页数
+     */
+    public function getPageTotal($path){
+        // 打开文件
+        if (!$fp = @fopen($path, 'r')) {
+            $error = "打开文件{$path}失败";
+            return false;
+        } else {
+            $max=0;
+            while(!feof($fp)) {
+                $line = fgets($fp,255);
+                if (preg_match('/\/Count [0-9]+/', $line, $matches)){
+                    preg_match('/[0-9]+/',$matches[0], $matches2);
+                    if ($max<$matches2[0]) $max=$matches2[0];
+                }
+            }
+            fclose($fp);
+            // 返回页数
+            return $max;
+        }
+    }
+    
+    public function readPageNum() {
+        $pdfPath = ROOT_PATH . '/../data/merge_test2.pdf';
+        $pdfPath = ROOT_PATH . '/../data/Modern-PHP.pdf';
+        $pageNum = $this->getPageTotal($pdfPath);
+        var_dump($pageNum);
     }
     
 }
