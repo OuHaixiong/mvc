@@ -2,7 +2,7 @@
 
 // 有些帮助类，可以命名为：XXXHelper.php
 set_time_limit(60); // 指定了当前所在php脚本的最大执行时间为60秒
-ini_set('max_execution_time', 60);
+ini_set('max_execution_time', 60); // 一定要在脚本中设置最大超时时间，不要删这里两行
 
 ini_set('session.cookie_path', '/'); // 设置cookie保存在跟目录
 ini_set('session.cookie_domain', '.mvc.com'); // cookie保存在主域下
