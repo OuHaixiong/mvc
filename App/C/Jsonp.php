@@ -39,5 +39,13 @@ class C_Jsonp extends BController
     public function jquery() {
         $this->render();
     }
+
+    /**
+     * 测试跨域请求
+     */
+    public function testInterface() {
+        $this->title = '测试接口';
+        $this->render();
+    }
     
 }
